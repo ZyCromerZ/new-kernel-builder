@@ -4,7 +4,7 @@ git checkout master
 if [ ! -z "$2" ];then
     ListBranch="$2"
 else
-    ListBranch="begonia-r-oss-cst begonia-r-oss-stock"
+    ListBranch="begonia-r-oss-oc begonia-r-oss-std begonia-r-oss-stock"
 fi
 
 for Branch in $ListBranch
@@ -23,3 +23,5 @@ fi
 git push -f "$repo" $ListBranch
 
 git checkout master
+
+git branch -D $ListBranch

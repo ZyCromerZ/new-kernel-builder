@@ -1,13 +1,13 @@
 #! /bin/bash
-KernelBranch="new-q-oss-up"
+KernelBranch="r-oss-base-mod-release"
 
-IncludeFiles "${MainPath}/device/begonia-q-oss.sh"
+IncludeFiles "${MainPath}/device/begonia-r-oss.sh"
 CustomUploader="Y"
 # UseSpectrum="Y"
 IncludeFiles "${MainPath}/misc/kernel.sh" "https://${GIT_SECRET}@github.com/${GIT_USERNAME}/begonia_kernel"
-# spectrumFile="bego-on-p.rc"
+# spectrumFile="None"
 FolderUp="begonia"
-TypeBuildTag="[Q-OSS][806Mhz][Stable]"
+TypeBuildTag="[R-OSS][806Mhz][Stable]"
 
 CloneKernel
 CloneCompiledGccTwelve

@@ -1,5 +1,5 @@
 #! /bin/bash
-KernelBranch="r-oss"
+KernelBranch="r-oss-up"
 
 IncludeFiles "${MainPath}/device/begonia-r-oss.sh"
 CustomUploader="Y"
@@ -7,22 +7,12 @@ CustomUploader="Y"
 IncludeFiles "${MainPath}/misc/kernel.sh" "https://${GIT_SECRET}@github.com/${GIT_USERNAME}/begonia_kernel"
 # spectrumFile="None"
 FolderUp="begonia"
-TypeBuildTag="[R-OSS][Stable]"
+TypeBuildTag="[R-OSS][806Mhz][Stable]"
 
 CloneKernel
 CloneCompiledGccTwelve
-# CloneThirteenGugelClang
-# CloneGCCOld
-# CloneOldDTCClang
-# PullLtoSlmk
-# CompileClangKernel && CleanOut
 CloneProtonClang
 CompileClangKernel && CleanOut
-CloneDTCClang
-# PullSlmk
-CompileClangKernel && CleanOut
-# CompileGccKernel && CleanOut
-CompileGccKernel
 
 # cleanup stuff after done
 cd "${MainPath}"
