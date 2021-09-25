@@ -1,0 +1,23 @@
+name: Building New Kernel
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+  
+    container: 
+      image: zycromerz/kerneldocker:v2
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Compile GCC
+      env:
+        GIT_SECRETB: ${{ secrets.GIT_SECRETB }}
+        GIT_SECRET: ${{ secrets.GIT_SECRET }}
+        BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
+        GIT_USERNAME: ${{ secrets.GIT_USERNAME }}
+      run: |
+        chmod +x main.sh
+        bash main.sh

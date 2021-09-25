@@ -21,8 +21,19 @@ KDType=""
 
 export DEBIAN_FRONTEND=noninteractive
 export KBUILD_BUILD_USER="ZyCromerZ"
-[ ! -z "${CIRCLE_BRANCH}" ] && branch="${CIRCLE_BRANCH}" && export KBUILD_BUILD_HOST="Circleci-server" && TotalCores="$(nproc --all)"
-[ ! -z "${DRONE_BRANCH}" ] && branch="${DRONE_BRANCH}" && export KBUILD_BUILD_HOST="Droneci-server" && TotalCores="$(nproc --all)"
+if [ ! -z "${CIRCLE_BRANCH}" ];then
+    export KBUILD_BUILD_HOST="Circleci-server"
+    branch="${CIRCLE_BRANCH}"
+elif [ ! -z "${DRONE_BRANCH}" ];then
+    export KBUILD_BUILD_HOST="Droneci-server"
+    branch="${DRONE_BRANCH}"
+elif [ ! -z "${GITHUB_REPOSITORY}" ];then
+    export KBUILD_BUILD_HOST="Github-server"
+    branch="${GITHUB_REPOSITORY/"${GITHUB_ACTOR}/"/""}"
+fi
+TotalCores="$(nproc --all)"
+
+git push -d origin $branch 2>/dev/null
 
 # just fix for dtc clang
 check=$(ls /usr/lib/x86_64-linux-gnu | grep libisl.so -m1)

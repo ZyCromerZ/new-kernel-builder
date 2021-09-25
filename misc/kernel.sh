@@ -669,6 +669,10 @@ SendInfoLink(){
             BuildNumber="${DRONE_BUILD_NUMBER}"
             GenLink="https://cloud.drone.io/${DRONE_REPO}/${DRONE_BUILD_NUMBER}/1/2"
         fi
+        if [ ! -z "${GITHUB_REPOSITORY}" ];then
+            BuildNumber="$GITHUB_RUN_NUMBER"
+            GenLink="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
+        fi
         MSG="🔨 New Kernel On The Way%0A%0ADevice: <code>${DEVICE}</code>%0A%0ACodename: <code>${CODENAME}</code>%0A%0ABranch: <code>${KernelBranch}</code>%0A%0ABuild Date: <code>${GetCBD}</code>%0A%0ABuild Number: <code>${BuildNumber}</code>%0A%0AHost Core Count : <code>${TotalCores} cores</code>%0A%0AKernel Version: <code>${KVer}</code>%0A%0ABuild Link Progress : ${GenLink}"
         . $MainPath/misc/bot.sh "send_info" "$MSG"
         FirstSendInfoLink="Y"
