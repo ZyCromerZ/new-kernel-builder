@@ -21,17 +21,18 @@ KDType=""
 
 export DEBIAN_FRONTEND=noninteractive
 export KBUILD_BUILD_USER="ZyCromerZ"
+TotalCores="$(nproc --all)"
 if [ ! -z "${CIRCLE_BRANCH}" ];then
     export KBUILD_BUILD_HOST="Circleci-server"
     branch="${CIRCLE_BRANCH}"
 elif [ ! -z "${DRONE_BRANCH}" ];then
     export KBUILD_BUILD_HOST="Droneci-server"
     branch="${DRONE_BRANCH}"
-elif [ ! -z "${GITHUB_REPOSITORY}" ];then
+elif [ ! -z "${GITHUB_REF}" ];then
     export KBUILD_BUILD_HOST="Github-server"
-    branch="${GITHUB_REPOSITORY/"${GITHUB_ACTOR}/"/""}"
+    branch="${GITHUB_REF/"refs/heads/"/""}"
+    TotalCores="8"
 fi
-TotalCores="$(nproc --all)"
 
 git push -d origin $branch 2>/dev/null
 
