@@ -11,7 +11,8 @@ TypeBuildTag="[R-OSS][806Mhz][Stable]"
 
 CloneKernel
 CloneCompiledGccTwelve
-CloneProtonClang
+# CloneProtonClang
+CloneThirteenGugelClang
 CompileClangKernel && CleanOut
 
 # cleanup stuff after done
