@@ -95,25 +95,54 @@ CloneGccten(){
     GetGccVersion
 }
 
+# CloneCompiledGccTwelve(){
+#     [[ "$(pwd)" != "${MainPath}" ]] && cd "${MainPath}"
+#     GCCaPath="$MainZipGCCaPath"
+#     GCCbPath="$MainZipGCCbPath"
+#     rm -rf ${GCCaPath}/* ${GCCbPath}/*
+#     mkdir "${GCCaPath}"
+#     mkdir "${GCCbPath}"
+#     if [ ! -e "${MainPath}/arm-zyc-linux-gnueabi-12.x-gnu-20210920.tar.gz" ];then
+#         wget -q  https://github.com/ZyCromerZ/compiled-gcc/releases/download/varm-zyc-linux-gnueabi-12.x-gnu-20210920/arm-zyc-linux-gnueabi-12.x-gnu-20210920.tar.gz
+#     fi
+#     tar -xf arm-zyc-linux-gnueabi-12.x-gnu-20210920.tar.gz -C $GCCbPath
+#     GCCbPath="${GCCbPath}/arm-zyc-linux-gnueabi"
+#     for32=arm-zyc-linux-gnueabi
+#     if [ ! -e "${MainPath}/aarch64-zyc-linux-gnu-12.x-gnu-20210920.tar.gz" ];then
+#         wget -q https://github.com/ZyCromerZ/compiled-gcc/releases/download/vaarch64-zyc-linux-gnu-12.x-gnu-20210920/aarch64-zyc-linux-gnu-12.x-gnu-20210920.tar.gz
+#     fi
+#     tar -xf aarch64-zyc-linux-gnu-12.x-gnu-20210920.tar.gz -C $GCCaPath
+#     GCCaPath="${GCCaPath}/aarch64-zyc-linux-gnu"
+#     for64=aarch64-zyc-linux-gnu
+#     GetGccVersion
+# }
+
+
 CloneCompiledGccTwelve(){
     [[ "$(pwd)" != "${MainPath}" ]] && cd "${MainPath}"
-    GCCaPath="$MainZipGCCaPath"
-    GCCbPath="$MainZipGCCbPath"
-    rm -rf ${GCCaPath}/* ${GCCbPath}/*
-    mkdir "${GCCaPath}"
-    mkdir "${GCCbPath}"
-    if [ ! -e "${MainPath}/arm-zyc-linux-gnueabi-12.x-gnu-20210920.tar.gz" ];then
-        wget -q  https://github.com/ZyCromerZ/compiled-gcc/releases/download/varm-zyc-linux-gnueabi-12.x-gnu-20210920/arm-zyc-linux-gnueabi-12.x-gnu-20210920.tar.gz
+    GCCaPath="${MainGCCaPath}"
+    if [ ! -d "$GCCaPath" ];then
+        git clone https://github.com/ZyCromerZ/aarch64-zyc-linux-gnu -b 12 $GCCaPath --depth=1
+    else
+        cd "${GCCaPath}"
+        git fetch https://github.com/ZyCromerZ/aarch64-zyc-linux-gnu -b 12 --depth=1
+        git checkout FETCH_HEAD
+        [[ ! -z "$(git branch | grep 12)" ]] && git branch -D 12
+        git checkout -b 12
     fi
-    tar -xf arm-zyc-linux-gnueabi-12.x-gnu-20210920.tar.gz -C $GCCbPath
-    GCCbPath="${GCCbPath}/arm-zyc-linux-gnueabi"
-    for32=arm-zyc-linux-gnueabi
-    if [ ! -e "${MainPath}/aarch64-zyc-linux-gnu-12.x-gnu-20210920.tar.gz" ];then
-        wget -q https://github.com/ZyCromerZ/compiled-gcc/releases/download/vaarch64-zyc-linux-gnu-12.x-gnu-20210920/aarch64-zyc-linux-gnu-12.x-gnu-20210920.tar.gz
-    fi
-    tar -xf aarch64-zyc-linux-gnu-12.x-gnu-20210920.tar.gz -C $GCCaPath
-    GCCaPath="${GCCaPath}/aarch64-zyc-linux-gnu"
     for64=aarch64-zyc-linux-gnu
+    [[ "$(pwd)" != "${MainPath}" ]] && cd "${MainPath}"
+    GCCbPath="${MainGCCbPath}"
+    if [ ! -d "$GCCbPath" ];then
+        git clone https://github.com/ZyCromerZ/arm-zyc-linux-gnueabi -b 12 $GCCbPath --depth=1
+    else
+        cd "${GCCbPath}"
+        git fetch https://github.com/ZyCromerZ/arm-zyc-linux-gnueabi -b 12 --depth=1
+        git checkout FETCH_HEAD
+        [[ ! -z "$(git branch | grep 12)" ]] && git branch -D 12
+        git checkout -b 12
+    fi
+    for32=arm-zyc-linux-gnueabi
     GetGccVersion
 }
 
