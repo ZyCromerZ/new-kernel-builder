@@ -3,6 +3,7 @@ jobs:
   compile:
    docker:
       - image: zycromerz/kerneldocker:v2
+   resource_class: xlarge
    steps:
       - run:
           command: |

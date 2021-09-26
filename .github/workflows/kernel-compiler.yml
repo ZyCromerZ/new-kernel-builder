@@ -19,5 +19,6 @@ jobs:
         BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
         GIT_USERNAME: ${{ secrets.GIT_USERNAME }}
       run: |
-        chmod +x main.sh
-        bash main.sh
+        echo "hamlah"
+        # chmod +x main.sh
+        # bash main.sh
