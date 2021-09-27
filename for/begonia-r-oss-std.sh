@@ -9,7 +9,7 @@ IncludeFiles "${MainPath}/misc/kernel.sh" "https://${GIT_SECRET}@github.com/${GI
 FolderUp="begonia"
 TypeBuildTag="[R-OSS][806Mhz][Stable]"
 
-CloneKernel
+CloneKernel "--depth=1"
 CloneCompiledGccTwelve
 CloneDTCClang
 # CloneProtonClang

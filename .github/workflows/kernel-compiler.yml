@@ -12,13 +12,12 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Compile GCC
+    - name: Compile Kernel
       env:
         GIT_SECRETB: ${{ secrets.GIT_SECRETB }}
         GIT_SECRET: ${{ secrets.GIT_SECRET }}
         BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
         GIT_USERNAME: ${{ secrets.GIT_USERNAME }}
       run: |
-        echo "hamlah"
-        # chmod +x main.sh
-        # bash main.sh
+        chmod +x main.sh
+        bash main.sh

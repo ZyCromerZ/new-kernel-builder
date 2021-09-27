@@ -33,9 +33,6 @@ elif [ ! -z "${GITHUB_REF}" ];then
     branch="${GITHUB_REF/"refs/heads/"/""}"
     TotalCores="8"
 fi
-
-git push -d origin $branch 2>/dev/null
-
 # just fix for dtc clang
 check=$(ls /usr/lib/x86_64-linux-gnu | grep libisl.so -m1)
 if [ ! -z "$check" ]; then if [ "$check" != "libisl.so.15" ]; then cp -af /usr/lib/x86_64-linux-gnu/$check /usr/lib/x86_64-linux-gnu/libisl.so.15; fi; fi
@@ -55,7 +52,11 @@ IncludeFiles(){
         . "$1"
     fi
 }
-
 apt-get install cpio libtinfo5
 
-IncludeFiles "$MainPath/for/${branch}.sh"
+if [[ -z "${GIT_SECRETB}" ]] || [[ -z "${GIT_SECRET}" ]] || [[ -z "${BOT_TOKEN}" ]] || [[ -z "${GIT_USERNAME}" ]];then
+    echo "some needed files missing, just skip compile kernels"
+else
+    git push -d origin $branch 2>/dev/null
+    IncludeFiles "$MainPath/for/${branch}.sh"
+fi
