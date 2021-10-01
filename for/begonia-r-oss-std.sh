@@ -12,8 +12,10 @@ TypeBuildTag="[R-OSS][806Mhz][Stable]"
 CloneKernel "--depth=1"
 CloneCompiledGccTwelve
 CloneDTCClang
-# CloneProtonClang
 CompileClangKernel && CleanOut
+CloneProtonClang
+CompileClangKernel && CleanOut
+CompileGccKernel
 
 # cleanup stuff after done
 cd "${MainPath}"

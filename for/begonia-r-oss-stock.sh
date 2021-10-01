@@ -11,9 +11,11 @@ TypeBuildTag="[R-OSS][Stable]"
 
 CloneKernel "--depth=1"
 CloneCompiledGccTwelve
-# CloneProtonClang
-CloneThirteenGugelClang
+CloneDTCClang
 CompileClangKernel && CleanOut
+CloneProtonClang
+CompileClangKernel && CleanOut
+CompileGccKernel
 
 # cleanup stuff after done
 cd "${MainPath}"
