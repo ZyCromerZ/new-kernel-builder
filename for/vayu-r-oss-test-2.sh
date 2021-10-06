@@ -1,5 +1,5 @@
 #! /bin/bash
-KernelBranch="20210824/neutrino-hareudang"
+KernelBranch="20210824/neutrino-phantasm"
 
 IncludeFiles "${MainPath}/device/vayu-r-oss.sh"
 CustomUploader="Y"
