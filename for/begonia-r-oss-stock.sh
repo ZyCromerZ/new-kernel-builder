@@ -10,7 +10,8 @@ FolderUp="begonia"
 TypeBuildTag="[R-OSS][Stable]"
 
 CloneKernel "--depth=1"
-CloneCompiledGccTwelve
+# CloneCompiledGccTwelve
+CloneCompiledGccEleven
 CloneDTCClang
 CompileClangKernel && CleanOut
 CloneProtonClang
