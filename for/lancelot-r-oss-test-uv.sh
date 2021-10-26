@@ -1,7 +1,7 @@
 #! /bin/bash
-KernelBranch="base-r-oss-custom-release"
+KernelBranch="base-r-oss-custom-release-uv"
 
-IncludeFiles "${MainPath}/device/merlin-r-oss.sh"
+IncludeFiles "${MainPath}/device/lancelot-r-oss.sh"
 CustomUploader="Y"
 IncludeFiles "${MainPath}/misc/kernel.sh" "https://${GIT_SECRET}@github.com/${GIT_USERNAME}/lancelot_kernels"
 FolderUp="shared-file"

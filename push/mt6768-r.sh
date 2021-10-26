@@ -4,7 +4,7 @@ git checkout master
 if [ ! -z "$2" ];then
     ListBranch="$2"
 else
-    ListBranch="lancelot-r-oss-test merlin-r-oss-test"
+    ListBranch="lancelot-r-oss-test merlin-r-oss-test lancelot-r-oss-test-uv merlin-r-oss-test-uv"
 fi
 
 for Branch in $ListBranch
@@ -17,10 +17,11 @@ done
 
 if [ ! -z "$1" ];then
     repo="$1"
-else
-    repo="zero"
-fi
 git push -f "$repo" $ListBranch
+else
+    git push -f "doa" lancelot-r-oss-test merlin-r-oss-test
+    git push -f "dob" lancelot-r-oss-test-uv merlin-r-oss-test-uv
+fi
 
 git checkout master
 

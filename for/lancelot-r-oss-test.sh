@@ -1,5 +1,5 @@
 #! /bin/bash
-KernelBranch="base-r-oss-custom"
+KernelBranch="base-r-oss-custom-release"
 
 IncludeFiles "${MainPath}/device/lancelot-r-oss.sh"
 CustomUploader="Y"
