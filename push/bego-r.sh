@@ -4,7 +4,7 @@ git checkout master
 if [ ! -z "$2" ];then
     ListBranch="$2"
 else
-    ListBranch="begonia-r-oss-std begonia-r-oss-stock"
+    ListBranch="begonia-r-oss-uv begonia-r-oss-std begonia-r-oss-stock"
 fi
 
 for Branch in $ListBranch
