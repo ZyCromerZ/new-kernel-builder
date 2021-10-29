@@ -23,8 +23,8 @@ else
     Normal="Y"
 fi
 if [ "$Normal" == "Y" ];then
-    git push -f neet x01bd-main-q
-    git push -f zyc x01bd-main-r
+    git push -f doa x01bd-main-q
+    git push -f dob x01bd-main-r
 else
     git push -f "$repo" $ListBranch
 fi
