@@ -8,11 +8,12 @@ TypeBuild="Stable"
 DEFFCONFIG="begonia_user_defconfig"
 GetBD=$(date +"%m%d")
 GetCBD=$(date +"%Y-%m-%d")
-TypeBuildTag="[Q-OSS]"
+# TypeBuildTag="[Q-OSS]"
 FolderUp="begonia"
 ExFolder=""
 AnyKernelBranch="master-begonia-q-oss"
 FirstSendInfoLink="N"
+TypeBuildFor="R-OSS"
 
 # pullALmk(){
 #     [[ "$(pwd)" != "${KernelPath}" ]] && cd "${KernelPath}"

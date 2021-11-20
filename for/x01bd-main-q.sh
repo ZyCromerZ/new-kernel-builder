@@ -7,7 +7,7 @@ UseSpectrum="Y"
 IncludeFiles "${MainPath}/misc/kernel.sh" "https://${GIT_SECRET}@github.com/${GIT_USERNAME}/x01bd_kernel"
 FolderUp="xobod-q"
 # doSFUp=$FolderUp
-TypeBuildTag="[Q]"
+TypeBuildFor="Q"
 spectrumFile="xobod-base.rc"
 
 CloneKernel "--depth=1"

@@ -116,6 +116,7 @@ CompileClangKernel(){
     cp -af $KernelPath/out/arch/$ARCH/boot/${ImgName} $AnyKernelPath
     KName=$(cat "${KernelPath}/arch/$ARCH/configs/$DEFFCONFIG" | grep "CONFIG_LOCALVERSION=" | sed 's/CONFIG_LOCALVERSION="-*//g' | sed 's/"*//g' )
     ZipName="[$GetBD][$TypeBuilder]${TypeBuildTag}[$CODENAME]$KVer-$KName-$HeadCommitId.zip"
+    [[ ! -z "$TypeBuildFor" ]] && ZipName="[$GetBD][$TypeBuildFor][$TypeBuilder]${TypeBuildTag}[$CODENAME]$KVer-$KName-$HeadCommitId.zip"
     CompilerStatus="- <code>${ClangType}</code>%0A- <code>${gcc32Type}</code>%0A- <code>${gcc64Type}</code>"
     if [ ! -z "$1" ];then
         MakeZip "$1"
@@ -224,6 +225,7 @@ CompileClangLTOKernel(){
     cp -af $KernelPath/out/arch/$ARCH/boot/${ImgName} $AnyKernelPath
     KName=$(cat "${KernelPath}/arch/$ARCH/configs/$DEFFCONFIG" | grep "CONFIG_LOCALVERSION=" | sed 's/CONFIG_LOCALVERSION="-*//g' | sed 's/"*//g' )
     ZipName="[$GetBD][$TypeBuilder][LTO]${TypeBuildTag}[$CODENAME]$KVer-$KName-$HeadCommitId.zip"
+    [[ ! -z "$TypeBuildFor" ]] && ZipName="[$GetBD][$TypeBuildFor][$TypeBuilder][LTO]${TypeBuildTag}[$CODENAME]$KVer-$KName-$HeadCommitId.zip"
     CompilerStatus="- <code>${ClangType}</code>%0A- <code>${gcc32Type}</code>%0A- <code>${gcc64Type}</code>"
     if [ ! -z "$1" ];then
         MakeZip "$1"
@@ -326,6 +328,7 @@ CompileClangLTO2Kernel(){
     cp -af $KernelPath/out/arch/$ARCH/boot/${ImgName} $AnyKernelPath
     KName=$(cat "${KernelPath}/arch/$ARCH/configs/$DEFFCONFIG" | grep "CONFIG_LOCALVERSION=" | sed 's/CONFIG_LOCALVERSION="-*//g' | sed 's/"*//g' )
     ZipName="[$GetBD][$TypeBuilder][LTO]${TypeBuildTag}[$CODENAME]$KVer-$KName-$HeadCommitId.zip"
+    [[ ! -z "$TypeBuildFor" ]] && ZipName="[$GetBD][$TypeBuildFor][$TypeBuilder][LTO]${TypeBuildTag}[$CODENAME]$KVer-$KName-$HeadCommitId.zip"
     CompilerStatus="- <code>${ClangType}</code>%0A- <code>${gcc32Type}</code>%0A- <code>${gcc64Type}</code>"
     if [ ! -z "$1" ];then
         MakeZip "$1"
@@ -451,6 +454,7 @@ CompileProtonClangKernel(){
     cp -af $KernelPath/out/arch/$ARCH/boot/${ImgName} $AnyKernelPath
     KName=$(cat "${KernelPath}/arch/$ARCH/configs/$DEFFCONFIG" | grep "CONFIG_LOCALVERSION=" | sed 's/CONFIG_LOCALVERSION="-*//g' | sed 's/"*//g' )
     ZipName="[$GetBD][$TypeBuilder]${TypeBuildTag}[$CODENAME]$KVer-$KName-$HeadCommitId.zip"
+    [[ ! -z "$TypeBuildFor" ]] && ZipName="[$GetBD][$TypeBuildFor][$TypeBuilder]${TypeBuildTag}[$CODENAME]$KVer-$KName-$HeadCommitId.zip"
     CompilerStatus="- <code>${ClangType}</code>"
     if [ ! -z "$1" ];then
         MakeZip "$1"
@@ -534,6 +538,7 @@ CompileProton2ClangKernel(){
     cp -af $KernelPath/out/arch/$ARCH/boot/${ImgName} $AnyKernelPath
     KName=$(cat "${KernelPath}/arch/$ARCH/configs/$DEFFCONFIG" | grep "CONFIG_LOCALVERSION=" | sed 's/CONFIG_LOCALVERSION="-*//g' | sed 's/"*//g' )
     ZipName="[$GetBD][$TypeBuilder]${TypeBuildTag}[$CODENAME]$KVer-$KName-$HeadCommitId.zip"
+    [[ ! -z "$TypeBuildFor" ]] && ZipName="[$GetBD][$TypeBuildFor][$TypeBuilder]${TypeBuildTag}[$CODENAME]$KVer-$KName-$HeadCommitId.zip"
     CompilerStatus="- <code>${ClangType}</code>"
     if [ ! -z "$1" ];then
         MakeZip "$1"
@@ -568,6 +573,7 @@ CompileLlvmKernel(){
     cp -af $KernelPath/out/arch/$ARCH/boot/${ImgName} $AnyKernelPath
     KName=$(cat "${KernelPath}/arch/$ARCH/configs/$DEFFCONFIG" | grep "CONFIG_LOCALVERSION=" | sed 's/CONFIG_LOCALVERSION="-*//g' | sed 's/"*//g' )
     ZipName="[$GetBD][$TypeBuilder]${TypeBuildTag}[$CODENAME]$KVer-$KName-$HeadCommitId.zip"
+    [[ ! -z "$TypeBuildFor" ]] && ZipName="[$GetBD][$TypeBuildFor][$TypeBuilder]${TypeBuildTag}[$CODENAME]$KVer-$KName-$HeadCommitId.zip"
     CompilerStatus="- <code>${ClangType}</code>"
     if [ ! -z "$1" ];then
         MakeZip "$1"
@@ -677,4 +683,21 @@ SendInfoLink(){
         . $MainPath/misc/bot.sh "send_info" "$MSG"
         FirstSendInfoLink="Y"
     fi
+}
+
+pullBranch(){
+    [[ "$(pwd)" != "${KernelPath}" ]] && cd "${KernelPath}"
+    git reset --hard $HeadCommitId
+    git fetch origin $1
+    git pull --no-commit origin $1
+    git commit -s -m "Pull branch $1"
+    TypeBuildTag="$2"
+}
+
+pullBranchAgain(){
+    [[ "$(pwd)" != "${KernelPath}" ]] && cd "${KernelPath}"
+    git fetch origin $1
+    git pull --no-commit origin $1
+    git commit -s -m "Pull branch $1"
+    TypeBuildTag="$2"
 }
