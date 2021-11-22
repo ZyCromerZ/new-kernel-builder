@@ -21,7 +21,11 @@ CompileClangKernel && CleanOut
 # CloneCompiledGccEleven
 # CloneSdClang
 # CompileClangKernel && CleanOut
-CloneDTCClang
+# CloneDTCClang
+# CompileClangKernel && CleanOut
+CloneThirteenGugelClang
 CompileClangKernel && CleanOut
-DEFFCONFIG="vayu_gcc_defconfig"
-CompileGccKernel
+CloneFourteenGugelClang
+CompileClangKernel && CleanOut
+# DEFFCONFIG="vayu_gcc_defconfig"
+# CompileGccKernel
