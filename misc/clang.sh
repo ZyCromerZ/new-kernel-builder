@@ -21,11 +21,24 @@ CloneThirteenGugelClang(){
     [[ "$(pwd)" != "${MainPath}" ]] && cd "${MainPath}"
     mkdir $ClangPath
     rm -rf $ClangPath/*
-    if [ ! -e "${MainPath}/clang-r433403.tar.gz" ];then
-        wget -q  https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+archive/refs/heads/master/clang-r433403.tar.gz -O "clang-r433403.tar.gz"
+    if [ ! -e "${MainPath}/clang-r433403b.tar.gz" ];then
+        wget -q  https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+archive/3a785d33320c48b09f7d6fcf2a37fed702686fdc/clang-r433403b.tar.gz -O "clang-r433403b.tar.gz"
     fi
-    tar -xf clang-r433403.tar.gz -C $ClangPath
-    TypeBuilder="CLANG"
+    tar -xf clang-r433403b.tar.gz -C $ClangPath
+    TypeBuilder="GCLANG-13"
+    ClangType="$(${ClangPath}/bin/clang --version | head -n 1)"
+}
+
+CloneFourteenGugelClang(){
+    ClangPath=${MainClangZipPath}
+    [[ "$(pwd)" != "${MainPath}" ]] && cd "${MainPath}"
+    mkdir $ClangPath
+    rm -rf $ClangPath/*
+    if [ ! -e "${MainPath}/clang-r437112.tar.gz" ];then
+        wget -q  https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+archive/3a785d33320c48b09f7d6fcf2a37fed702686fdc/clang-r437112.tar.gz -O "clang-r437112.tar.gz"
+    fi
+    tar -xf clang-r437112.tar.gz -C $ClangPath
+    TypeBuilder="GCLANG-14"
     ClangType="$(${ClangPath}/bin/clang --version | head -n 1)"
 }
 
