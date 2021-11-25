@@ -105,3 +105,17 @@ CloneSdClang(){
     TypeBuilder="SDClang"
     ClangType="$(${ClangPath}/bin/clang --version | head -n 1)"
 }
+
+CloneZyCFoutTeenClang()
+{
+    ClangPath=${MainClangZipPath}
+    [[ "$(pwd)" != "${MainPath}" ]] && cd "${MainPath}"
+    mkdir $ClangPath
+    rm -rf $ClangPath/*
+    if [ ! -e "${MainPath}/Clang-14.0.0-20211125-release.tar.gz" ];then
+        wget -q  https://github.com/ZyCromerZ/Clang/releases/download/14.0.0-20211125-release/Clang-14.0.0-20211125-release -O "Clang-14.0.0-20211125-release.tar.gz"
+    fi
+    tar -xf Clang-14.0.0-20211125-release.tar.gz -C $ClangPath
+    TypeBuilder="CLANG-14"
+    ClangType="$(${ClangPath}/bin/clang --version | head -n 1)"
+}
