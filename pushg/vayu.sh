@@ -3,6 +3,7 @@
 GetRepo="${1}"
 shift
 GetBranch="${@}"
+[[ -z "$SetBranch" ]] && SetBranch="vayu-builder"
 WriteConf()
 {
     echo "  build-$1:" >>.github/workflows/kernel-compiler.yml
@@ -20,7 +21,7 @@ WriteConf()
     echo "        bash maing.sh '$1'" >>.github/workflows/kernel-compiler.yml
     echo "" >>.github/workflows/kernel-compiler.yml
 }
-git checkout -b vayu-builder
+git checkout -b $SetBranch
 
 cp -af pushg/sample.yml .github/workflows/kernel-compiler.yml
 if [[ -z "$GetBranch" ]];then
@@ -33,7 +34,7 @@ git add .github/workflows/kernel-compiler.yml && git commit -s -m 'Go build'
 
 [[ -z "$GetRepo" ]] && GetRepo="doa"
 
-git push -f $GetRepo vayu-builder
+git push -f $GetRepo $SetBranch
 
 git checkout master
-git branch -D vayu-builder
+git branch -D $SetBranch
