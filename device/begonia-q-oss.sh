@@ -13,7 +13,7 @@ FolderUp="begonia"
 ExFolder=""
 AnyKernelBranch="master-begonia-q-oss"
 FirstSendInfoLink="N"
-TypeBuildFor="R-OSS"
+TypeBuildFor="Q-OSS"
 
 # pullALmk(){
 #     [[ "$(pwd)" != "${KernelPath}" ]] && cd "${KernelPath}"
