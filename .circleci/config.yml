@@ -2,7 +2,7 @@ version: 2.1
 jobs:
   compile:
    docker:
-      - image: zycromerz/kerneldocker:v2
+      - image: zycromerz/kerneldocker:v3
    resource_class: xlarge
    steps:
       - run:

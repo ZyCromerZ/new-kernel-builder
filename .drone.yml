@@ -18,7 +18,7 @@ steps:
         from_secret: GIT_SECRETB
       GIT_USERNAME:
         from_secret: GIT_USERNAME
-    image: zycromerz/kerneldocker:v2
+    image: zycromerz/kerneldocker:v3
     name: ZyC-Build
     trigger: 
       branch: 
