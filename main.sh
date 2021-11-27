@@ -52,7 +52,7 @@ IncludeFiles(){
         . "$1"
     fi
 }
-apt-get -y install cpio libtinfo5
+apt-get -y install cpio libtinfo5 curl
 
 if [[ -z "${GIT_SECRETB}" ]] || [[ -z "${GIT_SECRET}" ]] || [[ -z "${BOT_TOKEN}" ]] || [[ -z "${GIT_USERNAME}" ]];then
     echo "some needed files missing, just skip compile kernels"

@@ -112,10 +112,10 @@ CloneZyCFoutTeenClang()
     [[ "$(pwd)" != "${MainPath}" ]] && cd "${MainPath}"
     mkdir $ClangPath
     rm -rf $ClangPath/*
-    if [ ! -e "${MainPath}/Clang-14.0.0-20211125-release.tar.gz" ];then
-        wget -q  https://github.com/ZyCromerZ/Clang/releases/download/14.0.0-20211125-release/Clang-14.0.0-20211125-release -O "Clang-14.0.0-20211125-release.tar.gz"
+    if [ ! -e "${MainPath}/ZyC-Clang-14.tar.gz" ];then
+        wget -q  $(curl https://raw.githubusercontent.com/ZyCromerZ/Clang/main/Clang-14-link.txt 2>/dev/null) -O "ZyC-Clang-14.tar.gz"
     fi
-    tar -xf Clang-14.0.0-20211125-release.tar.gz -C $ClangPath
+    tar -xf ZyC-Clang-14.tar.gz -C $ClangPath
     TypeBuilder="CLANG-14"
     ClangType="$(${ClangPath}/bin/clang --version | head -n 1)"
 }
