@@ -11,11 +11,13 @@ TypeBuildTag="[Q-OSS][Stable]"
 
 CloneKernel "--depth=1"
 # CloneCompiledGccTwelve
+CloneZyCFoutTeenClang
+CompileClangKernelB && CleanOut
 CloneCompiledGccEleven
 CloneDTCClang
 CompileClangKernel && CleanOut
-CloneProtonClang
-CompileClangKernel && CleanOut
+# CloneProtonClang
+# CompileClangKernel && CleanOut
 CompileGccKernel
 
 # cleanup stuff after done
