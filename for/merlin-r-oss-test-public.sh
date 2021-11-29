@@ -1,5 +1,5 @@
 #! /bin/bash
-KernelBranch="base-r-oss-custom-release-public"
+KernelBranch="base-r-oss-custom-release-temp"
 
 IncludeFiles "${MainPath}/device/merlin-r-oss.sh"
 CustomUploader="Y"
@@ -8,16 +8,8 @@ FolderUp="shared-file"
 TypeBuildTag="[STABLE]"
 
 CloneKernel
-CloneCompiledGccEleven 
-# CloneDTCClang
-# CloneProtonClang
-
-# CompileClangKernel && CleanOut
-# CloneDTCClang
-CloneThirteenGugelClang
-pullBranch "base-r-oss-custom-release-public-ALMK" "[STABLE][ALMK]"
-CompileClangKernel && CleanOut
-# CompileGccKernel
+CloneCompiledGccEleven
+CompileGccKernel
 
 # cleanup stuff after done
 cd "${MainPath}"
