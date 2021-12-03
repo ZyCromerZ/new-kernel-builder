@@ -9,11 +9,12 @@ TypeBuildTag="[STABLE][Stock][950Mhz]"
 
 CloneKernel
 CloneZyCFoutTeenClang
-CompileClangKernelB
-pullBranch "base-r-oss-custom-release-ALMK" "[STABLE][ALMK][950Mhz]"
-CompileClangKernelB
-pullBranch "base-r-oss-custom-release-SLMK" "[STABLE][SLMK][950Mhz]"
-CompileClangKernelB
+# CompileClangKernelB
+# pullBranch "base-r-oss-custom-release-ALMK" "[STABLE][ALMK][950Mhz]"
+# CompileClangKernelB
+# CloneCompiledGccEleven
+pullBranch "base-r-oss-custom-SLMK" "[STABLE][SLMK][950Mhz]"
+CompileClangKernelLLVM
 
 
 

@@ -30,4 +30,5 @@ CloneKernel "--depth=1"
 # CompileClangKernel && CleanOut
 # CompileGccKernel
 CloneZyCFoutTeenClang
-CompileClangKernelB
+# CompileClangKernelB
+CompileClangKernelLLVM

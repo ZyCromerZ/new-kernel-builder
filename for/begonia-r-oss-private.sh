@@ -12,8 +12,9 @@ TypeBuildTag="[Test]"
 CloneKernel "--depth=1"
 CloneZyCFoutTeenClang
 # CompileClangKernelB && CleanOut
-CloneCompiledGccEleven
-CompileClangKernel
+# CloneCompiledGccEleven
+# CompileClangKernelB
+CompileClangKernelLLVM
 
 # cleanup stuff after done
 cd "${MainPath}"
