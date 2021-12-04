@@ -447,6 +447,51 @@ CompileClangKernelLLVMB(){
     fi
 }
 
+CompileSdclangKernel(){
+    cd "${KernelPath}"
+    SendInfoLink
+    BUILD_START=$(date +"%s")
+    make    -j${TotalCores}  O=out ARCH="${ARCH}" SUBARCH=$ARCH PATH=${ClangPath}/bin:${GCCaPath}/bin:${GCCbPath}/bin:/usr/bin:${PATH} CC=clang "${DEFFCONFIG}"
+    MAKE=(
+        ARCH=$ARCH \
+        SUBARCH=$ARCH \
+        PATH=${ClangPath}/bin:${GCCaPath}/bin:${GCCbPath}/bin:/usr/bin:${PATH} \
+        CC=clang \
+        CROSS_COMPILE=$for64- \
+        CROSS_COMPILE_ARM32=$for32- \
+        CLANG_TRIPLE=aarch64-linux-gnu-
+        
+    )
+    make    -j${TotalCores}  O=out \
+            ARCH=$ARCH \
+            SUBARCH=$ARCH \
+            PATH=${ClangPath}/bin:${GCCaPath}/bin:${GCCbPath}/bin:/usr/bin:${PATH} \
+	        CC=clang \
+            CROSS_COMPILE=$for64- \
+            CROSS_COMPILE_ARM32=$for32- \
+            CLANG_TRIPLE=aarch64-linux-gnu-
+            
+    
+    BUILD_END=$(date +"%s")
+    DIFF=$((BUILD_END - BUILD_START))
+    if [[ ! -e $KernelPath/out/arch/$ARCH/boot/${ImgName} ]];then
+        MSG="<b>❌ Build failed</b>%0ABranch : <b>${KernelBranch}</b>%0A- <code>$((DIFF / 60)) minute(s) $((DIFF % 60)) second(s)</code>%0A%0ASad Boy"
+        . $MainPath/misc/bot.sh "send_info" "$MSG"
+        exit 1
+    fi
+    cp -af $KernelPath/out/arch/$ARCH/boot/${ImgName} $AnyKernelPath
+    KName=$(cat "${KernelPath}/arch/$ARCH/configs/$DEFFCONFIG" | grep "CONFIG_LOCALVERSION=" | sed 's/CONFIG_LOCALVERSION="-*//g' | sed 's/"*//g' )
+    ZipName="[$GetBD][$TypeBuilder]${TypeBuildTag}[$CODENAME]$KVer-$KName-$HeadCommitId.zip"
+    [[ ! -z "$TypeBuildFor" ]] && ZipName="[$GetBD][$TypeBuildFor][$TypeBuilder]${TypeBuildTag}[$CODENAME]$KVer-$KName-$HeadCommitId.zip"
+    CompilerStatus="- <code>${ClangType}</code>%0A- <code>${gcc32Type}</code>%0A- <code>${gcc64Type}</code>"
+    if [ ! -z "$1" ];then
+        MakeZip "$1"
+    else
+        MakeZip
+    fi
+}
+
+
 CleanOut()
 {
     cd "${KernelPath}"

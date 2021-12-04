@@ -13,22 +13,10 @@ TypeBuildTag="[Stable]"
  
 
 CloneKernel "--depth=1"
-# CloneGCCOld && CloneGugelClang
-# CloneProtonClang
-# CloneCompiledGccEleven
-# CompileProtonClangKernel && CleanOut
-# CompileClangKernel && CleanOut
-# CloneCompiledGccEleven
-# CloneSdClang
-# CompileClangKernel && CleanOut
-# CloneDTCClang
-# CompileClangKernel && CleanOut
-# DEFFCONFIG="vayu_gcc_defconfig"
-# CloneThirteenGugelClang
-# CompileClangKernel && CleanOut
-# CloneFourteenGugelClang
-# CompileClangKernel && CleanOut
-# CompileGccKernel
-CloneZyCFoutTeenClang
-# CompileClangKernelB
-CompileClangKernelLLVM
+# CloneZyCFoutTeenClang
+# CompileClangKernelLLVM
+CloneDTCClang
+CloneCompiledGccTwelve
+CompileClangKernelLLVMB
+CloneSdClang
+CompileSdclangKernel
