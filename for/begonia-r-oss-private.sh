@@ -7,16 +7,17 @@ CustomUploader="Y"
 IncludeFiles "${MainPath}/misc/kernel.sh" "https://${GIT_SECRET}@github.com/${GIT_USERNAME}/begonia_kernel"
 # spectrumFile="None"
 FolderUp="begonia"
-TypeBuildTag="[Test]"
+TypeBuildTag="[TEST]"
 
 CloneKernel "--depth=1"
-# CloneZyCFoutTeenClang
-# CompileClangKernelLLVM
+CloneZyCFoutTeenClang
+CompileClangKernelLLVM && CleanOut
 CloneDTCClang
 CloneCompiledGccTwelve
-CompileClangKernelLLVMB
+CompileClangKernelLLVMB && CleanOut
 CloneSdClang
-CompileSdclangKernel
+CloneGCCOld
+CompileClangKernelLLVMB && CleanOut
 
 # cleanup stuff after done
 cd "${MainPath}"

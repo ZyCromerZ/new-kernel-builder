@@ -8,15 +8,16 @@ FolderUp="shared-file"
 TypeBuildTag="[STABLE][Stock][950Mhz]"
 
 CloneKernel
-# CloneZyCFoutTeenClang
+CloneZyCFoutTeenClang
 # pullBranch "base-r-oss-custom-release-ALMK" "[STABLE][ALMK][950Mhz]"
-pullBranch "base-r-oss-custom-SLMK" "[STABLE][SLMK][950Mhz]"
-# CompileClangKernelLLVM
+pullBranch "base-r-oss-custom-SLMK" "[TEST][SLMK][950Mhz]"
+CompileClangKernelLLVM && CleanOut
 CloneDTCClang
 CloneCompiledGccTwelve
-CompileClangKernelLLVMB
+CompileClangKernelLLVMB && CleanOut
 CloneSdClang
-CompileSdclangKernel
+CloneGCCOld
+CompileClangKernelLLVMB && CleanOut
 
 # cleanup stuff after done
 cd "${MainPath}"

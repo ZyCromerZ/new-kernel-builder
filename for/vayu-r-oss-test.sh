@@ -13,10 +13,11 @@ TypeBuildTag="[Stable]"
  
 
 CloneKernel "--depth=1"
-# CloneZyCFoutTeenClang
-# CompileClangKernelLLVM
+CloneZyCFoutTeenClang
+CompileClangKernelLLVM && CleanOut
 CloneDTCClang
 CloneCompiledGccTwelve
-CompileClangKernelLLVMB
+CompileClangKernelLLVMB && CleanOut
 CloneSdClang
-CompileSdclangKernel
+CloneGCCOld
+CompileClangKernelLLVMB && CleanOut
