@@ -19,7 +19,7 @@ CloneGugelClang(){
 CloneThirteenGugelClang(){
     ClangPath=${MainClangZipPath}
     [[ "$(pwd)" != "${MainPath}" ]] && cd "${MainPath}"
-    mkdir $ClangPath
+    [[ ! -d ${MainClangZipPath} ]] && mkdir $ClangPath
     rm -rf $ClangPath/*
     if [ ! -e "${MainPath}/clang-r433403b.tar.gz" ];then
         wget -q  https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+archive/3a785d33320c48b09f7d6fcf2a37fed702686fdc/clang-r433403b.tar.gz -O "clang-r433403b.tar.gz"
@@ -32,7 +32,7 @@ CloneThirteenGugelClang(){
 CloneFourteenGugelClang(){
     ClangPath=${MainClangZipPath}
     [[ "$(pwd)" != "${MainPath}" ]] && cd "${MainPath}"
-    mkdir $ClangPath
+    [[ ! -d ${MainClangZipPath} ]] && mkdir $ClangPath
     rm -rf $ClangPath/*
     if [ ! -e "${MainPath}/clang-r437112.tar.gz" ];then
         wget -q  https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+archive/3a785d33320c48b09f7d6fcf2a37fed702686fdc/clang-r437112.tar.gz -O "clang-r437112.tar.gz"
@@ -93,7 +93,7 @@ CloneProtonClang(){
 CloneSdClang(){
     ClangPath=${MainClangZipPath}
     [[ "$(pwd)" != "${MainPath}" ]] && cd "${MainPath}"
-    mkdir $ClangPath
+    [[ ! -d ${MainClangZipPath} ]] && mkdir $ClangPath
     rm -rf $ClangPath/*
     if [ ! -e "${MainPath}/SDClang.tar.gz" ];then
         wget -q  https://github.com/ZyCromerZ/Clang/releases/download/sdclang-14-release/Snapdragon-LLVM14.tar.gz -O "SDClang.tar.gz"
@@ -107,7 +107,7 @@ CloneZyCFoutTeenClang()
 {
     ClangPath=${MainClangZipPath}
     [[ "$(pwd)" != "${MainPath}" ]] && cd "${MainPath}"
-    mkdir $ClangPath
+    [[ ! -d ${MainClangZipPath} ]] && mkdir $ClangPath
     rm -rf $ClangPath/*
     if [ ! -e "${MainPath}/ZyC-Clang-14.tar.gz" ];then
         wget -q  $(curl https://raw.githubusercontent.com/ZyCromerZ/Clang/main/Clang-14-link.txt 2>/dev/null) -O "ZyC-Clang-14.tar.gz"

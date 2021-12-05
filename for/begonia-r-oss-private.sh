@@ -10,11 +10,11 @@ FolderUp="begonia"
 TypeBuildTag="[TEST]"
 
 CloneKernel "--depth=1"
-CloneZyCFoutTeenClang
-CompileClangKernelLLVM && CleanOut
-CloneDTCClang
-CloneCompiledGccTwelve
-CompileClangKernelLLVMB && CleanOut
+# CloneZyCFoutTeenClang
+# CompileClangKernelLLVM && CleanOut
+# CloneDTCClang
+# CloneCompiledGccTwelve
+# CompileClangKernelLLVMB && CleanOut
 CloneSdClang
 CloneGCCOld
 CompileClangKernelLLVMB && CleanOut

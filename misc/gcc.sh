@@ -5,8 +5,8 @@ CloneCompiledGcc(){
     GCCaPath="$MainZipGCCaPath"
     GCCbPath="$MainZipGCCbPath"
     rm -rf ${GCCaPath}/aarch64-linux-gnu ${GCCbPath}/arm-linux-gnueabi
-    mkdir "${GCCaPath}"
-    mkdir "${GCCbPath}"
+    [[ ! -d ${GCCaPath} ]] && mkdir "${GCCaPath}"
+    [[ ! -d ${GCCbPath} ]] && mkdir "${GCCbPath}"
     rm -rf ${GCCaPath}/* ${GCCbPath}/*
     if [ ! -e "${MainPath}/arm-linux-gnueabi-10.x-gnu-20210311.tar.gz" ];then
         wget -q https://gcc-drive.zyc-files.workers.dev/0:/arm-linux-gnueabi-10.x-gnu-20210311.tar.gz
@@ -28,8 +28,8 @@ CloneCompiledGcc(){
 #     GCCaPath="$MainZipGCCaPath"
 #     GCCbPath="$MainZipGCCbPath"
 #     rm -rf ${GCCaPath}/* ${GCCbPath}/*
-#     mkdir "${GCCaPath}"
-#     mkdir "${GCCbPath}"
+#     [[ ! -d ${GCCaPath} ]] && mkdir "${GCCaPath}"
+#     [[ ! -d ${GCCbPath} ]] && mkdir "${GCCbPath}"
 #     if [ ! -e "${MainPath}/arm-zyc-linux-gnueabi-11.x-gnu-20210905.tar.gz" ];then
 #         wget -q  https://github.com/ZyCromerZ/compiled-gcc/releases/download/varm-zyc-linux-gnueabi-11.x-gnu-20210905/arm-zyc-linux-gnueabi-11.x-gnu-20210905.tar.gz
 #     fi
@@ -107,8 +107,8 @@ CloneGccten(){
     [[ "$(pwd)" != "${MainPath}" ]] && cd "${MainPath}"
     GCCaPath="$MainZipGCCaPath"
     GCCbPath="$MainZipGCCbPath"
-    mkdir "${GCCaPath}"
-    mkdir "${GCCbPath}"
+    [[ ! -d ${GCCaPath} ]] && mkdir "${GCCaPath}"
+    [[ ! -d ${GCCbPath} ]] && mkdir "${GCCbPath}"
     rm -rf ${GCCaPath}/* ${GCCbPath}/*
     if [ ! -e "${MainPath}/gcc-arm-10.2-2020.11-x86_64-arm-none-linux-gnueabihf.tar.xz" ];then
         wget -q https://armkeil.blob.core.windows.net/developer/Files/downloads/gnu-a/10.2-2020.11/binrel/gcc-arm-10.2-2020.11-x86_64-arm-none-linux-gnueabihf.tar.xz
@@ -130,8 +130,8 @@ CloneGccten(){
 #     GCCaPath="$MainZipGCCaPath"
 #     GCCbPath="$MainZipGCCbPath"
 #     rm -rf ${GCCaPath}/* ${GCCbPath}/*
-#     mkdir "${GCCaPath}"
-#     mkdir "${GCCbPath}"
+#     [[ ! -d ${GCCaPath} ]] && mkdir "${GCCaPath}"
+#     [[ ! -d ${GCCbPath} ]] && mkdir "${GCCbPath}"
 #     if [ ! -e "${MainPath}/arm-zyc-linux-gnueabi-12.x-gnu-20210920.tar.gz" ];then
 #         wget -q  https://github.com/ZyCromerZ/compiled-gcc/releases/download/varm-zyc-linux-gnueabi-12.x-gnu-20210920/arm-zyc-linux-gnueabi-12.x-gnu-20210920.tar.gz
 #     fi
