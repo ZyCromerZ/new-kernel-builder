@@ -53,7 +53,7 @@ CloneCompiledGccEleven(){
         git clone https://github.com/ZyCromerZ/aarch64-zyc-linux-gnu -b 11 $GCCaPath --depth=1
     else
         cd "${GCCaPath}"
-        git fetch https://github.com/ZyCromerZ/aarch64-zyc-linux-gnu -b 11 --depth=1
+        git fetch https://github.com/ZyCromerZ/aarch64-zyc-linux-gnu 11 --depth=1
         git checkout FETCH_HEAD
         [[ ! -z "$(git branch | grep 11)" ]] && git branch -D 11
         git checkout -b 11
@@ -65,7 +65,7 @@ CloneCompiledGccEleven(){
         git clone https://github.com/ZyCromerZ/arm-zyc-linux-gnueabi -b 11 $GCCbPath --depth=1
     else
         cd "${GCCbPath}"
-        git fetch https://github.com/ZyCromerZ/arm-zyc-linux-gnueabi -b 11 --depth=1
+        git fetch https://github.com/ZyCromerZ/arm-zyc-linux-gnueabi 11 --depth=1
         git checkout FETCH_HEAD
         [[ ! -z "$(git branch | grep 11)" ]] && git branch -D 11
         git checkout -b 11
@@ -82,7 +82,7 @@ CloneGCCOld(){
         git clone https://github.com/ZyCromerZ/aarch64-linux-android-4.9 -b android-10.0.0_r47 $GCCaPath --depth=1
     else
         cd "${GCCaPath}"
-        git fetch https://github.com/ZyCromerZ/aarch64-linux-android-4.9 -b android-10.0.0_r47 --depth=1
+        git fetch https://github.com/ZyCromerZ/aarch64-linux-android-4.9 android-10.0.0_r47 --depth=1
         git checkout FETCH_HEAD
         [[ ! -z "$(git branch | grep android-10.0.0_r47)" ]] && git branch -D android-10.0.0_r47
         git checkout -b android-10.0.0_r47
@@ -94,7 +94,7 @@ CloneGCCOld(){
         git clone https://github.com/ZyCromerZ/arm-linux-androideabi-4.9 -b android-10.0.0_r47 $GCCbPath --depth=1
     else
         cd "${GCCbPath}"
-        git fetch https://github.com/ZyCromerZ/arm-linux-androideabi-4.9 -b android-10.0.0_r47 --depth=1
+        git fetch https://github.com/ZyCromerZ/arm-linux-androideabi-4.9 android-10.0.0_r47 --depth=1
         git checkout FETCH_HEAD
         [[ ! -z "$(git branch | grep android-10.0.0_r47)" ]] && git branch -D android-10.0.0_r47
         git checkout -b android-10.0.0_r47
@@ -155,7 +155,7 @@ CloneCompiledGccTwelve(){
         git clone https://github.com/ZyCromerZ/aarch64-zyc-linux-gnu -b 12 $GCCaPath --depth=1
     else
         cd "${GCCaPath}"
-        git fetch https://github.com/ZyCromerZ/aarch64-zyc-linux-gnu -b 12 --depth=1
+        git fetch https://github.com/ZyCromerZ/aarch64-zyc-linux-gnu 12 --depth=1
         git checkout FETCH_HEAD
         [[ ! -z "$(git branch | grep 12)" ]] && git branch -D 12
         git checkout -b 12
@@ -167,7 +167,7 @@ CloneCompiledGccTwelve(){
         git clone https://github.com/ZyCromerZ/arm-zyc-linux-gnueabi -b 12 $GCCbPath --depth=1
     else
         cd "${GCCbPath}"
-        git fetch https://github.com/ZyCromerZ/arm-zyc-linux-gnueabi -b 12 --depth=1
+        git fetch https://github.com/ZyCromerZ/arm-zyc-linux-gnueabi 12 --depth=1
         git checkout FETCH_HEAD
         [[ ! -z "$(git branch | grep 12)" ]] && git branch -D 12
         git checkout -b 12

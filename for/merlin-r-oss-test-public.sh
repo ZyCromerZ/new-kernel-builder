@@ -11,6 +11,4 @@ CloneKernel
 CloneCompiledGccEleven
 CompileGccKernel
 
-# cleanup stuff after done
-cd "${MainPath}"
-rm -rf *
+ 

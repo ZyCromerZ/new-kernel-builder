@@ -25,6 +25,7 @@ if [ ! -z "$1" ];then
     [[ -z "$ImgName" ]] && ImgName="Image.gz-dtb"
     [[ -z "$UseDtb" ]] && UseDtb="n"
     [[ -z "$UseDtbo" ]] && UseDtbo="n"
+    UseZyCLLVM="n"
 else    
     getInfoErr "KernelRepo is missing :/"
     [ ! -z "${DRONE_BRANCH}" ] && . $MainPath/misc/bot.sh "send_info" "<b>❌ Build failed</b>%0ABranch : <b>${KernelBranch}</b%0A%0ASad Boy"
@@ -65,6 +66,10 @@ CompileClangKernel(){
     SendInfoLink
     BUILD_START=$(date +"%s")
     make    -j${TotalCores}  O=out ARCH="$ARCH" "$DEFFCONFIG"
+    MorePlusPlus=" "
+    if [[ ! -z "$(cat $KernelPath/out/.config | grep "CONFIG_LTO=y" )" ]] || [[ ! -z "$(cat $KernelPath/out/.config | grep "CONFIG_LTO_CLANG=y" )" ]];then
+        MorePlusPlus="LD=ld.lld HOSTLD=ld.lld"
+    fi
     if [ -d "${ClangPath}/lib64" ];then
         MAKE=(
                 ARCH=$ARCH \
@@ -74,7 +79,7 @@ CompileClangKernel(){
                 CC=clang \
                 CROSS_COMPILE=$for64- \
                 CROSS_COMPILE_ARM32=$for32- \
-                CLANG_TRIPLE=aarch64-linux-gnu-
+                CLANG_TRIPLE=aarch64-linux-gnu- ${MorePlusPlus}
         )
         make    -j${TotalCores}  O=out \
                 ARCH=$ARCH \
@@ -84,27 +89,25 @@ CompileClangKernel(){
                 CC=clang \
                 CROSS_COMPILE=$for64- \
                 CROSS_COMPILE_ARM32=$for32- \
-                CLANG_TRIPLE=aarch64-linux-gnu-
+                CLANG_TRIPLE=aarch64-linux-gnu- ${MorePlusPlus}
     else
         MAKE=(
                 ARCH=$ARCH \
                 SUBARCH=$ARCH \
                 PATH=${ClangPath}/bin:${GCCaPath}/bin:${GCCbPath}/bin:/usr/bin:${PATH} \
-                LD_LIBRARY_PATH="${ClangPath}/lib:${LD_LIBRARY_PATH}" \
                 CC=clang \
                 CROSS_COMPILE=$for64- \
                 CROSS_COMPILE_ARM32=$for32- \
-                CLANG_TRIPLE=aarch64-linux-gnu-
+                CLANG_TRIPLE=aarch64-linux-gnu- ${MorePlusPlus}
         )
         make    -j${TotalCores}  O=out \
                 ARCH=$ARCH \
                 SUBARCH=$ARCH \
                 PATH=${ClangPath}/bin:${GCCaPath}/bin:${GCCbPath}/bin:/usr/bin:${PATH} \
-                LD_LIBRARY_PATH="${ClangPath}/lib:${LD_LIBRARY_PATH}" \
                 CC=clang \
                 CROSS_COMPILE=$for64- \
                 CROSS_COMPILE_ARM32=$for32- \
-                CLANG_TRIPLE=aarch64-linux-gnu-
+                CLANG_TRIPLE=aarch64-linux-gnu- ${MorePlusPlus}
     fi
     BUILD_END=$(date +"%s")
     DIFF=$((BUILD_END - BUILD_START))
@@ -127,6 +130,7 @@ CompileClangKernel(){
 
 CompileGccKernel(){
     cd "${KernelPath}"
+    DisableLTO
     SendInfoLink
     BUILD_START=$(date +"%s")
     make    -j${TotalCores}  O=out ARCH="${ARCH}" "${DEFFCONFIG}"
@@ -164,11 +168,78 @@ CompileGccKernel(){
 
 }
 
+CompileGccKernelB(){
+    cd "${KernelPath}"
+    DisableLTO
+    SendInfoLink
+    PrefixDir="${MainClangZipPath}-zyc/bin/"
+    BUILD_START=$(date +"%s")
+    make    -j${TotalCores}  O=out ARCH="${ARCH}" "${DEFFCONFIG}"
+    MAKE=(
+        ARCH=$ARCH \
+        SUBARCH=$ARCH \
+        PATH=${GCCaPath}/bin:${GCCbPath}/bin:/usr/bin:${PATH} \
+        CROSS_COMPILE=$for64- \
+        CROSS_COMPILE_ARM32=$for32- \
+        LD=${PrefixDir}ld.lld \
+        AR=${PrefixDir}llvm-ar \
+        NM=${PrefixDir}llvm-nm \
+        AS=${PrefixDir}llvm-as \
+        STRIP=${PrefixDir}llvm-strip \
+        OBJCOPY=${PrefixDir}llvm-objcopy \
+        OBJDUMP=${PrefixDir}llvm-objdump \
+        READELF=${PrefixDir}llvm-readelf \
+        HOSTAR=${PrefixDir}llvm-ar \
+        HOSTAS=${PrefixDir}llvm-as \
+        HOSTLD=${PrefixDir}ld.lld ${MorePlusPlus}
+    )
+    make    -j${TotalCores}  O=out \
+            ARCH=$ARCH \
+            SUBARCH=$ARCH \
+            PATH=${GCCaPath}/bin:${GCCbPath}/bin:/usr/bin:${PATH} \
+            CROSS_COMPILE=$for64- \
+            CROSS_COMPILE_ARM32=$for32- \
+            LD=${PrefixDir}ld.lld \
+            AR=${PrefixDir}llvm-ar \
+            NM=${PrefixDir}llvm-nm \
+            AS=${PrefixDir}llvm-as \
+            STRIP=${PrefixDir}llvm-strip \
+            OBJCOPY=${PrefixDir}llvm-objcopy \
+            OBJDUMP=${PrefixDir}llvm-objdump \
+            READELF=${PrefixDir}llvm-readelf \
+            HOSTAR=${PrefixDir}llvm-ar \
+            HOSTAS=${PrefixDir}llvm-as \
+            HOSTLD=${PrefixDir}ld.lld ${MorePlusPlus}
+    
+    BUILD_END=$(date +"%s")
+    DIFF=$((BUILD_END - BUILD_START))
+    if [[ ! -e $KernelPath/out/arch/$ARCH/boot/${ImgName} ]];then
+        MSG="<b>❌ Build failed</b>%0ABranch : <b>${KernelBranch}</b>%0A- <code>$((DIFF / 60)) minute(s) $((DIFF % 60)) second(s)</code>%0A%0ASad Boy"
+        . $MainPath/misc/bot.sh "send_info" "$MSG"
+        exit 1
+    fi
+    cp -af $KernelPath/out/arch/$ARCH/boot/${ImgName} $AnyKernelPath
+    KName=$(cat "${KernelPath}/arch/${ARCH}/configs/${DEFFCONFIG}" | grep "CONFIG_LOCALVERSION=" | sed 's/CONFIG_LOCALVERSION="-*//g' | sed 's/"*//g' )
+    ZipName="[$GetBD][GCC]${TypeBuildTag}[$CODENAME]$KVer-$KName-$HeadCommitId.zip"
+    [[ ! -z "$TypeBuildFor" ]] && ZipName="[$GetBD][$TypeBuildFor][GGC]${TypeBuildTag}[$CODENAME]$KVer-$KName-$HeadCommitId.zip"
+    CompilerStatus="- <code>${gcc32Type}</code>%0A- <code>${gcc64Type}</code>"
+    if [ ! -z "$1" ];then
+        MakeZip "$1"
+    else
+        MakeZip
+    fi
+
+}
+
 CompileClangKernelB(){
     cd "${KernelPath}"
     SendInfoLink
     BUILD_START=$(date +"%s")
     make    -j${TotalCores}  O=out ARCH="$ARCH" "$DEFFCONFIG"
+    MorePlusPlus=" "
+    if [[ ! -z "$(cat $KernelPath/out/.config | grep "CONFIG_LTO=y" )" ]] || [[ ! -z "$(cat $KernelPath/out/.config | grep "CONFIG_LTO_CLANG=y" )" ]];then
+        MorePlusPlus="LD=ld.lld HOSTLD=ld.lld"
+    fi
     if [ -d "${ClangPath}/lib64" ];then
         MAKE=(
                 ARCH=$ARCH \
@@ -178,7 +249,7 @@ CompileClangKernelB(){
                 CC=clang \
                 CROSS_COMPILE=aarch64-linux-gnu- \
                 CROSS_COMPILE_ARM32=arm-linux-gnueabi- \
-                CLANG_TRIPLE=aarch64-linux-gnu-
+                CLANG_TRIPLE=aarch64-linux-gnu- ${MorePlusPlus}
         )
         make    -j${TotalCores}  O=out \
                 ARCH=$ARCH \
@@ -188,27 +259,25 @@ CompileClangKernelB(){
                 CC=clang \
                 CROSS_COMPILE=aarch64-linux-gnu- \
                 CROSS_COMPILE_ARM32=arm-linux-gnueabi- \
-                CLANG_TRIPLE=aarch64-linux-gnu-
+                CLANG_TRIPLE=aarch64-linux-gnu- ${MorePlusPlus}
     else
         MAKE=(
                 ARCH=$ARCH \
                 SUBARCH=$ARCH \
                 PATH=${ClangPath}/bin:/usr/bin:${PATH} \
-                LD_LIBRARY_PATH="${ClangPath}/lib:${LD_LIBRARY_PATH}" \
                 CC=clang \
                 CROSS_COMPILE=aarch64-linux-gnu- \
                 CROSS_COMPILE_ARM32=arm-linux-gnueabi- \
-                CLANG_TRIPLE=aarch64-linux-gnu-
+                CLANG_TRIPLE=aarch64-linux-gnu- ${MorePlusPlus}
         )
         make    -j${TotalCores}  O=out \
                 ARCH=$ARCH \
                 SUBARCH=$ARCH \
                 PATH=${ClangPath}/bin:/usr/bin:${PATH} \
-                LD_LIBRARY_PATH="${ClangPath}/lib:${LD_LIBRARY_PATH}" \
                 CC=clang \
                 CROSS_COMPILE=aarch64-linux-gnu- \
                 CROSS_COMPILE_ARM32=arm-linux-gnueabi- \
-                CLANG_TRIPLE=aarch64-linux-gnu-
+                CLANG_TRIPLE=aarch64-linux-gnu- ${MorePlusPlus}
     fi
     BUILD_END=$(date +"%s")
     DIFF=$((BUILD_END - BUILD_START))
@@ -233,7 +302,11 @@ CompileClangKernelLLVM(){
     cd "${KernelPath}"
     SendInfoLink
     MorePlusPlus=" "
+    PrefixDir=""
     [[ "$TypeBuilder" != *"SDClang"* ]] && MorePlusPlus="HOSTCC=clang HOSTCXX=clang++"
+    if [[ "$UseZyCLLVM" == "y" ]];then
+        PrefixDir="${MainClangZipPath}-zyc/bin/"
+    fi
     BUILD_START=$(date +"%s")
     make    -j${TotalCores}  O=out ARCH="$ARCH" "$DEFFCONFIG"
     if [ -d "${ClangPath}/lib64" ];then
@@ -246,17 +319,17 @@ CompileClangKernelLLVM(){
                 CROSS_COMPILE=aarch64-linux-gnu- \
                 CROSS_COMPILE_ARM32=arm-linux-gnueabi- \
                 CLANG_TRIPLE=aarch64-linux-gnu- \
-                LD=ld.lld \
-                AR=llvm-ar \
-                NM=llvm-nm \
-                AS=llvm-as \
-                STRIP=llvm-strip \
-                OBJCOPY=llvm-objcopy \
-                OBJDUMP=llvm-objdump \
-                READELF=llvm-readelf \
-                HOSTAR=llvm-ar \
-                HOSTAS=llvm-as \
-                HOSTLD=ld.lld ${MorePlusPlus}
+                LD=${PrefixDir}ld.lld \
+                AR=${PrefixDir}llvm-ar \
+                NM=${PrefixDir}llvm-nm \
+                AS=${PrefixDir}llvm-as \
+                STRIP=${PrefixDir}llvm-strip \
+                OBJCOPY=${PrefixDir}llvm-objcopy \
+                OBJDUMP=${PrefixDir}llvm-objdump \
+                READELF=${PrefixDir}llvm-readelf \
+                HOSTAR=${PrefixDir}llvm-ar \
+                HOSTAS=${PrefixDir}llvm-as \
+                HOSTLD=${PrefixDir}ld.lld ${MorePlusPlus}
         )
         make    -j${TotalCores}  O=out \
                 ARCH=$ARCH \
@@ -267,59 +340,57 @@ CompileClangKernelLLVM(){
                 CROSS_COMPILE=aarch64-linux-gnu- \
                 CROSS_COMPILE_ARM32=arm-linux-gnueabi- \
                 CLANG_TRIPLE=aarch64-linux-gnu- \
-                LD=ld.lld \
-                AR=llvm-ar \
-                NM=llvm-nm \
-                AS=llvm-as \
-                STRIP=llvm-strip \
-                OBJCOPY=llvm-objcopy \
-                OBJDUMP=llvm-objdump \
-                READELF=llvm-readelf \
-                HOSTAR=llvm-ar \
-                HOSTAS=llvm-as \
-                HOSTLD=ld.lld ${MorePlusPlus}
+                LD=${PrefixDir}ld.lld \
+                AR=${PrefixDir}llvm-ar \
+                NM=${PrefixDir}llvm-nm \
+                AS=${PrefixDir}llvm-as \
+                STRIP=${PrefixDir}llvm-strip \
+                OBJCOPY=${PrefixDir}llvm-objcopy \
+                OBJDUMP=${PrefixDir}llvm-objdump \
+                READELF=${PrefixDir}llvm-readelf \
+                HOSTAR=${PrefixDir}llvm-ar \
+                HOSTAS=${PrefixDir}llvm-as \
+                HOSTLD=${PrefixDir}ld.lld ${MorePlusPlus}
     else
         MAKE=(
                 ARCH=$ARCH \
                 SUBARCH=$ARCH \
                 PATH=${ClangPath}/bin:${PATH} \
-                LD_LIBRARY_PATH="${ClangPath}/lib:${LD_LIBRARY_PATH}" \
                 CC=clang \
                 CROSS_COMPILE=aarch64-linux-gnu- \
                 CROSS_COMPILE_ARM32=arm-linux-gnueabi- \
                 CLANG_TRIPLE=aarch64-linux-gnu- \
-                LD=ld.lld \
-                AR=llvm-ar \
-                NM=llvm-nm \
-                AS=llvm-as \
-                STRIP=llvm-strip \
-                OBJCOPY=llvm-objcopy \
-                OBJDUMP=llvm-objdump \
-                READELF=llvm-readelf \
-                HOSTAR=llvm-ar \
-                HOSTAS=llvm-as \
-                HOSTLD=ld.lld ${MorePlusPlus}
+                LD=${PrefixDir}ld.lld \
+                AR=${PrefixDir}llvm-ar \
+                NM=${PrefixDir}llvm-nm \
+                AS=${PrefixDir}llvm-as \
+                STRIP=${PrefixDir}llvm-strip \
+                OBJCOPY=${PrefixDir}llvm-objcopy \
+                OBJDUMP=${PrefixDir}llvm-objdump \
+                READELF=${PrefixDir}llvm-readelf \
+                HOSTAR=${PrefixDir}llvm-ar \
+                HOSTAS=${PrefixDir}llvm-as \
+                HOSTLD=${PrefixDir}ld.lld ${MorePlusPlus}
         )
         make    -j${TotalCores}  O=out \
                 ARCH=$ARCH \
                 SUBARCH=$ARCH \
                 PATH=${ClangPath}/bin:${PATH} \
-                LD_LIBRARY_PATH="${ClangPath}/lib:${LD_LIBRARY_PATH}" \
                 CC=clang \
                 CROSS_COMPILE=aarch64-linux-gnu- \
                 CROSS_COMPILE_ARM32=arm-linux-gnueabi- \
                 CLANG_TRIPLE=aarch64-linux-gnu- \
-                LD=ld.lld \
-                AR=llvm-ar \
-                NM=llvm-nm \
-                AS=llvm-as \
-                STRIP=llvm-strip \
-                OBJCOPY=llvm-objcopy \
-                OBJDUMP=llvm-objdump \
-                READELF=llvm-readelf \
-                HOSTAR=llvm-ar \
-                HOSTAS=llvm-as \
-                HOSTLD=ld.lld ${MorePlusPlus}
+                LD=${PrefixDir}ld.lld \
+                AR=${PrefixDir}llvm-ar \
+                NM=${PrefixDir}llvm-nm \
+                AS=${PrefixDir}llvm-as \
+                STRIP=${PrefixDir}llvm-strip \
+                OBJCOPY=${PrefixDir}llvm-objcopy \
+                OBJDUMP=${PrefixDir}llvm-objdump \
+                READELF=${PrefixDir}llvm-readelf \
+                HOSTAR=${PrefixDir}llvm-ar \
+                HOSTAS=${PrefixDir}llvm-as \
+                HOSTLD=${PrefixDir}ld.lld ${MorePlusPlus}
     fi
     BUILD_END=$(date +"%s")
     DIFF=$((BUILD_END - BUILD_START))
@@ -344,7 +415,11 @@ CompileClangKernelLLVMB(){
     cd "${KernelPath}"
     SendInfoLink
     MorePlusPlus=" "
+    PrefixDir=""
     [[ "$TypeBuilder" != *"SDClang"* ]] && MorePlusPlus="HOSTCC=clang HOSTCXX=clang++"
+    if [[ "$UseZyCLLVM" == "y" ]];then
+        PrefixDir="${MainClangZipPath}-zyc/bin/"
+    fi
     BUILD_START=$(date +"%s")
     make    -j${TotalCores}  O=out ARCH="$ARCH" "$DEFFCONFIG"
     if [ -d "${ClangPath}/lib64" ];then
@@ -352,85 +427,83 @@ CompileClangKernelLLVMB(){
                 ARCH=$ARCH \
                 SUBARCH=$ARCH \
                 PATH=${ClangPath}/bin:${GCCaPath}/bin:${GCCbPath}/bin:/usr/bin:${PATH} \
-                LD_LIBRARY_PATH="${ClangPath}/lib:${LD_LIBRARY_PATH}" \
+                LD_LIBRARY_PATH="${ClangPath}/lib64:${LD_LIBRARY_PATH}" \
                 CC=clang \
                 CROSS_COMPILE=$for64- \
                 CROSS_COMPILE_ARM32=$for32- \
                 CLANG_TRIPLE=aarch64-linux-gnu- \
-                LD=ld.lld \
-                AR=llvm-ar \
-                NM=llvm-nm \
-                AS=llvm-as \
-                STRIP=llvm-strip \
-                OBJCOPY=llvm-objcopy \
-                OBJDUMP=llvm-objdump \
-                READELF=llvm-readelf \
-                HOSTAR=llvm-ar \
-                HOSTAS=llvm-as \
-                HOSTLD=ld.lld ${MorePlusPlus}
+                LD=${PrefixDir}ld.lld \
+                AR=${PrefixDir}llvm-ar \
+                NM=${PrefixDir}llvm-nm \
+                AS=${PrefixDir}llvm-as \
+                STRIP=${PrefixDir}llvm-strip \
+                OBJCOPY=${PrefixDir}llvm-objcopy \
+                OBJDUMP=${PrefixDir}llvm-objdump \
+                READELF=${PrefixDir}llvm-readelf \
+                HOSTAR=${PrefixDir}llvm-ar \
+                HOSTAS=${PrefixDir}llvm-as \
+                HOSTLD=${PrefixDir}ld.lld ${MorePlusPlus}
         )
         make    -j${TotalCores}  O=out \
                 ARCH=$ARCH \
                 SUBARCH=$ARCH \
                 PATH=${ClangPath}/bin:${GCCaPath}/bin:${GCCbPath}/bin:/usr/bin:${PATH} \
-                LD_LIBRARY_PATH="${ClangPath}/lib:${LD_LIBRARY_PATH}" \
+                LD_LIBRARY_PATH="${ClangPath}/lib64:${LD_LIBRARY_PATH}" \
                 CC=clang \
                 CROSS_COMPILE=$for64- \
                 CROSS_COMPILE_ARM32=$for32- \
                 CLANG_TRIPLE=aarch64-linux-gnu- \
-                LD=ld.lld \
-                AR=llvm-ar \
-                NM=llvm-nm \
-                AS=llvm-as \
-                STRIP=llvm-strip \
-                OBJCOPY=llvm-objcopy \
-                OBJDUMP=llvm-objdump \
-                READELF=llvm-readelf \
-                HOSTAR=llvm-ar \
-                HOSTAS=llvm-as \
-                HOSTLD=ld.lld ${MorePlusPlus}
+                LD=${PrefixDir}ld.lld \
+                AR=${PrefixDir}llvm-ar \
+                NM=${PrefixDir}llvm-nm \
+                AS=${PrefixDir}llvm-as \
+                STRIP=${PrefixDir}llvm-strip \
+                OBJCOPY=${PrefixDir}llvm-objcopy \
+                OBJDUMP=${PrefixDir}llvm-objdump \
+                READELF=${PrefixDir}llvm-readelf \
+                HOSTAR=${PrefixDir}llvm-ar \
+                HOSTAS=${PrefixDir}llvm-as \
+                HOSTLD=${PrefixDir}ld.lld ${MorePlusPlus}
     else
         MAKE=(
                 ARCH=$ARCH \
                 SUBARCH=$ARCH \
                 PATH=${ClangPath}/bin:${GCCaPath}/bin:${GCCbPath}/bin:/usr/bin:${PATH} \
-                LD_LIBRARY_PATH="${ClangPath}/lib:${LD_LIBRARY_PATH}" \
                 CC=clang \
                 CROSS_COMPILE=$for64- \
                 CROSS_COMPILE_ARM32=$for32- \
                 CLANG_TRIPLE=aarch64-linux-gnu- \
-                LD=ld.lld \
-                AR=llvm-ar \
-                NM=llvm-nm \
-                AS=llvm-as \
-                STRIP=llvm-strip \
-                OBJCOPY=llvm-objcopy \
-                OBJDUMP=llvm-objdump \
-                READELF=llvm-readelf \
-                HOSTAR=llvm-ar \
-                HOSTAS=llvm-as \
-                HOSTLD=ld.lld ${MorePlusPlus}
+                LD=${PrefixDir}ld.lld \
+                AR=${PrefixDir}llvm-ar \
+                NM=${PrefixDir}llvm-nm \
+                AS=${PrefixDir}llvm-as \
+                STRIP=${PrefixDir}llvm-strip \
+                OBJCOPY=${PrefixDir}llvm-objcopy \
+                OBJDUMP=${PrefixDir}llvm-objdump \
+                READELF=${PrefixDir}llvm-readelf \
+                HOSTAR=${PrefixDir}llvm-ar \
+                HOSTAS=${PrefixDir}llvm-as \
+                HOSTLD=${PrefixDir}ld.lld ${MorePlusPlus}
         )
         make    -j${TotalCores}  O=out \
                 ARCH=$ARCH \
                 SUBARCH=$ARCH \
                 PATH=${ClangPath}/bin:${GCCaPath}/bin:${GCCbPath}/bin:/usr/bin:${PATH} \
-                LD_LIBRARY_PATH="${ClangPath}/lib:${LD_LIBRARY_PATH}" \
                 CC=clang \
                 CROSS_COMPILE=$for64- \
                 CROSS_COMPILE_ARM32=$for32- \
                 CLANG_TRIPLE=aarch64-linux-gnu- \
-                LD=ld.lld \
-                AR=llvm-ar \
-                NM=llvm-nm \
-                AS=llvm-as \
-                STRIP=llvm-strip \
-                OBJCOPY=llvm-objcopy \
-                OBJDUMP=llvm-objdump \
-                READELF=llvm-readelf \
-                HOSTAR=llvm-ar \
-                HOSTAS=llvm-as \
-                HOSTLD=ld.lld ${MorePlusPlus}
+                LD=${PrefixDir}ld.lld \
+                AR=${PrefixDir}llvm-ar \
+                NM=${PrefixDir}llvm-nm \
+                AS=${PrefixDir}llvm-as \
+                STRIP=${PrefixDir}llvm-strip \
+                OBJCOPY=${PrefixDir}llvm-objcopy \
+                OBJDUMP=${PrefixDir}llvm-objdump \
+                READELF=${PrefixDir}llvm-readelf \
+                HOSTAR=${PrefixDir}llvm-ar \
+                HOSTAS=${PrefixDir}llvm-as \
+                HOSTLD=${PrefixDir}ld.lld ${MorePlusPlus}
     fi
     BUILD_END=$(date +"%s")
     DIFF=$((BUILD_END - BUILD_START))
@@ -570,4 +643,11 @@ pullBranchAgain(){
     git pull --no-commit origin $1
     git commit -s -m "Pull branch $1"
     TypeBuildTag="$2"
+}
+
+DisableLTO(){
+    [[ "$(pwd)" != "${KernelPath}" ]] && cd "${KernelPath}"
+    sed -i "s/CONFIG_LTO=y/CONFIG_LTO=n/" arch/$ARCH/configs/$DEFFCONFIG
+    sed -i "s/CONFIG_LTO_CLANG=y/CONFIG_LTO_CLANG=n/" arch/$ARCH/configs/$DEFFCONFIG
+    git add arch/$ARCH/configs/$DEFFCONFIG && git commit -sm 'defconfig: Disable LTO'
 }

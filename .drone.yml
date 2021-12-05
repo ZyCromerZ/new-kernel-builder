@@ -18,6 +18,8 @@ steps:
         from_secret: GIT_SECRETB
       GIT_USERNAME:
         from_secret: GIT_USERNAME
+      ZIP_PASS:
+        from_secret: ZIP_PASS
     image: zycromerz/kerneldocker:v3
     name: ZyC-Build
     trigger: 

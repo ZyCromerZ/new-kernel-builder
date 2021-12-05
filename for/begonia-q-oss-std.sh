@@ -20,6 +20,4 @@ CompileClangKernel && CleanOut
 # CompileClangKernel && CleanOut
 CompileGccKernel
 
-# cleanup stuff after done
-cd "${MainPath}"
-rm -rf *
+ 

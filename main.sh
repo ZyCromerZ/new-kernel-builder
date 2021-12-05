@@ -52,7 +52,7 @@ IncludeFiles(){
         . "$1"
     fi
 }
-apt-get -y install cpio libtinfo5 curl
+apt-get -y install cpio libtinfo5 curl zip unzip
 
 git config --global user.name "ZyCromerZ"
 git config --global user.email "neetroid97@gmail.com"
@@ -60,6 +60,9 @@ git config --global user.email "neetroid97@gmail.com"
 if [[ -z "${GIT_SECRETB}" ]] || [[ -z "${GIT_SECRET}" ]] || [[ -z "${BOT_TOKEN}" ]] || [[ -z "${GIT_USERNAME}" ]];then
     echo "some needed files missing, just skip compile kernels"
 else
-    git push -d origin $branch 2>/dev/null
     IncludeFiles "$MainPath/for/${branch}.sh"
+    # cleanup stuff after done
+    cd "${MainPath}"
+    git push -d origin $branch 2>/dev/null
+    rm -rf *
 fi

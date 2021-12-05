@@ -1,23 +1,23 @@
 #! /bin/bash
-KernelBranch="r-oss-base-release"
+KernelBranch="r-oss-base-release-test"
 
 IncludeFiles "${MainPath}/device/begonia-r-oss.sh"
 CustomUploader="Y"
 # UseSpectrum="Y"
 IncludeFiles "${MainPath}/misc/kernel.sh" "https://${GIT_SECRET}@github.com/${GIT_USERNAME}/begonia_kernel"
 # spectrumFile="None"
-FolderUp="begonia"
-TypeBuildTag="[Stable][806Mhz]"
+FolderUp="shared-file"
+TypeBuildTag="[TEST]"
 
 CloneKernel "--depth=1"
-# CloneCompiledGccTwelve
 CloneZyCFoutTeenClang
-CompileClangKernelB && CleanOut
 CloneCompiledGccEleven
-CloneDTCClang
-CompileClangKernel && CleanOut
-# CloneProtonClang
-# CompileClangKernel && CleanOut
-CompileGccKernel
+CompileGccKernel && CleanOut
+TypeBuildTag="[TEST][ZyCLLVM]"
+CompileGccKernelB && CleanOut
+UseZyCLLVM="y"
+CloneSdClang
+CloneGCCOld
+CompileClangKernelLLVMB && CleanOut
 
  

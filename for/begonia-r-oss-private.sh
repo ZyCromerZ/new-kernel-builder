@@ -6,19 +6,17 @@ CustomUploader="Y"
 # UseSpectrum="Y"
 IncludeFiles "${MainPath}/misc/kernel.sh" "https://${GIT_SECRET}@github.com/${GIT_USERNAME}/begonia_kernel"
 # spectrumFile="None"
-FolderUp="begonia"
+FolderUp="shared-file"
 TypeBuildTag="[TEST]"
 
 CloneKernel "--depth=1"
-# CloneZyCFoutTeenClang
-# CompileClangKernelLLVM && CleanOut
-# CloneDTCClang
-# CloneCompiledGccTwelve
-# CompileClangKernelLLVMB && CleanOut
-CloneSdClang
-CloneGCCOld
+CloneZyCFoutTeenClang
+CompileClangKernelLLVM && CleanOut
+CloneDTCClang
+CloneCompiledGccTwelve
+CompileClangKernelLLVMB && CleanOut
+UseZyCLLVM="y"
+TypeBuildTag="[TEST][ZyCLLVM]"
 CompileClangKernelLLVMB && CleanOut
 
-# cleanup stuff after done
-cd "${MainPath}"
-rm -rf *
+ 

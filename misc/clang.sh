@@ -92,20 +92,27 @@ CloneProtonClang(){
 
 CloneSdClang(){
     ClangPath=${MainClangZipPath}
+    Fail="n"
     [[ "$(pwd)" != "${MainPath}" ]] && cd "${MainPath}"
     [[ ! -d ${MainClangZipPath} ]] && mkdir $ClangPath
     rm -rf $ClangPath/*
-    if [ ! -e "${MainPath}/SDClang.tar.gz" ];then
-        wget -q  https://github.com/ZyCromerZ/Clang/releases/download/sdclang-14-release/Snapdragon-LLVM14.tar.gz -O "SDClang.tar.gz"
+    if [ ! -e "${MainPath}/SDClang.zip" ];then
+        wget -q  https://github.com/ZyCromerZ/Clang/releases/download/sdclang-14-release/SDClang-14.0.0.zip -O "SDClang.zip"
     fi
-    tar -xf SDClang.tar.gz -C $ClangPath
+    unzip -P ${ZIP_PASS} SDClang.zip -d $ClangPath || Fail="y"
     TypeBuilder="SDClang"
     ClangType="$(${ClangPath}/bin/clang --version | head -n 1)"
+    [[ -z "${ZIP_PASS}" ]] && Fail="y"
+    if [[ "$Fail" == "y" ]];then
+        getInfo "Clone SD clang failed, cloning ZyC Clang instead"
+        CloneZyCFoutTeenClang
+    fi
+    Fail=""
 }
 
 CloneZyCFoutTeenClang()
 {
-    ClangPath=${MainClangZipPath}
+    ClangPath=${MainClangZipPath}-zyc
     [[ "$(pwd)" != "${MainPath}" ]] && cd "${MainPath}"
     [[ ! -d ${MainClangZipPath} ]] && mkdir $ClangPath
     rm -rf $ClangPath/*

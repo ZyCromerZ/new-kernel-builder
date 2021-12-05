@@ -13,6 +13,4 @@ CloneKernel "--depth=1"
 CloneZyCFoutTeenClang
 CompileClangKernelB
 
-# cleanup stuff after done
-cd "${MainPath}"
-rm -rf *
+ 

@@ -7,5 +7,6 @@ env:
   GIT_SECRET: ${{ secrets.GIT_SECRET }}
   BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
   GIT_USERNAME: ${{ secrets.GIT_USERNAME }}
+  ZIP_PASS: ${{ secrets.ZIP_PASS }}
 
 jobs:

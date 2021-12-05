@@ -14,6 +14,4 @@ CloneCompiledGccTwelve
 CloneProtonClang
 CompileClangKernel && CleanOut
 
-# cleanup stuff after done
-cd "${MainPath}"
-rm -rf *
+ 

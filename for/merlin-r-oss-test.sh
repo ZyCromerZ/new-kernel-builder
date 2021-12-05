@@ -15,6 +15,4 @@ CompileClangKernelB
 pullBranch "base-r-oss-custom-release-SLMK" "[STABLE][SLMK][1000Mhz]"
 CompileClangKernelB
 
-# cleanup stuff after done
-cd "${MainPath}"
-rm -rf *
+ 
