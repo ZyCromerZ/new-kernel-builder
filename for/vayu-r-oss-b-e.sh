@@ -1,5 +1,5 @@
 #! /bin/bash
-KernelBranch="20210824/neutrino-flamescion"
+KernelBranch="20210824/neutrino-phantasm"
 
 IncludeFiles "${MainPath}/device/vayu-r-oss.sh"
 CustomUploader="Y"
@@ -13,6 +13,7 @@ TypeBuildTag="[Stable]"
  
 
 CloneKernel "--depth=1"
-CloneZyCFoutTeenClang
+CloneCompiledGccTwelve
+CloneDTCClang
 DisableLTO
-CompileClangKernelB
+CompileClangKernel

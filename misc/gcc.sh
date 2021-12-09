@@ -79,25 +79,25 @@ CloneGCCOld(){
     [[ "$(pwd)" != "${MainPath}" ]] && cd "${MainPath}"
     GCCaPath="${MainGCCaPath}"
     if [ ! -d "$GCCaPath" ];then
-        git clone https://github.com/ZyCromerZ/aarch64-linux-android-4.9 -b android-10.0.0_r47 $GCCaPath --depth=1
+        git clone https://github.com/ZyCromerZ/aarch64-linux-android-4.9 -b android-12.0.0_r15 $GCCaPath --depth=1
     else
         cd "${GCCaPath}"
-        git fetch https://github.com/ZyCromerZ/aarch64-linux-android-4.9 android-10.0.0_r47 --depth=1
+        git fetch https://github.com/ZyCromerZ/aarch64-linux-android-4.9 android-12.0.0_r15 --depth=1
         git checkout FETCH_HEAD
-        [[ ! -z "$(git branch | grep android-10.0.0_r47)" ]] && git branch -D android-10.0.0_r47
-        git checkout -b android-10.0.0_r47
+        [[ ! -z "$(git branch | grep android-12.0.0_r15)" ]] && git branch -D android-12.0.0_r15
+        git checkout -b android-12.0.0_r15
     fi
     for64=aarch64-linux-android
     [[ "$(pwd)" != "${MainPath}" ]] && cd "${MainPath}"
     GCCbPath="${MainGCCbPath}"
     if [ ! -d "$GCCbPath" ];then
-        git clone https://github.com/ZyCromerZ/arm-linux-androideabi-4.9 -b android-10.0.0_r47 $GCCbPath --depth=1
+        git clone https://github.com/ZyCromerZ/arm-linux-androideabi-4.9 -b android-12.0.0_r15 $GCCbPath --depth=1
     else
         cd "${GCCbPath}"
-        git fetch https://github.com/ZyCromerZ/arm-linux-androideabi-4.9 android-10.0.0_r47 --depth=1
+        git fetch https://github.com/ZyCromerZ/arm-linux-androideabi-4.9 android-12.0.0_r15 --depth=1
         git checkout FETCH_HEAD
-        [[ ! -z "$(git branch | grep android-10.0.0_r47)" ]] && git branch -D android-10.0.0_r47
-        git checkout -b android-10.0.0_r47
+        [[ ! -z "$(git branch | grep android-12.0.0_r15)" ]] && git branch -D android-12.0.0_r15
+        git checkout -b android-12.0.0_r15
     fi
     for32=arm-linux-androideabi
     GetGccVersion

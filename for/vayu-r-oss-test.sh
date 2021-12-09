@@ -14,9 +14,11 @@ TypeBuildTag="[TEST]"
 
 CloneKernel "--depth=1"
 CloneZyCFoutTeenClang
-CompileClangKernelB && CleanOut
+CompileClangKernelLLVM && CleanOut
 CloneGCCOld
 CloneSdClang
+DisableLTO
 CompileClangKernel && CleanOut
 CloneCompiledGccEleven
-CompileGccKernel
+DisableLTO
+CompileGccKernelB
