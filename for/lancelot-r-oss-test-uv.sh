@@ -5,18 +5,10 @@ IncludeFiles "${MainPath}/device/lancelot-r-oss.sh"
 CustomUploader="Y"
 IncludeFiles "${MainPath}/misc/kernel.sh" "https://${GIT_SECRET}@github.com/${GIT_USERNAME}/lancelot_kernels"
 FolderUp="shared-file"
-TypeBuildTag="[STABLE][Stock][950Mhz]"
+TypeBuildTag="[TEST][Stock][950Mhz]"
 
-CloneKernel
+CloneKernel "--depth=1"
+# pullBranch "base-r-oss-custom-ALMK" "[TEST][ALMK][950Mhz]"
+# pullBranch "base-r-oss-custom-SLMK" "[TEST][SLMK][950Mhz]"
 CloneZyCFoutTeenClang
-# pullBranch "base-r-oss-custom-release-ALMK" "[STABLE][ALMK][950Mhz]"
-pullBranch "base-r-oss-custom-SLMK" "[TEST][SLMK][950Mhz]"
-CompileClangKernelLLVM && CleanOut
-CloneDTCClang
-CloneCompiledGccTwelve
-CompileClangKernelLLVMB && CleanOut
-UseZyCLLVM="y"
-TypeBuildTag="[TEST][ZyCLLVM]"
-CompileClangKernelLLVMB && CleanOut
-
- 
+CompileClangKernelLLVM
