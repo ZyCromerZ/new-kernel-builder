@@ -14,4 +14,7 @@ TypeBuildTag="[Stable][ThinLTO]"
 
 CloneKernel "--depth=1"
 CloneZyCFoutTeenClang
+# CompileClangKernelLLVM && CleanOut
+EnableWalt
+TypeBuildTag="[Stable][EnableWalt][ThinLTO]"
 CompileClangKernelLLVM && CleanOut

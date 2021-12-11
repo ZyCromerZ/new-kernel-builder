@@ -15,4 +15,7 @@ TypeBuildTag="[Stable][ThinLTO]"
 CloneKernel "--depth=1"
 CloneCompiledGccTwelve
 CloneDTCClang
+# CompileClangKernelLLVMB && CleanOut
+EnableWalt
+TypeBuildTag="[Stable][EnableWalt][ThinLTO]"
 CompileClangKernelLLVMB && CleanOut

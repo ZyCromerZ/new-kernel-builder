@@ -14,4 +14,9 @@ TypeBuildTag="[Stable]"
 
 CloneKernel "--depth=1"
 CloneCompiledGccEleven
+# DisableLTO
+# CompileGccKernel
+EnableWalt
+TypeBuildTag="[Stable][EnableWalt]"
+DisableLTO
 CompileGccKernel

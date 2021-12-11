@@ -14,5 +14,9 @@ TypeBuildTag="[Stable]"
 
 CloneKernel "--depth=1"
 CloneZyCFoutTeenClang
+# DisableLTO
+# CompileClangKernelB
+EnableWalt
+TypeBuildTag="[Stable][EnableWalt]"
 DisableLTO
 CompileClangKernelB

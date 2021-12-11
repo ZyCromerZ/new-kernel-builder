@@ -651,3 +651,15 @@ DisableLTO(){
     sed -i "s/CONFIG_LTO_CLANG=y/CONFIG_LTO_CLANG=n/" arch/$ARCH/configs/$DEFFCONFIG
     git add arch/$ARCH/configs/$DEFFCONFIG && git commit -sm 'defconfig: Disable LTO'
 }
+
+EnableWalt(){
+    [[ "$(pwd)" != "${KernelPath}" ]] && cd "${KernelPath}"
+    sed -i "s/# CONFIG_SCHED_WALT is not set/CONFIG_SCHED_WALT=y/" arch/$ARCH/configs/$DEFFCONFIG
+    git add arch/$ARCH/configs/$DEFFCONFIG && git commit -sm 'defconfig: Enable WALT'
+}
+
+DisableWalt(){
+    [[ "$(pwd)" != "${KernelPath}" ]] && cd "${KernelPath}"
+    sed -i "s/CONFIG_SCHED_WALT=y/CONFIG_SCHED_WALT=n/" arch/$ARCH/configs/$DEFFCONFIG
+    git add arch/$ARCH/configs/$DEFFCONFIG && git commit -sm 'defconfig: Disable WALT'
+}
