@@ -1,7 +1,11 @@
 export DEBIAN_FRONTEND=noninteractive
 ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
-sudo -E apt-get -y purge azure-cli ghc* zulu* hhvm llvm* firefox google* dotnet* powershell openjdk* mysql* php* 
-sudo -E apt-get clean
+if [ ! -z "${GITHUB_REF}" ];then
+    docker rmi `docker images -q`
+    apt-get remove landscape-common
+    sudo -E apt-get -y purge azure-cli ghc* zulu* hhvm llvm* firefox google* dotnet* powershell openjdk* mysql* php* 
+fi
+apt-get clean
 apt-get update -qq && \
 apt-get upgrade -y && \
 apt-get -y install tzdata \

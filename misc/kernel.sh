@@ -26,6 +26,7 @@ if [ ! -z "$1" ];then
     [[ -z "$UseDtb" ]] && UseDtb="n"
     [[ -z "$UseDtbo" ]] && UseDtbo="n"
     UseZyCLLVM="n"
+    UseGoldBinutils="n"
 else    
     getInfoErr "KernelRepo is missing :/"
     [ ! -z "${DRONE_BRANCH}" ] && . $MainPath/misc/bot.sh "send_info" "<b>❌ Build failed</b>%0ABranch : <b>${KernelBranch}</b%0A%0ASad Boy"
@@ -98,6 +99,7 @@ CompileClangKernel(){
                 ARCH=$ARCH \
                 SUBARCH=$ARCH \
                 PATH=${ClangPath}/bin:${GCCaPath}/bin:${GCCbPath}/bin:/usr/bin:${PATH} \
+                LD_LIBRARY_PATH="${ClangPath}/lib:${LD_LIBRARY_PATH}" \
                 CC=clang \
                 CROSS_COMPILE=$for64- \
                 CROSS_COMPILE_ARM32=$for32- \
@@ -107,6 +109,7 @@ CompileClangKernel(){
                 ARCH=$ARCH \
                 SUBARCH=$ARCH \
                 PATH=${ClangPath}/bin:${GCCaPath}/bin:${GCCbPath}/bin:/usr/bin:${PATH} \
+                LD_LIBRARY_PATH="${ClangPath}/lib:${LD_LIBRARY_PATH}" \
                 CC=clang \
                 CROSS_COMPILE=$for64- \
                 CROSS_COMPILE_ARM32=$for32- \
@@ -161,7 +164,7 @@ CompileGccKernel(){
     cp -af $KernelPath/out/arch/$ARCH/boot/${ImgName} $AnyKernelPath
     KName=$(cat "${KernelPath}/arch/${ARCH}/configs/${DEFFCONFIG}" | grep "CONFIG_LOCALVERSION=" | sed 's/CONFIG_LOCALVERSION="-*//g' | sed 's/"*//g' )
     ZipName="[$GetBD][GCC]${TypeBuildTag}[$CODENAME]$KVer-$KName-$HeadCommitId.zip"
-    [[ ! -z "$TypeBuildFor" ]] && ZipName="[$GetBD][$TypeBuildFor][GGC]${TypeBuildTag}[$CODENAME]$KVer-$KName-$HeadCommitId.zip"
+    [[ ! -z "$TypeBuildFor" ]] && ZipName="[$GetBD][$TypeBuildFor][GCC]${TypeBuildTag}[$CODENAME]$KVer-$KName-$HeadCommitId.zip"
     CompilerStatus="- <code>${gcc32Type}</code>%0A- <code>${gcc64Type}</code>"
     if [ ! -z "$1" ];then
         MakeZip "$1"
@@ -224,7 +227,7 @@ CompileGccKernelB(){
     cp -af $KernelPath/out/arch/$ARCH/boot/${ImgName} $AnyKernelPath
     KName=$(cat "${KernelPath}/arch/${ARCH}/configs/${DEFFCONFIG}" | grep "CONFIG_LOCALVERSION=" | sed 's/CONFIG_LOCALVERSION="-*//g' | sed 's/"*//g' )
     ZipName="[$GetBD][GCC]${TypeBuildTag}[$CODENAME]$KVer-$KName-$HeadCommitId.zip"
-    [[ ! -z "$TypeBuildFor" ]] && ZipName="[$GetBD][$TypeBuildFor][GGC]${TypeBuildTag}[$CODENAME]$KVer-$KName-$HeadCommitId.zip"
+    [[ ! -z "$TypeBuildFor" ]] && ZipName="[$GetBD][$TypeBuildFor][GCC]${TypeBuildTag}[$CODENAME]$KVer-$KName-$HeadCommitId.zip"
     CompilerStatus="- <code>${gcc32Type}</code>%0A- <code>${gcc64Type}</code>"
     if [ ! -z "$1" ];then
         MakeZip "$1"
@@ -271,6 +274,7 @@ CompileClangKernelB(){
                 ARCH=$ARCH \
                 SUBARCH=$ARCH \
                 PATH=${ClangPath}/bin:/usr/bin:${PATH} \
+                LD_LIBRARY_PATH="${ClangPath}/lib:${LD_LIBRARY_PATH}" \
                 CC=clang \
                 CROSS_COMPILE=aarch64-linux-gnu- \
                 CROSS_COMPILE_ARM32=arm-linux-gnueabi- \
@@ -280,6 +284,7 @@ CompileClangKernelB(){
                 ARCH=$ARCH \
                 SUBARCH=$ARCH \
                 PATH=${ClangPath}/bin:/usr/bin:${PATH} \
+                LD_LIBRARY_PATH="${ClangPath}/lib:${LD_LIBRARY_PATH}" \
                 CC=clang \
                 CROSS_COMPILE=aarch64-linux-gnu- \
                 CROSS_COMPILE_ARM32=arm-linux-gnueabi- \
@@ -317,6 +322,11 @@ CompileClangKernelLLVM(){
     else
         MorePlusPlus="HOSTCC=gcc HOSTCXX=g++"
     fi
+    if [[ "$UseGoldBinutils" == "y" ]];then
+        MorePlusPlus="LD=aarch64-linux-gnu-ld.gold HOSTLD=aarch64-linux-gnu-ld.gold $MorePlusPlus"
+    else
+        MorePlusPlus="LD=${PrefixDir}ld.lld HOSTLD=${PrefixDir}ld.lld $MorePlusPlus"
+    fi
     BUILD_START=$(date +"%s")
     make    -j${TotalCores}  O=out ARCH="$ARCH" "$DEFFCONFIG"
     if [ -d "${ClangPath}/lib64" ];then
@@ -329,7 +339,6 @@ CompileClangKernelLLVM(){
                 CROSS_COMPILE=aarch64-linux-gnu- \
                 CROSS_COMPILE_ARM32=arm-linux-gnueabi- \
                 CLANG_TRIPLE=aarch64-linux-gnu- \
-                LD=${PrefixDir}ld.lld \
                 AR=${PrefixDir}llvm-ar \
                 NM=${PrefixDir}llvm-nm \
                 AS=${PrefixDir}llvm-as \
@@ -338,8 +347,7 @@ CompileClangKernelLLVM(){
                 OBJDUMP=${PrefixDir}llvm-objdump \
                 READELF=${PrefixDir}llvm-readelf \
                 HOSTAR=${PrefixDir}llvm-ar \
-                HOSTAS=${PrefixDir}llvm-as \
-                HOSTLD=${PrefixDir}ld.lld ${MorePlusPlus}
+                HOSTAS=${PrefixDir}llvm-as ${MorePlusPlus}
         )
         make    -j${TotalCores}  O=out \
                 ARCH=$ARCH \
@@ -350,7 +358,6 @@ CompileClangKernelLLVM(){
                 CROSS_COMPILE=aarch64-linux-gnu- \
                 CROSS_COMPILE_ARM32=arm-linux-gnueabi- \
                 CLANG_TRIPLE=aarch64-linux-gnu- \
-                LD=${PrefixDir}ld.lld \
                 AR=${PrefixDir}llvm-ar \
                 NM=${PrefixDir}llvm-nm \
                 AS=${PrefixDir}llvm-as \
@@ -359,18 +366,17 @@ CompileClangKernelLLVM(){
                 OBJDUMP=${PrefixDir}llvm-objdump \
                 READELF=${PrefixDir}llvm-readelf \
                 HOSTAR=${PrefixDir}llvm-ar \
-                HOSTAS=${PrefixDir}llvm-as \
-                HOSTLD=${PrefixDir}ld.lld ${MorePlusPlus}
+                HOSTAS=${PrefixDir}llvm-as ${MorePlusPlus}
     else
         MAKE=(
                 ARCH=$ARCH \
                 SUBARCH=$ARCH \
                 PATH=${ClangPath}/bin:${PATH} \
+                LD_LIBRARY_PATH="${ClangPath}/lib:${LD_LIBRARY_PATH}" \
                 CC=clang \
                 CROSS_COMPILE=aarch64-linux-gnu- \
                 CROSS_COMPILE_ARM32=arm-linux-gnueabi- \
                 CLANG_TRIPLE=aarch64-linux-gnu- \
-                LD=${PrefixDir}ld.lld \
                 AR=${PrefixDir}llvm-ar \
                 NM=${PrefixDir}llvm-nm \
                 AS=${PrefixDir}llvm-as \
@@ -379,18 +385,17 @@ CompileClangKernelLLVM(){
                 OBJDUMP=${PrefixDir}llvm-objdump \
                 READELF=${PrefixDir}llvm-readelf \
                 HOSTAR=${PrefixDir}llvm-ar \
-                HOSTAS=${PrefixDir}llvm-as \
-                HOSTLD=${PrefixDir}ld.lld ${MorePlusPlus}
+                HOSTAS=${PrefixDir}llvm-as ${MorePlusPlus}
         )
         make    -j${TotalCores}  O=out \
                 ARCH=$ARCH \
                 SUBARCH=$ARCH \
                 PATH=${ClangPath}/bin:${PATH} \
+                LD_LIBRARY_PATH="${ClangPath}/lib:${LD_LIBRARY_PATH}" \
                 CC=clang \
                 CROSS_COMPILE=aarch64-linux-gnu- \
                 CROSS_COMPILE_ARM32=arm-linux-gnueabi- \
                 CLANG_TRIPLE=aarch64-linux-gnu- \
-                LD=${PrefixDir}ld.lld \
                 AR=${PrefixDir}llvm-ar \
                 NM=${PrefixDir}llvm-nm \
                 AS=${PrefixDir}llvm-as \
@@ -399,8 +404,7 @@ CompileClangKernelLLVM(){
                 OBJDUMP=${PrefixDir}llvm-objdump \
                 READELF=${PrefixDir}llvm-readelf \
                 HOSTAR=${PrefixDir}llvm-ar \
-                HOSTAS=${PrefixDir}llvm-as \
-                HOSTLD=${PrefixDir}ld.lld ${MorePlusPlus}
+                HOSTAS=${PrefixDir}llvm-as ${MorePlusPlus}
     fi
     BUILD_END=$(date +"%s")
     DIFF=$((BUILD_END - BUILD_START))
@@ -434,6 +438,11 @@ CompileClangKernelLLVMB(){
     else
         MorePlusPlus="HOSTCC=gcc HOSTCXX=g++"
     fi
+    if [[ "$UseGoldBinutils" == "y" ]];then
+        MorePlusPlus="LD=$for64-ld.gold HOSTLD=$for64-ld.gold $MorePlusPlus"
+    else
+        MorePlusPlus="LD=${PrefixDir}ld.lld HOSTLD=${PrefixDir}ld.lld $MorePlusPlus"
+    fi
     BUILD_START=$(date +"%s")
     make    -j${TotalCores}  O=out ARCH="$ARCH" "$DEFFCONFIG"
     if [ -d "${ClangPath}/lib64" ];then
@@ -446,7 +455,6 @@ CompileClangKernelLLVMB(){
                 CROSS_COMPILE=$for64- \
                 CROSS_COMPILE_ARM32=$for32- \
                 CLANG_TRIPLE=aarch64-linux-gnu- \
-                LD=${PrefixDir}ld.lld \
                 AR=${PrefixDir}llvm-ar \
                 NM=${PrefixDir}llvm-nm \
                 AS=${PrefixDir}llvm-as \
@@ -455,8 +463,7 @@ CompileClangKernelLLVMB(){
                 OBJDUMP=${PrefixDir}llvm-objdump \
                 READELF=${PrefixDir}llvm-readelf \
                 HOSTAR=${PrefixDir}llvm-ar \
-                HOSTAS=${PrefixDir}llvm-as \
-                HOSTLD=${PrefixDir}ld.lld ${MorePlusPlus}
+                HOSTAS=${PrefixDir}llvm-as ${MorePlusPlus}
         )
         make    -j${TotalCores}  O=out \
                 ARCH=$ARCH \
@@ -467,7 +474,6 @@ CompileClangKernelLLVMB(){
                 CROSS_COMPILE=$for64- \
                 CROSS_COMPILE_ARM32=$for32- \
                 CLANG_TRIPLE=aarch64-linux-gnu- \
-                LD=${PrefixDir}ld.lld \
                 AR=${PrefixDir}llvm-ar \
                 NM=${PrefixDir}llvm-nm \
                 AS=${PrefixDir}llvm-as \
@@ -476,18 +482,17 @@ CompileClangKernelLLVMB(){
                 OBJDUMP=${PrefixDir}llvm-objdump \
                 READELF=${PrefixDir}llvm-readelf \
                 HOSTAR=${PrefixDir}llvm-ar \
-                HOSTAS=${PrefixDir}llvm-as \
-                HOSTLD=${PrefixDir}ld.lld ${MorePlusPlus}
+                HOSTAS=${PrefixDir}llvm-as ${MorePlusPlus}
     else
         MAKE=(
                 ARCH=$ARCH \
                 SUBARCH=$ARCH \
                 PATH=${ClangPath}/bin:${GCCaPath}/bin:${GCCbPath}/bin:/usr/bin:${PATH} \
+                LD_LIBRARY_PATH="${ClangPath}/lib:${LD_LIBRARY_PATH}" \
                 CC=clang \
                 CROSS_COMPILE=$for64- \
                 CROSS_COMPILE_ARM32=$for32- \
                 CLANG_TRIPLE=aarch64-linux-gnu- \
-                LD=${PrefixDir}ld.lld \
                 AR=${PrefixDir}llvm-ar \
                 NM=${PrefixDir}llvm-nm \
                 AS=${PrefixDir}llvm-as \
@@ -503,11 +508,11 @@ CompileClangKernelLLVMB(){
                 ARCH=$ARCH \
                 SUBARCH=$ARCH \
                 PATH=${ClangPath}/bin:${GCCaPath}/bin:${GCCbPath}/bin:/usr/bin:${PATH} \
+                LD_LIBRARY_PATH="${ClangPath}/lib:${LD_LIBRARY_PATH}" \
                 CC=clang \
                 CROSS_COMPILE=$for64- \
                 CROSS_COMPILE_ARM32=$for32- \
                 CLANG_TRIPLE=aarch64-linux-gnu- \
-                LD=${PrefixDir}ld.lld \
                 AR=${PrefixDir}llvm-ar \
                 NM=${PrefixDir}llvm-nm \
                 AS=${PrefixDir}llvm-as \
@@ -682,4 +687,10 @@ DisableWalt(){
     [[ "$(pwd)" != "${KernelPath}" ]] && cd "${KernelPath}"
     sed -i "s/CONFIG_SCHED_WALT=y/CONFIG_SCHED_WALT=n/" arch/$ARCH/configs/$DEFFCONFIG
     git add arch/$ARCH/configs/$DEFFCONFIG && git commit -sm 'defconfig: Disable WALT'
+}
+
+DisableMsmP(){
+    [[ "$(pwd)" != "${KernelPath}" ]] && cd "${KernelPath}"
+    sed -i "s/CONFIG_MSM_PERFORMANCE=y/CONFIG_MSM_PERFORMANCE=n/" arch/$ARCH/configs/$DEFFCONFIG
+    git add arch/$ARCH/configs/$DEFFCONFIG && git commit -sm 'defconfig: Disable MSM_PERFORMANCE'   
 }

@@ -22,6 +22,7 @@ KDType=""
 export DEBIAN_FRONTEND=noninteractive
 export KBUILD_BUILD_USER="ZyCromerZ"
 TotalCores="$(nproc --all)"
+DoSudo=""
 if [ ! -z "${CIRCLE_BRANCH}" ];then
     export KBUILD_BUILD_HOST="Circleci-server"
     # branch="${CIRCLE_BRANCH}"
@@ -32,13 +33,14 @@ elif [ ! -z "${GITHUB_REF}" ];then
     export KBUILD_BUILD_HOST="Github-server"
     # branch="${GITHUB_REF/"refs/heads/"/""}"
     TotalCores="4"
+    DoSudo="sudo"
 fi
 branch="$1"
 # just fix for dtc clang
 check=$(ls /usr/lib/x86_64-linux-gnu | grep libisl.so -m1)
-if [ ! -z "$check" ]; then if [ "$check" != "libisl.so.15" ]; then cp -af /usr/lib/x86_64-linux-gnu/$check /usr/lib/x86_64-linux-gnu/libisl.so.15; fi; fi
+if [ ! -z "$check" ]; then if [ "$check" != "libisl.so.15" ]; then $DoSudo cp -af /usr/lib/x86_64-linux-gnu/$check /usr/lib/x86_64-linux-gnu/libisl.so.15; fi; fi
 check=$(ls /usr/lib/x86_64-linux-gnu | grep libz3.so -m1)
-if [ ! -z "$check" ]; then if [ "$check" != "libz3.so.4.8" ]; then cp -af /usr/lib/x86_64-linux-gnu/$check /usr/lib/x86_64-linux-gnu/libz3.so.4.8; fi; fi
+if [ ! -z "$check" ]; then if [ "$check" != "libz3.so.4.8" ]; then $DoSudo cp -af /usr/lib/x86_64-linux-gnu/$check /usr/lib/x86_64-linux-gnu/libz3.so.4.8; fi; fi
 check=""
 
 IncludeFiles(){

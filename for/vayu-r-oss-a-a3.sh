@@ -15,14 +15,14 @@ TypeBuildTag="[Stable][A][MPDCL]"
 CloneKernel "--depth=1"
 CloneZyCFoutTeenClang
 # DisableMsmP
-CompileClangKernelLLVM && CleanOut
+# CompileClangKernelLLVM && CleanOut
 # TypeBuildTag="[Stable][B][MPDCL]"
 # CompileClangKernelB && CleanOut
-# [[ "$(pwd)" != "${KernelPath}" ]] && cd "${KernelPath}"
-# git fetch origin 3840164aa061d2d663e3e3386d50cfc5a34d5a24 --depth=1
-# git reset --hard 3840164aa061d2d663e3e3386d50cfc5a34d5a24
-# TypeBuildTag="[Stable][A][MPDCL][OLD]"
-# CompileClangKernelLLVM && CleanOut
+[[ "$(pwd)" != "${KernelPath}" ]] && cd "${KernelPath}"
+git fetch origin 3840164aa061d2d663e3e3386d50cfc5a34d5a24 --depth=1
+git reset --hard 3840164aa061d2d663e3e3386d50cfc5a34d5a24
+TypeBuildTag="[Stable][A][MPDCL][OLD]"
+CompileClangKernelLLVM && CleanOut
 # [[ "$(pwd)" != "${KernelPath}" ]] && cd "${KernelPath}"
 # git fetch origin 3840164aa061d2d663e3e3386d50cfc5a34d5a24 --depth=1
 # git reset --hard 3840164aa061d2d663e3e3386d50cfc5a34d5a24
