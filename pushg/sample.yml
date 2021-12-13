@@ -8,5 +8,6 @@ env:
   BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
   GIT_USERNAME: ${{ secrets.GIT_USERNAME }}
   ZIP_PASS: ${{ secrets.ZIP_PASS }}
+  TZ: Asia/Jakarta
 
 jobs:
