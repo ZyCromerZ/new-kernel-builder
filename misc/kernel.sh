@@ -70,6 +70,9 @@ CompileClangKernel(){
     if [[ ! -z "$(cat $KernelPath/out/.config | grep "CONFIG_LTO=y" )" ]] || [[ ! -z "$(cat $KernelPath/out/.config | grep "CONFIG_LTO_CLANG=y" )" ]];then
         MorePlusPlus="LD=ld.lld HOSTLD=ld.lld"
     fi
+    if [[ "$TypeBuilder" == *"SDClang"* ]];then
+        MorePlusPlus="HOSTCC=gcc HOSTCXX=g++ $MorePlusPlus"
+    fi
     if [ -d "${ClangPath}/lib64" ];then
         MAKE=(
                 ARCH=$ARCH \
@@ -240,6 +243,9 @@ CompileClangKernelB(){
     if [[ ! -z "$(cat $KernelPath/out/.config | grep "CONFIG_LTO=y" )" ]] || [[ ! -z "$(cat $KernelPath/out/.config | grep "CONFIG_LTO_CLANG=y" )" ]];then
         MorePlusPlus="LD=ld.lld HOSTLD=ld.lld"
     fi
+    if [[ "$TypeBuilder" == *"SDClang"* ]];then
+        MorePlusPlus="HOSTCC=gcc HOSTCXX=g++ $MorePlusPlus"
+    fi
     if [ -d "${ClangPath}/lib64" ];then
         MAKE=(
                 ARCH=$ARCH \
@@ -303,9 +309,13 @@ CompileClangKernelLLVM(){
     SendInfoLink
     MorePlusPlus=" "
     PrefixDir=""
-    [[ "$TypeBuilder" != *"SDClang"* ]] && MorePlusPlus="HOSTCC=clang HOSTCXX=clang++"
     if [[ "$UseZyCLLVM" == "y" ]];then
         PrefixDir="${MainClangZipPath}-zyc/bin/"
+    fi
+    if [[ "$TypeBuilder" != *"SDClang"* ]];then
+        MorePlusPlus="HOSTCC=clang HOSTCXX=clang++"
+    else
+        MorePlusPlus="HOSTCC=gcc HOSTCXX=g++"
     fi
     BUILD_START=$(date +"%s")
     make    -j${TotalCores}  O=out ARCH="$ARCH" "$DEFFCONFIG"
@@ -416,9 +426,13 @@ CompileClangKernelLLVMB(){
     SendInfoLink
     MorePlusPlus=" "
     PrefixDir=""
-    [[ "$TypeBuilder" != *"SDClang"* ]] && MorePlusPlus="HOSTCC=clang HOSTCXX=clang++"
     if [[ "$UseZyCLLVM" == "y" ]];then
         PrefixDir="${MainClangZipPath}-zyc/bin/"
+    fi
+    if [[ "$TypeBuilder" != *"SDClang"* ]];then
+        MorePlusPlus="HOSTCC=clang HOSTCXX=clang++"
+    else
+        MorePlusPlus="HOSTCC=gcc HOSTCXX=g++"
     fi
     BUILD_START=$(date +"%s")
     make    -j${TotalCores}  O=out ARCH="$ARCH" "$DEFFCONFIG"
@@ -650,6 +664,12 @@ DisableLTO(){
     sed -i "s/CONFIG_LTO=y/CONFIG_LTO=n/" arch/$ARCH/configs/$DEFFCONFIG
     sed -i "s/CONFIG_LTO_CLANG=y/CONFIG_LTO_CLANG=n/" arch/$ARCH/configs/$DEFFCONFIG
     git add arch/$ARCH/configs/$DEFFCONFIG && git commit -sm 'defconfig: Disable LTO'
+}
+
+DisableThin(){
+    [[ "$(pwd)" != "${KernelPath}" ]] && cd "${KernelPath}"
+    sed -i "s/CONFIG_THINLTO=y/CONFIG_THINLTO=n/" arch/$ARCH/configs/$DEFFCONFIG
+    git add arch/$ARCH/configs/$DEFFCONFIG && git commit -sm 'defconfig: Disable THINLTO'
 }
 
 EnableWalt(){
