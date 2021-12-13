@@ -15,9 +15,5 @@ TypeBuildTag="[Stable]"
 CloneKernel "--depth=1"
 CloneCompiledGccTwelve
 CloneDTCClang
-# DisableLTO
-# CompileClangKernel
-EnableWalt
-TypeBuildTag="[Stable][EnableWalt]"
 DisableLTO
 CompileClangKernel
