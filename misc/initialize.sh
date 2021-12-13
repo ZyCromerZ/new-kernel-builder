@@ -1,8 +1,10 @@
+export DEBIAN_FRONTEND=noninteractive
 ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
-export DEBIAN_FRONTEND=noninteractive && \
-    apt-get update -qq && \
-    apt-get upgrade -y && \
-    apt-get -y install tzdata \
+sudo -E apt-get -y purge azure-cli ghc* zulu* hhvm llvm* firefox google* dotnet* powershell openjdk* mysql* php* 
+sudo -E apt-get clean
+apt-get update -qq && \
+apt-get upgrade -y && \
+apt-get -y install tzdata \
     git \
     automake \
     lzop \
