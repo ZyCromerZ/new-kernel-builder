@@ -31,7 +31,7 @@ elif [ ! -z "${DRONE_BRANCH}" ];then
 elif [ ! -z "${GITHUB_REF}" ];then
     export KBUILD_BUILD_HOST="Github-server"
     branch="${GITHUB_REF/"refs/heads/"/""}"
-    TotalCores="8"
+    TotalCores="4"
 fi
 # just fix for dtc clang
 check=$(ls /usr/lib/x86_64-linux-gnu | grep libisl.so -m1)
