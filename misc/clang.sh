@@ -25,6 +25,7 @@ CloneThirteenGugelClang(){
         wget -q  https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+archive/3a785d33320c48b09f7d6fcf2a37fed702686fdc/clang-r433403b.tar.gz -O "clang-r433403b.tar.gz"
     fi
     tar -xf clang-r433403b.tar.gz -C $ClangPath
+    rm -rf clang-r433403b.tar.gz
     TypeBuilder="GCLANG-13"
     ClangType="$(${ClangPath}/bin/clang --version | head -n 1)"
 }
@@ -38,6 +39,7 @@ CloneFourteenGugelClang(){
         wget -q  https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+archive/3a785d33320c48b09f7d6fcf2a37fed702686fdc/clang-r437112.tar.gz -O "clang-r437112.tar.gz"
     fi
     tar -xf clang-r437112.tar.gz -C $ClangPath
+    rm -rf clang-r437112.tar.gz
     TypeBuilder="GCLANG-14"
     ClangType="$(${ClangPath}/bin/clang --version | head -n 1)"
 }
@@ -120,6 +122,7 @@ CloneZyCFoutTeenClang()
         wget -q  $(curl https://raw.githubusercontent.com/ZyCromerZ/Clang/main/Clang-14-link.txt 2>/dev/null) -O "ZyC-Clang-14.tar.gz"
     fi
     tar -xf ZyC-Clang-14.tar.gz -C $ClangPath
+    rm -rf ZyC-Clang-14.tar.gz
     TypeBuilder="CLANG-14"
     ClangType="$(${ClangPath}/bin/clang --version | head -n 1)"
 }
