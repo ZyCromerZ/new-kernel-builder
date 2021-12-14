@@ -11,10 +11,13 @@ TypeBuildFor="R"
 spectrumFile="xobod-base.rc"
 
 CloneKernel "--depth=1"
-CloneCompiledGccEleven
-CloneProtonClang
-CompileClangKernel && CleanOut
-CloneDTCClang
-CompileClangKernel && CleanOut
-CompileGccKernel && CleanOut
-
+CloneZyCFoutTeenClang
+CompileClangKernelB && CleanOut
+# CloneCompiledGccTwelve
+# CloneDTCClang
+# CompileClangKernel && CleanOut
+# CloneCompiledGccEleven
+# CompileGccKernel && CleanOut
+# CloneGCCOld
+# CloneSdClang
+# CompileClangKernel && CleanOut

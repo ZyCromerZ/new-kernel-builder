@@ -10,6 +10,6 @@ GetBD=$(date +"%m%d")
 GetCBD=$(date +"%Y-%m-%d")
 TypeBuildTag=""
 FolderUp="xobod-private"
-ExFolder=""
+ExFolder="xobod-kernels"
 AnyKernelBranch="master"
 FirstSendInfoLink="N"
