@@ -694,3 +694,9 @@ DisableMsmP(){
     sed -i "s/CONFIG_MSM_PERFORMANCE=y/CONFIG_MSM_PERFORMANCE=n/" arch/$ARCH/configs/$DEFFCONFIG
     git add arch/$ARCH/configs/$DEFFCONFIG && git commit -sm 'defconfig: Disable MSM_PERFORMANCE'   
 }
+
+DisableKCAL(){
+    [[ "$(pwd)" != "${KernelPath}" ]] && cd "${KernelPath}"
+    sed -i "s/CONFIG_DRM_MSM_KCAL_CTRL=y/CONFIG_DRM_MSM_KCAL_CTRL=n/" arch/$ARCH/configs/$DEFFCONFIG
+    git add arch/$ARCH/configs/$DEFFCONFIG && git commit -sm 'defconfig: Disable DRM_MSM_KCAL_CTRL' 
+}
