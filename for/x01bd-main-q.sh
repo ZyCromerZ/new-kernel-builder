@@ -13,6 +13,7 @@ spectrumFile="xobod-base.rc"
 CloneKernel "--depth=1"
 CloneZyCFoutTeenClang
 CompileClangKernelB && CleanOut
+CompileClangKernelLLVM && CleanOut
 # CloneCompiledGccTwelve
 # CloneDTCClang
 # CompileClangKernel && CleanOut

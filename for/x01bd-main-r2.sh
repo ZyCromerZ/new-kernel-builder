@@ -16,6 +16,7 @@ CloneKernel "--depth=1"
 CloneCompiledGccTwelve
 CloneDTCClang
 CompileClangKernel && CleanOut
+CompileClangKernelLLVMB && CleanOut
 # CloneCompiledGccEleven
 # CompileGccKernel && CleanOut
 # CloneGCCOld

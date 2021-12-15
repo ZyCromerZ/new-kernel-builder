@@ -21,3 +21,4 @@ CloneKernel "--depth=1"
 CloneGCCOld
 CloneSdClang
 CompileClangKernel && CleanOut
+CompileClangKernelLLVMB && CleanOut
