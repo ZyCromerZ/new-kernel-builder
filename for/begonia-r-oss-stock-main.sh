@@ -10,7 +10,7 @@ FolderUp="begonia"
 TypeBuildTag="[R-OSS][Stable]"
 
 CloneKernel "--depth=1"
-CloneZyCFoutTeenClang
+CloneZyCFoutTeenLabClang
 CompileClangKernelB
 
  

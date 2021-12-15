@@ -11,7 +11,7 @@ TypeBuildTag="[R-OSS][Stable]"
 
 CloneKernel "--depth=1"
 # CloneCompiledGccTwelve
-CloneZyCFoutTeenClang
+CloneZyCFoutTeenLabClang
 CompileClangKernelB && CleanOut
 CloneCompiledGccEleven
 CloneDTCClang

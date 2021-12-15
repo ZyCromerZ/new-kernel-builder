@@ -13,6 +13,7 @@ TypeBuildTag="[Stable][ThinLTO][MPDCL]"
  
 
 CloneKernel "--depth=1"
-CloneZyCFoutTeenClang
+CloneZyCFoutTeenLabClang
 # DisableMsmP
+# DisableThin
 CompileClangKernelLLVM && CleanOut

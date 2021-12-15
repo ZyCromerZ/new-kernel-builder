@@ -126,3 +126,20 @@ CloneZyCFoutTeenClang()
     TypeBuilder="CLANG-14"
     ClangType="$(${ClangPath}/bin/clang --version | head -n 1)"
 }
+
+CloneZyCFoutTeenLabClang()
+{
+    ClangPath=${MainClangPath}
+    [[ "$(pwd)" != "${MainPath}" ]] && cd "${MainPath}"
+    if [ ! -d "${ClangPath}" ];then
+        git clone https://git@gitlab.com/ZyCromerZ/clang.git -b 14.0.0 "${ClangPath}" --depth=1
+    else
+        cd "${ClangPath}"
+        git fetch https://git@gitlab.com/ZyCromerZ/clang.git 14.0.0 --depth=1
+        git checkout FETCH_HEAD
+        [[ ! -z "$(git branch | grep 14.0.0)" ]] && git branch -D 14.0.0
+        git checkout -b 14.0.0
+    fi
+    TypeBuilder="CLANG-14"
+    ClangType="$(${ClangPath}/bin/clang --version | head -n 1)"
+}

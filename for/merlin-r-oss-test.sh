@@ -8,7 +8,7 @@ FolderUp="shared-file"
 TypeBuildTag="[STABLE][Stock][1000Mhz]"
 
 CloneKernel
-CloneZyCFoutTeenClang
+CloneZyCFoutTeenLabClang
 CompileClangKernelB
 pullBranch "base-r-oss-custom-release-ALMK" "[STABLE][ALMK][1000Mhz]"
 CompileClangKernelB

@@ -13,6 +13,6 @@ TypeBuildTag="[Stable]"
  
 
 CloneKernel "--depth=1"
-CloneZyCFoutTeenClang
+CloneZyCFoutTeenLabClang
 DisableLTO
 CompileClangKernelB

@@ -10,7 +10,7 @@ FolderUp="begonia"
 TypeBuildTag="[Stable][806Mhz]"
 
 CloneKernel "--depth=1"
-CloneZyCFoutTeenClang
+CloneZyCFoutTeenLabClang
 CompileClangKernelB
 
  

@@ -11,7 +11,7 @@ TypeBuildTag="[Stable][806Mhz]"
 
 CloneKernel "--depth=1"
 # CloneCompiledGccTwelve
-CloneZyCFoutTeenClang
+CloneZyCFoutTeenLabClang
 CompileClangKernelB && CleanOut
 CloneCompiledGccEleven
 CloneDTCClang

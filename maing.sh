@@ -32,7 +32,7 @@ elif [ ! -z "${DRONE_BRANCH}" ];then
 elif [ ! -z "${GITHUB_REF}" ];then
     export KBUILD_BUILD_HOST="Github-server"
     # branch="${GITHUB_REF/"refs/heads/"/""}"
-    TotalCores="4"
+    # TotalCores="4"
     DoSudo="sudo"
 fi
 branch="$1"
