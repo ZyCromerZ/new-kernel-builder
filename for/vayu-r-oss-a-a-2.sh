@@ -16,6 +16,8 @@ CloneKernel "--depth=1"
 CloneZyCFoutTeenLabClang
 # DisableMsmP
 DisableThin
-OptimizaForPerf
-EnableSCS
+# OptimizaForPerf
+# EnableSCS
+# DEFFCONFIG="other-vayu_defconfig"
+# TypeBuildTag="[Nyobain]"
 CompileClangKernelLLVM && CleanOut
