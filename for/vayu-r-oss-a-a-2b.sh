@@ -12,12 +12,10 @@ TypeBuildTag="[Stable][FullLTO][MPDCL][2][1]"
 # doSFUp=$FolderUp
  
 
-CloneKernel "--depth=1" 
+CloneKernel "--depth=1"
 CloneZyCFoutTeenLabClang
-[[ "$(pwd)" != "${KernelPath}" ]] && cd "${KernelPath}"
-git fetch origin 6cd51416d8f6a02bd735c95363c881fdfd1dd2a9 --depth=1
-git reset --hard 6cd51416d8f6a02bd735c95363c881fdfd1dd2a9
 # DisableMsmP
 DisableThin
 OptimizaForSize
+EnableSCS
 CompileClangKernelLLVM && CleanOut

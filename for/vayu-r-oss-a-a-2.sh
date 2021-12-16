@@ -16,5 +16,6 @@ CloneKernel "--depth=1"
 CloneZyCFoutTeenLabClang
 # DisableMsmP
 DisableThin
-OptimizaForSize
+OptimizaForPerf
+EnableSCS
 CompileClangKernelLLVM && CleanOut

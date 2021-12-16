@@ -14,10 +14,8 @@ TypeBuildTag="[Stable][FullLTO][MPDCL][2][2]"
 
 CloneKernel "--depth=1"
 CloneZyCFoutTeenLabClang
-[[ "$(pwd)" != "${KernelPath}" ]] && cd "${KernelPath}"
-git fetch origin 328fc06aae5f561f6aa37a724a441c1fde619237 --depth=1
-git reset --hard 328fc06aae5f561f6aa37a724a441c1fde619237
 # DisableMsmP
 DisableThin
 OptimizaForSize
+EnableSCS
 CompileClangKernelLLVM && CleanOut

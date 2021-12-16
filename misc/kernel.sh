@@ -704,7 +704,24 @@ DisableKCAL(){
 OptimizaForSize()
 {
     [[ "$(pwd)" != "${KernelPath}" ]] && cd "${KernelPath}"
+    sed -i "s/# CONFIG_CC_OPTIMIZE_FOR_SIZE is not set/CONFIG_CC_OPTIMIZE_FOR_SIZE=y/" arch/$ARCH/configs/$DEFFCONFIG
+    sed -i "s/CONFIG_CC_OPTIMIZE_FOR_PERFORMANCE=y/# CONFIG_CC_OPTIMIZE_FOR_PERFORMANCE is not set/" arch/$ARCH/configs/$DEFFCONFIG
+    git add arch/$ARCH/configs/$DEFFCONFIG && git commit -sm 'defconfig: Optimize for size' 
+}
+
+OptimizaForPerf()
+{
+    [[ "$(pwd)" != "${KernelPath}" ]] && cd "${KernelPath}"
     sed -i "s/# CONFIG_CC_OPTIMIZE_FOR_PERFORMANCE is not set/CONFIG_CC_OPTIMIZE_FOR_PERFORMANCE=y/" arch/$ARCH/configs/$DEFFCONFIG
     sed -i "s/CONFIG_CC_OPTIMIZE_FOR_SIZE=y/# CONFIG_CC_OPTIMIZE_FOR_SIZE is not set/" arch/$ARCH/configs/$DEFFCONFIG
-    git add arch/$ARCH/configs/$DEFFCONFIG && git commit -sm 'defconfig: Optimize for size' 
+    git add arch/$ARCH/configs/$DEFFCONFIG && git commit -sm 'defconfig: Optimize for Performance' 
+}
+
+EnableSCS()
+{
+    [[ "$(pwd)" != "${KernelPath}" ]] && cd "${KernelPath}"
+    sed -i "s/# CONFIG_SHADOW_CALL_STACK is not set/CONFIG_SHADOW_CALL_STACK=y/" arch/$ARCH/configs/$DEFFCONFIG
+    echo "" >> arch/$ARCH/configs/$DEFFCONFIG
+    echo "CONFIG_SHADOW_CALL_STACK_VMAP=y" >> arch/$ARCH/configs/$DEFFCONFIG
+    git add arch/$ARCH/configs/$DEFFCONFIG && git commit -sm 'defconfig: enable SCS' 
 }

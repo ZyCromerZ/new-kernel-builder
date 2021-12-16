@@ -19,5 +19,5 @@ CloneSdClang
 # CompileClangKernel
 # DisableMsmP
 DisableThin
-OptimizaForSize
+OptimizaForPerf
 CompileClangKernelLLVMB

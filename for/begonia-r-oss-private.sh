@@ -12,6 +12,8 @@ TypeBuildTag="[TEST]"
 CloneKernel "--depth=1"
 CloneZyCFoutTeenLabClang
 DisableThin
+EnableSCS
+OptimizaForPerf
 CompileClangKernelLLVM && CleanOut
 # CloneDTCClang
 # CloneCompiledGccTwelve

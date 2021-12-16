@@ -17,5 +17,5 @@ CloneCompiledGccTwelve
 CloneDTCClang
 # DisableMsmP
 DisableThin
-OptimizaForSize
+OptimizaForPerf
 CompileClangKernelLLVMB && CleanOut
