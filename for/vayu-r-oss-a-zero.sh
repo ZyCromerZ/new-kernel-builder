@@ -15,12 +15,15 @@ TypeBuildTag="[Stable][FullLTO][MPDCL]"
 CloneKernel "--depth=1"
 CloneZyCFoutTeenLabClang
 DisableThin
+EnableRELR
 CompileClangKernelLLVM && CleanOut
 CloneCompiledGccTwelve
 CloneDTCClang
 DisableThin
+EnableRELR
 CompileClangKernelLLVMB && CleanOut
 CloneGCCOld
 CloneSdClang
 DisableThin
+EnableRELR
 CompileClangKernelLLVMB && CleanOut

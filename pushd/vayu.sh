@@ -29,7 +29,7 @@ WriteConf()
     echo "      ZIP_PASS:" >>.drone.yml
     echo "        from_secret: ZIP_PASS" >>.drone.yml
     echo "    image: zycromerz/kerneldocker:v3" >>.drone.yml
-    echo "    name: ZyC-Build" >>.drone.yml
+    echo "    name: ZyC-Build-$1" >>.drone.yml
     echo "    trigger: " >>.drone.yml
     echo "      branch: " >>.drone.yml
     echo "        - unified-tes" >>.drone.yml

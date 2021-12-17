@@ -725,3 +725,10 @@ EnableSCS()
     echo "CONFIG_SHADOW_CALL_STACK_VMAP=y" >> arch/$ARCH/configs/$DEFFCONFIG
     git add arch/$ARCH/configs/$DEFFCONFIG && git commit -sm 'defconfig: enable SCS' 
 }
+
+EnableRELR()
+{
+    [[ "$(pwd)" != "${KernelPath}" ]] && cd "${KernelPath}"
+    sed -i "s/# CONFIG_TOOLS_SUPPORT_RELR is not set/CONFIG_TOOLS_SUPPORT_RELR=y/" arch/$ARCH/configs/$DEFFCONFIG
+    git add arch/$ARCH/configs/$DEFFCONFIG && git commit -sm 'defconfig: enable TOOLS_SUPPORT_RELR'  
+}

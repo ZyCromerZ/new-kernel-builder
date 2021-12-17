@@ -18,5 +18,6 @@ CloneSdClang
 # DisableLTO
 # CompileClangKernel
 # DisableMsmP
-# DisableThin
+DisableThin
+EnableRELR
 CompileClangKernelLLVMB
