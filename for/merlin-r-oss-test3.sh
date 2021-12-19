@@ -10,9 +10,9 @@ TypeBuildTag="[Stable][1000Mhz][FullLTO]"
 CloneKernel "--depth=1"
 # pullBranch "base-r-oss-custom-ALMK" "[STABLE][ALMK][1000Mhz]"
 # pullBranch "base-r-oss-custom-SLMK" "[TEST][SLMK][1000Mhz]"
-CloneZyCFoutTeenLabClang
-# DisableMsmP
+CloneGCCOld
+CloneSdClang
 DisableThin
 EnableRELR
 OptimizaForPerf
-CompileClangKernelLLVM && CleanOut
+CompileClangKernelLLVMB
