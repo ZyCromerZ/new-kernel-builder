@@ -10,8 +10,11 @@ FolderUp="shared-file"
 TypeBuildTag="[Stable][FullLTO][806Mhz]"
 
 CloneKernel "--depth=1"
-CloneZyCFoutTeenLabClang
+CloneGCCOld
+CloneSdClang
+# DisableLTO
+# CompileClangKernel
 # DisableMsmP
 DisableThin
 EnableRELR
-CompileClangKernelLLVM && CleanOut
+CompileClangKernelLLVMB

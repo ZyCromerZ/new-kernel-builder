@@ -190,13 +190,11 @@ CompileGccKernelB(){
         LD=${PrefixDir}ld.lld \
         AR=${PrefixDir}llvm-ar \
         NM=${PrefixDir}llvm-nm \
-        AS=${PrefixDir}llvm-as \
         STRIP=${PrefixDir}llvm-strip \
         OBJCOPY=${PrefixDir}llvm-objcopy \
         OBJDUMP=${PrefixDir}llvm-objdump \
         READELF=${PrefixDir}llvm-readelf \
         HOSTAR=${PrefixDir}llvm-ar \
-        HOSTAS=${PrefixDir}llvm-as \
         HOSTLD=${PrefixDir}ld.lld ${MorePlusPlus}
     )
     make    -j${TotalCores}  O=out \
@@ -208,13 +206,11 @@ CompileGccKernelB(){
             LD=${PrefixDir}ld.lld \
             AR=${PrefixDir}llvm-ar \
             NM=${PrefixDir}llvm-nm \
-            AS=${PrefixDir}llvm-as \
             STRIP=${PrefixDir}llvm-strip \
             OBJCOPY=${PrefixDir}llvm-objcopy \
             OBJDUMP=${PrefixDir}llvm-objdump \
             READELF=${PrefixDir}llvm-readelf \
             HOSTAR=${PrefixDir}llvm-ar \
-            HOSTAS=${PrefixDir}llvm-as \
             HOSTLD=${PrefixDir}ld.lld ${MorePlusPlus}
     
     BUILD_END=$(date +"%s")
@@ -341,13 +337,11 @@ CompileClangKernelLLVM(){
                 CLANG_TRIPLE=aarch64-linux-gnu- \
                 AR=${PrefixDir}llvm-ar \
                 NM=${PrefixDir}llvm-nm \
-                AS=${PrefixDir}llvm-as \
                 STRIP=${PrefixDir}llvm-strip \
                 OBJCOPY=${PrefixDir}llvm-objcopy \
                 OBJDUMP=${PrefixDir}llvm-objdump \
                 READELF=${PrefixDir}llvm-readelf \
-                HOSTAR=${PrefixDir}llvm-ar \
-                HOSTAS=${PrefixDir}llvm-as ${MorePlusPlus} LLVM=1
+                HOSTAR=${PrefixDir}llvm-ar ${MorePlusPlus} LLVM=1
         )
         make    -j${TotalCores}  O=out \
                 ARCH=$ARCH \
@@ -360,13 +354,11 @@ CompileClangKernelLLVM(){
                 CLANG_TRIPLE=aarch64-linux-gnu- \
                 AR=${PrefixDir}llvm-ar \
                 NM=${PrefixDir}llvm-nm \
-                AS=${PrefixDir}llvm-as \
                 STRIP=${PrefixDir}llvm-strip \
                 OBJCOPY=${PrefixDir}llvm-objcopy \
                 OBJDUMP=${PrefixDir}llvm-objdump \
                 READELF=${PrefixDir}llvm-readelf \
-                HOSTAR=${PrefixDir}llvm-ar \
-                HOSTAS=${PrefixDir}llvm-as ${MorePlusPlus} LLVM=1
+                HOSTAR=${PrefixDir}llvm-ar ${MorePlusPlus} LLVM=1
     else
         MAKE=(
                 ARCH=$ARCH \
@@ -379,13 +371,11 @@ CompileClangKernelLLVM(){
                 CLANG_TRIPLE=aarch64-linux-gnu- \
                 AR=${PrefixDir}llvm-ar \
                 NM=${PrefixDir}llvm-nm \
-                AS=${PrefixDir}llvm-as \
                 STRIP=${PrefixDir}llvm-strip \
                 OBJCOPY=${PrefixDir}llvm-objcopy \
                 OBJDUMP=${PrefixDir}llvm-objdump \
                 READELF=${PrefixDir}llvm-readelf \
-                HOSTAR=${PrefixDir}llvm-ar \
-                HOSTAS=${PrefixDir}llvm-as ${MorePlusPlus} LLVM=1
+                HOSTAR=${PrefixDir}llvm-ar ${MorePlusPlus} LLVM=1
         )
         make    -j${TotalCores}  O=out \
                 ARCH=$ARCH \
@@ -398,13 +388,11 @@ CompileClangKernelLLVM(){
                 CLANG_TRIPLE=aarch64-linux-gnu- \
                 AR=${PrefixDir}llvm-ar \
                 NM=${PrefixDir}llvm-nm \
-                AS=${PrefixDir}llvm-as \
                 STRIP=${PrefixDir}llvm-strip \
                 OBJCOPY=${PrefixDir}llvm-objcopy \
                 OBJDUMP=${PrefixDir}llvm-objdump \
                 READELF=${PrefixDir}llvm-readelf \
-                HOSTAR=${PrefixDir}llvm-ar \
-                HOSTAS=${PrefixDir}llvm-as ${MorePlusPlus} LLVM=1
+                HOSTAR=${PrefixDir}llvm-ar ${MorePlusPlus} LLVM=1
     fi
     BUILD_END=$(date +"%s")
     DIFF=$((BUILD_END - BUILD_START))
@@ -457,13 +445,11 @@ CompileClangKernelLLVMB(){
                 CLANG_TRIPLE=aarch64-linux-gnu- \
                 AR=${PrefixDir}llvm-ar \
                 NM=${PrefixDir}llvm-nm \
-                AS=${PrefixDir}llvm-as \
                 STRIP=${PrefixDir}llvm-strip \
                 OBJCOPY=${PrefixDir}llvm-objcopy \
                 OBJDUMP=${PrefixDir}llvm-objdump \
                 READELF=${PrefixDir}llvm-readelf \
-                HOSTAR=${PrefixDir}llvm-ar \
-                HOSTAS=${PrefixDir}llvm-as ${MorePlusPlus} LLVM=1
+                HOSTAR=${PrefixDir}llvm-ar ${MorePlusPlus} LLVM=1
         )
         make    -j${TotalCores}  O=out \
                 ARCH=$ARCH \
@@ -476,13 +462,11 @@ CompileClangKernelLLVMB(){
                 CLANG_TRIPLE=aarch64-linux-gnu- \
                 AR=${PrefixDir}llvm-ar \
                 NM=${PrefixDir}llvm-nm \
-                AS=${PrefixDir}llvm-as \
                 STRIP=${PrefixDir}llvm-strip \
                 OBJCOPY=${PrefixDir}llvm-objcopy \
                 OBJDUMP=${PrefixDir}llvm-objdump \
                 READELF=${PrefixDir}llvm-readelf \
-                HOSTAR=${PrefixDir}llvm-ar \
-                HOSTAS=${PrefixDir}llvm-as ${MorePlusPlus} LLVM=1
+                HOSTAR=${PrefixDir}llvm-ar ${MorePlusPlus} LLVM=1
     else
         MAKE=(
                 ARCH=$ARCH \
@@ -495,13 +479,11 @@ CompileClangKernelLLVMB(){
                 CLANG_TRIPLE=aarch64-linux-gnu- \
                 AR=${PrefixDir}llvm-ar \
                 NM=${PrefixDir}llvm-nm \
-                AS=${PrefixDir}llvm-as \
                 STRIP=${PrefixDir}llvm-strip \
                 OBJCOPY=${PrefixDir}llvm-objcopy \
                 OBJDUMP=${PrefixDir}llvm-objdump \
                 READELF=${PrefixDir}llvm-readelf \
                 HOSTAR=${PrefixDir}llvm-ar \
-                HOSTAS=${PrefixDir}llvm-as \
                 HOSTLD=${PrefixDir}ld.lld ${MorePlusPlus} LLVM=1
         )
         make    -j${TotalCores}  O=out \
@@ -515,13 +497,11 @@ CompileClangKernelLLVMB(){
                 CLANG_TRIPLE=aarch64-linux-gnu- \
                 AR=${PrefixDir}llvm-ar \
                 NM=${PrefixDir}llvm-nm \
-                AS=${PrefixDir}llvm-as \
                 STRIP=${PrefixDir}llvm-strip \
                 OBJCOPY=${PrefixDir}llvm-objcopy \
                 OBJDUMP=${PrefixDir}llvm-objdump \
                 READELF=${PrefixDir}llvm-readelf \
                 HOSTAR=${PrefixDir}llvm-ar \
-                HOSTAS=${PrefixDir}llvm-as \
                 HOSTLD=${PrefixDir}ld.lld ${MorePlusPlus} LLVM=1
     fi
     BUILD_END=$(date +"%s")

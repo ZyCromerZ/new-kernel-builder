@@ -1,5 +1,5 @@
 #! /bin/bash
-KernelBranch="q-oss-base-release"
+KernelBranch="new-q-oss-up"
 
 IncludeFiles "${MainPath}/device/begonia-q-oss.sh"
 CustomUploader="Y"
@@ -7,11 +7,8 @@ CustomUploader="Y"
 IncludeFiles "${MainPath}/misc/kernel.sh" "https://${GIT_SECRET}@github.com/${GIT_USERNAME}/begonia_kernel"
 # spectrumFile="bego-on-p.rc"
 FolderUp="shared-file"
-TypeBuildTag="[Stable][FullLTO][806Mhz]"
+TypeBuildTag="[Stable]"
 
 CloneKernel "--depth=1"
-CloneZyCFoutTeenLabClang
-# DisableMsmP
-DisableThin
-EnableRELR
-CompileClangKernelLLVM && CleanOut
+CloneCompiledGccEleven
+CompileGccKernel

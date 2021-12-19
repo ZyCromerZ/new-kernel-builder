@@ -6,7 +6,7 @@ CustomUploader="Y"
 # UseSpectrum="Y"
 IncludeFiles "${MainPath}/misc/kernel.sh" "https://${GIT_SECRET}@github.com/${GIT_USERNAME}/begonia_kernel"
 # spectrumFile="None"
-FolderUp="begonia"
+FolderUp="shared-file"
 TypeBuildTag="[R-OSS][Stable]"
 
 CloneKernel "--depth=1"
