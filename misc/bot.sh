@@ -10,7 +10,7 @@ if [ ! -z "$1" ];then
             -d "parse_mode=html" \
             -d text="$msg"
         else
-            curl -X POST "https://api.telegram.org/bot$BOT_TOKEN/sendMessage" -d chat_id="-1001150624898" \
+            curl -X POST "https://api.telegram.org/bot$BOT_TOKEN/sendMessage" -d chat_id="-1001628919239" \
             -d "disable_web_page_preview=true" \
             -d "parse_mode=html" \
             -d text="$msg"
@@ -27,7 +27,7 @@ if [ ! -z "$1" ];then
             -F caption="$msg"
         else
             curl --progress-bar -F document=@"$2" "https://api.telegram.org/bot$BOT_TOKEN/sendDocument" \
-            -F chat_id="-1001150624898"  \
+            -F chat_id="-1001628919239"  \
             -F "disable_web_page_preview=true" \
             -F "parse_mode=html" \
             -F caption="$msg"
