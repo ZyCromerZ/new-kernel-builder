@@ -1,24 +1,4 @@
 #! /bin/bash
-MainPath="$(pwd)"
-MainClangPath="${MainPath}/Clang"
-MainClangZipPath="${MainPath}/Clang-zip"
-MainGCCaPath="${MainPath}/GCC64"
-MainGCCbPath="${MainPath}/GCC32"
-MainZipGCCaPath="${MainPath}/GCC64-zip"
-MainZipGCCbPath="${MainPath}/GCC32-zip"
-KernelPath="${MainPath}/Kernel"
-AnyKernelPath="${MainPath}/Anykernel"
-CustomUploader="N"
-UploaderPath="${MainPath}/Uploader"
-FolderUp=""
-ExFolder=""
-UseSpectrum="N"
-SpectrumPath="${MainPath}/Spectrum"
-spectrumFile="None"
-KernelDownloader='N'
-KDpath="${MainPath}/Kernel-Downloader"
-KDType=""
-
 export DEBIAN_FRONTEND=noninteractive
 export KBUILD_BUILD_USER="ZyCromerZ"
 TotalCores="$(nproc --all)"
@@ -36,6 +16,27 @@ fi
 if [ ! -z "$1" ];then
     branch="$1"
 fi
+
+MainPath="$(pwd)"
+MainClangPath="${MainPath}/Clang-$branch"
+MainClangZipPath="${MainPath}/Clang-zip-$branch"
+MainGCCaPath="${MainPath}/GCC64-$branch"
+MainGCCbPath="${MainPath}/GCC32-$branch"
+MainZipGCCaPath="${MainPath}/GCC64-zip-$branch"
+MainZipGCCbPath="${MainPath}/GCC32-zip-$branch"
+KernelPath="${MainPath}/Kernel-$branch"
+AnyKernelPath="${MainPath}/Anykernel-$branch"
+CustomUploader="N-$branch"
+UploaderPath="${MainPath}/Uploader-$branch"
+FolderUp=""
+ExFolder=""
+UseSpectrum="N"
+SpectrumPath="${MainPath}/Spectrum-$branch"
+spectrumFile="None"
+KernelDownloader='N'
+KDpath="${MainPath}/Kernel-Downloader-$branch"
+KDType=""
+
 # just fix for dtc clang
 check=$(ls /usr/lib/x86_64-linux-gnu | grep libisl.so -m1)
 if [ ! -z "$check" ]; then if [ "$check" != "libisl.so.15" ]; then cp -af /usr/lib/x86_64-linux-gnu/$check /usr/lib/x86_64-linux-gnu/libisl.so.15; fi; fi
