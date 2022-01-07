@@ -17,4 +17,5 @@ CloneZyCFoutTeenLabClang
 # DisableMsmP
 DisableThin
 EnableRELR
+OptimizaForSize
 CompileClangKernelLLVM && CleanOut
