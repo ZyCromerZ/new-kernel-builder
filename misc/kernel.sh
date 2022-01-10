@@ -27,6 +27,7 @@ if [ ! -z "$1" ];then
     [[ -z "$UseDtbo" ]] && UseDtbo="n"
     UseZyCLLVM="n"
     UseGoldBinutils="n"
+    MAKE=()
 else    
     getInfoErr "KernelRepo is missing :/"
     [ ! -z "${DRONE_BRANCH}" ] && . $MainPath/misc/bot.sh "send_info" "<b>❌ Build failed</b>%0ABranch : <b>${KernelBranch}</b%0A%0ASad Boy"
@@ -534,7 +535,7 @@ CreateMultipleDtb()
             filename=$(echo $Ngesot | awk -F ':' '{print $2}')
             git fetch origin $branch --depth=1
             git checkout FETCH_HEAD
-            make "${MAKE[@]}" dtbo.img
+            make "${MAKE[@]}" O=out "$DEFFCONFIG" dtbo.img
             ( find "$KernelPath/out/arch/$ARCH/boot/dts/$AfterDTS" -name "*.dtb" -exec cat {} + > $AnyKernelPath/dtb-$filename )
             [[ ! -e "$AnyKernelPath/dtb-$filename" ]] && [[ ! -z "$BASE_DTB_NAME" ]] && cp $KernelPath/out/arch/$ARCH/boot/dts/$AfterDTS/$BASE_DTB_NAME $AnyKernelPath/dtb-$filename
         done
