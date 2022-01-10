@@ -523,6 +523,25 @@ CompileClangKernelLLVMB(){
     fi
 }
 
+CreateMultipleDtb()
+{
+    if [[ ! -z "$MultipleDtbBranch" ]];then
+        cd "${KernelPath}"
+        rm -rf $AnyKernelPath/dtb
+        for Ngesot in $MultipleDtbBranch
+        do
+            branch=$(echo $Ngesot | awk -F ':' '{print $1}')
+            filename=$(echo $Ngesot | awk -F ':' '{print $2}')
+            git fetch origin $branch --depth=1
+            git checkout FETCH_HEAD
+            make "${MAKE[@]}" dtbo.img
+            ( find "$KernelPath/out/arch/$ARCH/boot/dts/$AfterDTS" -name "*.dtb" -exec cat {} + > $AnyKernelPath/dtb-$filename )
+            [[ ! -e "$AnyKernelPath/dtb-$filename" ]] && [[ ! -z "$BASE_DTB_NAME" ]] && cp $KernelPath/out/arch/$ARCH/boot/dts/$AfterDTS/$BASE_DTB_NAME $AnyKernelPath/dtb-$filename
+        done
+        cd "$AnyKernelPath"
+    fi
+}
+
 CleanOut()
 {
     cd "${KernelPath}"
@@ -543,6 +562,7 @@ MakeZip(){
         ( find "$KernelPath/out/arch/$ARCH/boot/dts/$AfterDTS" -name "*.dtb" -exec cat {} + > $AnyKernelPath/dtb )
         [[ ! -e "$AnyKernelPath/dtb" ]] && [[ ! -z "$BASE_DTB_NAME" ]] && cp $KernelPath/out/arch/$ARCH/boot/dts/$AfterDTS/$BASE_DTB_NAME $AnyKernelPath/dtb
     fi
+    CreateMultipleDtb
     # remove placeholder file
     for asu in `find . -name placeholder`
     do
@@ -597,7 +617,7 @@ UploadKernel(){
     fi
     
     # always remove after push kernel zip
-    for FIleName in Image Image-dtb Image.gz Image.gz-dtb dtb dtb.img dt dt.img dtbo dtbo.img init.spectrum.rc
+    for FIleName in Image Image-dtb Image.gz Image.gz-dtb dtb dtb.img dt dt.img dtbo dtbo.img init.spectrum.rc dtb-*
     do
         rm -rf $AnyKernelPath/$FIleName
     done
