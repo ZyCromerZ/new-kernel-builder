@@ -574,6 +574,8 @@ MakeZip(){
     ZipName=${ZipName/"--"/"-"}
     if [ ! -z "$HasOcDtb" ];then
         zip -r9 "$ZipName-OC.zip" * -x .git README.md anykernel-real.sh .gitignore *.zip
+        cp -af "$ZipName-OC.zip" ../"$ZipName-OC.zip" && rm -rf "$ZipName-OC.zip"
+        KernelFilesOc="$(pwd)/../$ZipName-OC.zip"
     fi
     zip -r9 "$ZipName" * -x .git README.md anykernel-real.sh .gitignore *.zip $DontInc
 
@@ -600,7 +602,7 @@ UploadKernel(){
         chmod +x "${UploaderPath}/run.sh"
         . "${UploaderPath}/run.sh" "$KernelFiles" "$FolderUp" "$GetCBD" "$ExFolder"
         if [ ! -z "$HasOcDtb" ];then
-            . "${UploaderPath}/run.sh" "$KernelFiles-OC.zip" "$FolderUp" "$GetCBD" "$ExFolder"
+            . "${UploaderPath}/run.sh" "$KernelFilesOc" "$FolderUp" "$GetCBD" "$ExFolder"
         fi
         if [ ! -z "$1" ];then
             . ${MainPath}/misc/bot.sh "send_info" "$MSG" "$1"
@@ -610,12 +612,12 @@ UploadKernel(){
     else
         if [ ! -z "$1" ];then
             if [ ! -z "$HasOcDtb" ];then
-                . ${MainPath}/misc/bot.sh "send_files" "$KernelFiles-OC.zip" "$MSG" "$1"
+                . ${MainPath}/misc/bot.sh "send_files" "$KernelFilesOc" "$MSG" "$1"
             fi
             . ${MainPath}/misc/bot.sh "send_files" "$KernelFiles" "$MSG" "$1"
         else
             if [ ! -z "$HasOcDtb" ];then
-                . ${MainPath}/misc/bot.sh "send_files" "$KernelFiles-OC.zip" "$MSG"
+                . ${MainPath}/misc/bot.sh "send_files" "$KernelFilesOc" "$MSG"
             fi
             . ${MainPath}/misc/bot.sh "send_files" "$KernelFiles" "$MSG"
         fi
@@ -634,6 +636,7 @@ UploadKernel(){
     do
         rm -rf $AnyKernelPath/$FIleName
     done
+    rm -rf "$KernelFilesOc"
     # remove kernel zip
     rm -rf "$AnyKernelPath/$ZipName"
     rm -rf $KernelPath/out/arch/$ARCH/boot/dtbo.img $KernelPath/out/arch/$ARCH/boot/dtbo.img $KernelPath/out/arch/$ARCH/boot/${ImgName}
