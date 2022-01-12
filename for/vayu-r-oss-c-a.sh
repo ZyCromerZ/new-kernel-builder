@@ -1,11 +1,11 @@
 #! /bin/bash
-KernelBranch="20210824/neutrino-phantasm-254"
+KernelBranch="20210824/neutrino-phantasm-254-upCAF"
 
 IncludeFiles "${MainPath}/device/vayu-r-oss.sh"
 CustomUploader="Y"
 IncludeFiles "${MainPath}/misc/kernel.sh" "https://${GIT_SECRET}@github.com/${GIT_USERNAME}/vayu_kernel"
 # FolderUp="shared-file"
-TypeBuildTag="[Stable][MPDCL]"
+TypeBuildTag="[Stable][STOCK][FullLTO][MPDCL]"
 
 # misc
 # doOsdnUp=$FolderUp
@@ -13,10 +13,9 @@ TypeBuildTag="[Stable][MPDCL]"
  
 
 CloneKernel "--depth=1"
-CloneCompiledGccTwelve
-CloneDTCClang
+CloneZyCFoutTeenClang
 # DisableMsmP
-# DisableThin
+DisableThin
 EnableRELR
-DisableLTO
-CompileClangKernelLLVMB && CleanOut
+OptimizaForSize
+CompileClangKernelLLVM && CleanOut

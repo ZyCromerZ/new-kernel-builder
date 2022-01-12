@@ -40,7 +40,7 @@ git checkout -b $SetBranch
 
 cp -af pushg/sample.yml .github/workflows/kernel-compiler.yml
 if [[ -z "$GetBranch" ]];then
-    GetBranch="vayu-r-oss-test vayu-r-oss-test-2"
+    GetBranch="vayu-r-oss-c-d"
 fi
 for ngentot in $GetBranch;do
     WriteConf "$ngentot"

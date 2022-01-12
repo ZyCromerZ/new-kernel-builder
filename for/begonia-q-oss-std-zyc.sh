@@ -10,7 +10,7 @@ FolderUp="shared-file"
 TypeBuildTag="[Stable][806Mhz]"
 
 CloneKernel "--depth=1"
-CloneZyCFoutTeenLabClang
+CloneZyCFoutTeenClang
 CompileClangKernelB
 
  
