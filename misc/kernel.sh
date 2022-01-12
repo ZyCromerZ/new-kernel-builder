@@ -28,6 +28,7 @@ if [ ! -z "$1" ];then
     UseZyCLLVM="n"
     UseGoldBinutils="n"
     MAKE=()
+    [ -z "$DontInc" ] && DontInc=""
 else    
     getInfoErr "KernelRepo is missing :/"
     [ ! -z "${DRONE_BRANCH}" ] && . $MainPath/misc/bot.sh "send_info" "<b>❌ Build failed</b>%0ABranch : <b>${KernelBranch}</b%0A%0ASad Boy"
@@ -571,7 +572,10 @@ MakeZip(){
     done
     # update zip name :v
     ZipName=${ZipName/"--"/"-"}
-    zip -r9 "$ZipName" * -x .git README.md anykernel-real.sh .gitignore *.zip
+    if [ ! -z "$HasOcDtb" ];then
+        zip -r9 "$ZipName-OC.zip" * -x .git README.md anykernel-real.sh .gitignore *.zip
+    fi
+    zip -r9 "$ZipName" * -x .git README.md anykernel-real.sh .gitignore *.zip $DontInc
 
     # remove dtb file after make a zip
     KernelFiles="$(pwd)/$ZipName"
@@ -579,7 +583,7 @@ MakeZip(){
     if [ ! -z "$1" ];then
         UploadKernel "$1"
     else
-        UploadKernel "$1"
+        UploadKernel
     fi
     
 }
@@ -595,16 +599,24 @@ UploadKernel(){
         cd $UploaderPath
         chmod +x "${UploaderPath}/run.sh"
         . "${UploaderPath}/run.sh" "$KernelFiles" "$FolderUp" "$GetCBD" "$ExFolder"
+        if [ ! -z "$HasOcDtb" ];then
+            . "${UploaderPath}/run.sh" "$KernelFiles-OC.zip" "$FolderUp" "$GetCBD" "$ExFolder"
+        fi
         if [ ! -z "$1" ];then
-            UploadKernel "$1"
             . ${MainPath}/misc/bot.sh "send_info" "$MSG" "$1"
         else
             . ${MainPath}/misc/bot.sh "send_info" "$MSG"
         fi
     else
         if [ ! -z "$1" ];then
+            if [ ! -z "$HasOcDtb" ];then
+                . ${MainPath}/misc/bot.sh "send_files" "$KernelFiles-OC.zip" "$MSG" "$1"
+            fi
             . ${MainPath}/misc/bot.sh "send_files" "$KernelFiles" "$MSG" "$1"
         else
+            if [ ! -z "$HasOcDtb" ];then
+                . ${MainPath}/misc/bot.sh "send_files" "$KernelFiles-OC.zip" "$MSG"
+            fi
             . ${MainPath}/misc/bot.sh "send_files" "$KernelFiles" "$MSG"
         fi
     fi

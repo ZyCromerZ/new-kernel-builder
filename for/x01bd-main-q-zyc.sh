@@ -5,7 +5,7 @@ IncludeFiles "${MainPath}/device/x01bd.sh"
 CustomUploader="Y"
 UseSpectrum="Y"
 IncludeFiles "${MainPath}/misc/kernel.sh" "https://${GIT_SECRET}@github.com/${GIT_USERNAME}/x01bd_kernel"
-EnableFolderUp="shared-file"Walt
+EnableFolderUp="shared-file"
 # doSFUp=$FolderUp
 TypeBuildFor="Q"
 spectrumFile="xobod-base.rc"
