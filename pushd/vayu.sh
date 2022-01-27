@@ -38,7 +38,7 @@ WriteConf()
 git checkout -b $SetBranch
 
 if [[ -z "$GetBranch" ]];then
-    GetBranch="vayu-r-oss-c-a vayu-r-oss-c-b vayu-r-oss-c-c"
+    GetBranch="vayu-r-oss-c-a vayu-r-oss-c-b vayu-r-oss-c-c vayu-r-oss-d-a vayu-r-oss-d-b vayu-r-oss-d-c"
 fi
 for ngentot in $GetBranch;do
     WriteConf "$ngentot"
