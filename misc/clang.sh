@@ -113,26 +113,30 @@ CloneProtonClang(){
 #     Fail=""
 # }
 
-# CloneOldSdClang(){
-#     ClangPath=${MainClangZipPath}
-#     Fail="n"
-#     [[ "$(pwd)" != "${MainPath}" ]] && cd "${MainPath}"
-#     [[ ! -d ${MainClangZipPath} ]] && mkdir $ClangPath
-#     rm -rf $ClangPath/*
-#     if [ ! -e "${MainPath}/SDClang-12.1.3.tar.g" ];then
-#         wget -q  https://github.com/ZyCromerZ/Clang/releases/download/sdclang-14-release/SDClang-12.1.3.tar.gz -O "SDClang-12.1.3.tar.g"
-#     fi
-#     tar -xf SDClang-12.1.3.tar.g -C $ClangPath
-#     rm -rf SDClang-12.1.3.tar.g
-#     TypeBuilder="SDClang"
-#     ClangType="$(${ClangPath}/bin/clang --version | head -n 1)"
-#     [[ -z "${ZIP_PASS}" ]] && Fail="y"
-#     if [[ "$Fail" == "y" ]];then
-#         getInfo "Clone SD clang failed, cloning ZyC Clang instead"
-#         CloneZyCFoutTeenClang
-#     fi
-#     Fail=""
-# }
+ClonePrepSdClang(){
+    ClangPath=${MainClangZipPath}
+    Fail="n"
+    [[ "$(pwd)" != "${MainPath}" ]] && cd "${MainPath}"
+    [[ ! -d ${MainClangZipPath} ]] && mkdir $ClangPath
+    rm -rf $ClangPath/*
+    # if [ ! -e "${MainPath}/SDClang-12.1.3.tar.g" ];then
+    #     wget -q  https://github.com/ZyCromerZ/Clang/releases/download/sdclang-14-release/SDClang-12.1.3.tar.gz -O "SDClang-12.1.3.tar.g"
+    # fi
+    # tar -xf SDClang-12.1.3.tar.g -C $ClangPath
+    # rm -rf SDClang-12.1.3.tar.g
+    if [ ! -e "${MainPath}/SDClang-14.0.1.0.zip" ];then
+        wget -q  https://github.com/ZyCromerZ/Clang/releases/download/sdclang-14-release/SDClang-14.0.1.0.zip -O "SDClang-14.0.1.0.zip"
+    fi
+    unzip -P ${ZIP_PASS} SDClang-14.0.1.0.zip -d $ClangPath
+    TypeBuilder="SDClang"
+    ClangType="$(${ClangPath}/bin/clang --version | head -n 1)"
+    [[ -z "${ZIP_PASS}" ]] && Fail="y"
+    if [[ "$Fail" == "y" ]];then
+        getInfo "Clone SD clang failed, cloning ZyC Clang instead"
+        CloneZyCFoutTeenClang
+    fi
+    Fail=""
+}
 
 CloneSdClang(){
     ClangPath=${MainClangPath}

@@ -10,8 +10,8 @@ WriteConf()
     echo "" >>.github/workflows/kernel-compiler.yml
     echo "    runs-on: ubuntu-latest" >>.github/workflows/kernel-compiler.yml
     # echo "" >>.github/workflows/kernel-compiler.yml
-    # echo "    container:" >>.github/workflows/kernel-compiler.yml
-    # echo "      image: zycromerz/kerneldocker:v3" >>.github/workflows/kernel-compiler.yml
+    echo "    container:" >>.github/workflows/kernel-compiler.yml
+    echo "      image: zycromerz/kerneldocker:v3" >>.github/workflows/kernel-compiler.yml
     echo "" >>.github/workflows/kernel-compiler.yml
     echo "    steps:" >>.github/workflows/kernel-compiler.yml
     echo "      - name: Checkout" >>.github/workflows/kernel-compiler.yml
@@ -20,15 +20,16 @@ WriteConf()
     echo "      - name: initialize" >>.github/workflows/kernel-compiler.yml
     echo "        run: |" >>.github/workflows/kernel-compiler.yml
     echo "          chmod +x misc/initialize.sh" >>.github/workflows/kernel-compiler.yml
-    echo "          sudo bash misc/initialize.sh" >>.github/workflows/kernel-compiler.yml
+    # echo "          sudo bash misc/initialize.sh" >>.github/workflows/kernel-compiler.yml
+    echo "          bash misc/initialize.sh" >>.github/workflows/kernel-compiler.yml
     echo "" >>.github/workflows/kernel-compiler.yml
-    echo "      - name: Set Swap Space" >>.github/workflows/kernel-compiler.yml
+    # echo "      - name: Set Swap Space" >>.github/workflows/kernel-compiler.yml
     # echo "        uses: pierotofy/set-swap-space@master" >>.github/workflows/kernel-compiler.yml
     # echo "        with:" >>.github/workflows/kernel-compiler.yml
     # echo "            swap-size-gb: 12" >>.github/workflows/kernel-compiler.yml
-    echo "        run: |" >>.github/workflows/kernel-compiler.yml
-    echo "          chmod +x misc/setswap.sh" >>.github/workflows/kernel-compiler.yml
-    echo "          sudo bash misc/setswap.sh 14" >>.github/workflows/kernel-compiler.yml
+    # echo "        run: |" >>.github/workflows/kernel-compiler.yml
+    # echo "          chmod +x misc/setswap.sh" >>.github/workflows/kernel-compiler.yml
+    # echo "          sudo bash misc/setswap.sh 14" >>.github/workflows/kernel-compiler.yml
     echo "" >>.github/workflows/kernel-compiler.yml
     echo "      - name: Compile Kernel" >>.github/workflows/kernel-compiler.yml
     echo "        run: |" >>.github/workflows/kernel-compiler.yml
