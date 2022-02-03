@@ -177,7 +177,7 @@ CloneZyCFoutTeenClang()
     fi
     tar -xf ZyC-Clang-14.tar.gz -C $ClangPath
     rm -rf ZyC-Clang-14.tar.gz
-    TypeBuilder="CLANG-14"
+    TypeBuilder="CLANG-15"
     ClangType="$(${ClangPath}/bin/clang --version | head -n 1)"
 }
 
