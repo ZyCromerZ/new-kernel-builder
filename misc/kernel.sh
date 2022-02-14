@@ -120,7 +120,7 @@ CompileClangKernel(){
     BUILD_END=$(date +"%s")
     DIFF=$((BUILD_END - BUILD_START))
     if [[ ! -e $KernelPath/out/arch/$ARCH/boot/${ImgName} ]];then
-        MSG="<b>❌ Build failed</b>%0ABranch : <b>${KernelBranch}</b>%0A- <code>$((DIFF / 60)) minute(s) $((DIFF % 60)) second(s)</code>%0A%0ASad Boy"
+        MSG="<b>❌ Build failed</b>%0ABranch : <b>${KernelBranch}</b>%0ABuilder : <b>${rbranch}</b>%0A%0A- <code>$((DIFF / 60)) minute(s) $((DIFF % 60)) second(s)</code>%0A%0ASad Boy"
         . $MainPath/misc/bot.sh "send_info" "$MSG"
         exit 1
     fi
@@ -159,7 +159,7 @@ CompileGccKernel(){
     BUILD_END=$(date +"%s")
     DIFF=$((BUILD_END - BUILD_START))
     if [[ ! -e $KernelPath/out/arch/$ARCH/boot/${ImgName} ]];then
-        MSG="<b>❌ Build failed</b>%0ABranch : <b>${KernelBranch}</b>%0A- <code>$((DIFF / 60)) minute(s) $((DIFF % 60)) second(s)</code>%0A%0ASad Boy"
+        MSG="<b>❌ Build failed</b>%0ABranch : <b>${KernelBranch}</b>%0ABuilder : <b>${rbranch}</b>%0A%0A- <code>$((DIFF / 60)) minute(s) $((DIFF % 60)) second(s)</code>%0A%0ASad Boy"
         . $MainPath/misc/bot.sh "send_info" "$MSG"
         exit 1
     fi
@@ -218,7 +218,7 @@ CompileGccKernelB(){
     BUILD_END=$(date +"%s")
     DIFF=$((BUILD_END - BUILD_START))
     if [[ ! -e $KernelPath/out/arch/$ARCH/boot/${ImgName} ]];then
-        MSG="<b>❌ Build failed</b>%0ABranch : <b>${KernelBranch}</b>%0A- <code>$((DIFF / 60)) minute(s) $((DIFF % 60)) second(s)</code>%0A%0ASad Boy"
+        MSG="<b>❌ Build failed</b>%0ABranch : <b>${KernelBranch}</b>%0ABuilder : <b>${rbranch}</b>%0A%0A- <code>$((DIFF / 60)) minute(s) $((DIFF % 60)) second(s)</code>%0A%0ASad Boy"
         . $MainPath/misc/bot.sh "send_info" "$MSG"
         exit 1
     fi
@@ -291,7 +291,7 @@ CompileClangKernelB(){
     BUILD_END=$(date +"%s")
     DIFF=$((BUILD_END - BUILD_START))
     if [[ ! -e $KernelPath/out/arch/$ARCH/boot/${ImgName} ]];then
-        MSG="<b>❌ Build failed</b>%0ABranch : <b>${KernelBranch}</b>%0A- <code>$((DIFF / 60)) minute(s) $((DIFF % 60)) second(s)</code>%0A%0ASad Boy"
+        MSG="<b>❌ Build failed</b>%0ABranch : <b>${KernelBranch}</b>%0ABuilder : <b>${rbranch}</b>%0A%0A- <code>$((DIFF / 60)) minute(s) $((DIFF % 60)) second(s)</code>%0A%0ASad Boy"
         . $MainPath/misc/bot.sh "send_info" "$MSG"
         exit 1
     fi
@@ -399,7 +399,7 @@ CompileClangKernelLLVM(){
     BUILD_END=$(date +"%s")
     DIFF=$((BUILD_END - BUILD_START))
     if [[ ! -e $KernelPath/out/arch/$ARCH/boot/${ImgName} ]];then
-        MSG="<b>❌ Build failed</b>%0ABranch : <b>${KernelBranch}</b>%0A- <code>$((DIFF / 60)) minute(s) $((DIFF % 60)) second(s)</code>%0A%0ASad Boy"
+        MSG="<b>❌ Build failed</b>%0ABranch : <b>${KernelBranch}</b>%0ABuilder : <b>${rbranch}</b>%0A%0A- <code>$((DIFF / 60)) minute(s) $((DIFF % 60)) second(s)</code>%0A%0ASad Boy"
         . $MainPath/misc/bot.sh "send_info" "$MSG"
         exit 1
     fi
@@ -509,7 +509,7 @@ CompileClangKernelLLVMB(){
     BUILD_END=$(date +"%s")
     DIFF=$((BUILD_END - BUILD_START))
     if [[ ! -e $KernelPath/out/arch/$ARCH/boot/${ImgName} ]];then
-        MSG="<b>❌ Build failed</b>%0ABranch : <b>${KernelBranch}</b>%0A- <code>$((DIFF / 60)) minute(s) $((DIFF % 60)) second(s)</code>%0A%0ASad Boy"
+        MSG="<b>❌ Build failed</b>%0ABranch : <b>${KernelBranch}</b>%0ABuilder : <b>${rbranch}</b>%0A%0A- <code>$((DIFF / 60)) minute(s) $((DIFF % 60)) second(s)</code>%0A%0ASad Boy"
         . $MainPath/misc/bot.sh "send_info" "$MSG"
         exit 1
     fi

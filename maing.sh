@@ -5,36 +5,36 @@ TotalCores="$(nproc --all)"
 DoSudo=""
 if [ ! -z "${CIRCLE_BRANCH}" ];then
     export KBUILD_BUILD_HOST="Circleci-server"
-    # branch="${CIRCLE_BRANCH}"
+    # rbranch="${CIRCLE_BRANCH}"
 elif [ ! -z "${DRONE_BRANCH}" ];then
     export KBUILD_BUILD_HOST="Droneci-server"
-    # branch="${DRONE_BRANCH}"
+    # rbranch="${DRONE_BRANCH}"
 elif [ ! -z "${GITHUB_REF}" ];then
     export KBUILD_BUILD_HOST="Github-server"
-    # branch="${GITHUB_REF/"refs/heads/"/""}"
+    # rbranch="${GITHUB_REF/"refs/heads/"/""}"
     # TotalCores="4"
     DoSudo="sudo"
 fi
-branch="$1"
+rbranch="$1"
 
 MainPath="$(pwd)"
-MainClangPath="${MainPath}/Clang-$branch"
-MainClangZipPath="${MainPath}/Clang-zip-$branch"
-MainGCCaPath="${MainPath}/GCC64-$branch"
-MainGCCbPath="${MainPath}/GCC32-$branch"
-MainZipGCCaPath="${MainPath}/GCC64-zip-$branch"
-MainZipGCCbPath="${MainPath}/GCC32-zip-$branch"
-KernelPath="${MainPath}/Kernel-$branch"
-AnyKernelPath="${MainPath}/Anykernel-$branch"
-CustomUploader="N-$branch"
-UploaderPath="${MainPath}/Uploader-$branch"
+MainClangPath="${MainPath}/Clang-$rbranch"
+MainClangZipPath="${MainPath}/Clang-zip-$rbranch"
+MainGCCaPath="${MainPath}/GCC64-$rbranch"
+MainGCCbPath="${MainPath}/GCC32-$rbranch"
+MainZipGCCaPath="${MainPath}/GCC64-zip-$rbranch"
+MainZipGCCbPath="${MainPath}/GCC32-zip-$rbranch"
+KernelPath="${MainPath}/Kernel-$rbranch"
+AnyKernelPath="${MainPath}/Anykernel-$rbranch"
+CustomUploader="N-$rbranch"
+UploaderPath="${MainPath}/Uploader-$rbranch"
 FolderUp=""
 ExFolder=""
 UseSpectrum="N"
-SpectrumPath="${MainPath}/Spectrum-$branch"
+SpectrumPath="${MainPath}/Spectrum-$rbranch"
 spectrumFile="None"
 KernelDownloader='N'
-KDpath="${MainPath}/Kernel-Downloader-$branch"
+KDpath="${MainPath}/Kernel-Downloader-$rbranch"
 KDType=""
 
 # just fix for dtc clang
@@ -64,9 +64,9 @@ git config --global user.email "neetroid97@gmail.com"
 if [[ -z "${GIT_SECRETB}" ]] || [[ -z "${GIT_SECRET}" ]] || [[ -z "${BOT_TOKEN}" ]] || [[ -z "${GIT_USERNAME}" ]];then
     echo "some needed files missing, just skip compile kernels"
 else
-    IncludeFiles "$MainPath/for/${branch}.sh"
+    IncludeFiles "$MainPath/for/${rbranch}.sh"
     # cleanup stuff after done
     cd "${MainPath}"
-    git push -d origin $branch 2>/dev/null
+    git push -d origin $rbranch 2>/dev/null
     rm -rf *
 fi
