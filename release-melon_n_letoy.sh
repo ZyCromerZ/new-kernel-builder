@@ -1,0 +1,4 @@
+#! /bin/bash
+
+. pushg/vayu.sh doa lancelot-r-oss-test-almk lancelot-r-oss-test-slmk lancelot-r-oss-test-uv-almk lancelot-r-oss-test-uv-slmk lancelot-r-oss-test-uv2-almk lancelot-r-oss-test-uv2-slmk lancelot-r-oss-test-uv3-almk lancelot-r-oss-test-uv3-slmk lancelot-r-oss-test-uv4-almk lancelot-r-oss-test-uv4-slmk lancelot-r-oss-test2-almk lancelot-r-oss-test2-slmk lancelot-r-oss-test3-almk lancelot-r-oss-test3-slmk lancelot-r-oss-test4-almk lancelot-r-oss-test4-slmk && \
+. pushg/vayu.sh dob merlin-r-oss-test-almk merlin-r-oss-test-slmk merlin-r-oss-test-uv-almk merlin-r-oss-test-uv-slmk merlin-r-oss-test-uv2-almk merlin-r-oss-test-uv2-slmk merlin-r-oss-test-uv3-almk merlin-r-oss-test-uv3-slmk merlin-r-oss-test-uv4-almk merlin-r-oss-test-uv4-slmk merlin-r-oss-test2-almk merlin-r-oss-test2-slmk merlin-r-oss-test3-almk merlin-r-oss-test3-slmk merlin-r-oss-test4-almk merlin-r-oss-test4-slmk
