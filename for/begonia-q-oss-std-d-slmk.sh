@@ -7,7 +7,7 @@ CustomUploader="Y"
 IncludeFiles "${MainPath}/misc/kernel.sh" "https://${GIT_SECRET}@github.com/${GIT_USERNAME}/begonia_kernel"
 # spectrumFile="bego-on-p.rc"
 FolderUp="shared-file"
-TypeBuildTag="[Stable][SLMK][806Mhz]"
+TypeBuildTag="[SLMK][806Mhz]"
 
 CloneKernel "--depth=1"
 CloneCompiledGccEleven

@@ -5,7 +5,7 @@ IncludeFiles "${MainPath}/device/lancelot-r-oss.sh"
 CustomUploader="Y"
 IncludeFiles "${MainPath}/misc/kernel.sh" "https://${GIT_SECRET}@github.com/${GIT_USERNAME}/lancelot_kernels"
 FolderUp="shared-file"
-TypeBuildTag="[Stable][ALMK][950Mhz]"
+TypeBuildTag="[ALMK][950Mhz]"
 
 CloneKernel "--depth=1"
 # pullBranch "base-r-oss-custom-ALMK" "[STABLE][ALMK][950Mhz]"
