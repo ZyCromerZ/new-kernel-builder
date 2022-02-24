@@ -4,7 +4,7 @@ git checkout master
 if [ ! -z "$2" ];then
     ListBranch="$2"
 else
-    ListBranch="x01bd-main-q x01bd-main-r"
+    ListBranch="x01bd-main-q x01bd-main-q2 x01bd-main-q3 x01bd-main-q4 x01bd-main-r x01bd-main-r2 x01bd-main-r3 x01bd-main-r4 x01bd-main-p x01bd-main-p2 x01bd-main-p3 x01bd-main-p4"
 fi
 
 for Branch in $ListBranch
@@ -23,8 +23,8 @@ else
     Normal="Y"
 fi
 if [ "$Normal" == "Y" ];then
-    git push -f doa x01bd-main-q
-    git push -f dob x01bd-main-r
+    git push -f doa x01bd-main-q x01bd-main-q2 x01bd-main-q3 x01bd-main-q4 x01bd-main-p x01bd-main-p2
+    git push -f dob x01bd-main-r x01bd-main-r2 x01bd-main-r3 x01bd-main-r4 x01bd-main-p3 x01bd-main-p4
 else
     git push -f "$repo" $ListBranch
 fi
