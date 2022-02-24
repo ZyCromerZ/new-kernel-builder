@@ -12,6 +12,6 @@ TypeBuildTag="[SLMK][806Mhz]"
 CloneKernel "--depth=1"
 CloneZyCFoutTeenClang
 # DisableMsmP
-DisableThin
+# DisableThin
 EnableRELR
 CompileClangKernelLLVM && CleanOut

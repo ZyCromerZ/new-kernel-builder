@@ -13,6 +13,6 @@ CloneKernel "--depth=1"
 CloneCompiledGccTwelve
 CloneDTCClang
 # DisableMsmP
-DisableThin
+# DisableThin
 EnableRELR
 CompileClangKernelLLVMB && CleanOut

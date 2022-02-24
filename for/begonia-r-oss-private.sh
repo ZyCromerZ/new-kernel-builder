@@ -11,7 +11,7 @@ TypeBuildTag="[TEST]"
 
 CloneKernel "--depth=1"
 CloneZyCFoutTeenClang
-DisableThin
+# DisableThin
 OptimizaForPerf
 EnableRELR
 CompileClangKernelLLVM && CleanOut
@@ -23,7 +23,7 @@ CompileClangKernelLLVM && CleanOut
 # CompileClangKernelLLVMB && CleanOut
 CloneGCCOld
 CloneSdClang
-DisableThin
+# DisableThin
 EnableRELR
 OptimizaForPerf
 CompileClangKernelLLVMB && CleanOut
