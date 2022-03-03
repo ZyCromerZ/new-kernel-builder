@@ -11,5 +11,5 @@ TypeBuildTag=""
 
 CloneKernel "--depth=1"
 # CloneCompiledGccTwelve
-CloneZyCFoutTeenClang
+CloneZyCFifTeenClang
 CompileClangKernelB && CleanOut

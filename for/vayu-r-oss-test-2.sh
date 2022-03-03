@@ -29,6 +29,6 @@ CloneKernel "--depth=1"
 # CloneFourteenGugelClang
 # CompileClangKernel && CleanOut
 # CompileGccKernel
-CloneZyCFoutTeenClang
+CloneZyCFifTeenClang
 # CompileClangKernelB
 CompileClangKernelLLVM

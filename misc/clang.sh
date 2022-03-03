@@ -181,6 +181,21 @@ CloneZyCFoutTeenClang()
     fi
     tar -xf ZyC-Clang-14.tar.gz -C $ClangPath
     rm -rf ZyC-Clang-14.tar.gz
+    TypeBuilder="CLANG-14"
+    ClangType="$(${ClangPath}/bin/clang --version | head -n 1)"
+}
+
+CloneZyCFifTeenClang()
+{
+    ClangPath=${MainClangZipPath}-zyc
+    [[ "$(pwd)" != "${MainPath}" ]] && cd "${MainPath}"
+    [[ ! -d ${MainClangZipPath} ]] && mkdir $ClangPath
+    rm -rf $ClangPath/*
+    if [ ! -e "${MainPath}/ZyC-Clang-main.tar.gz" ];then
+        wget -q  $(curl https://raw.githubusercontent.com/ZyCromerZ/Clang/main/Clang-main-link.txt 2>/dev/null) -O "ZyC-Clang-main.tar.gz"
+    fi
+    tar -xf ZyC-Clang-main.tar.gz -C $ClangPath
+    rm -rf ZyC-Clang-main.tar.gz
     TypeBuilder="CLANG-15"
     ClangType="$(${ClangPath}/bin/clang --version | head -n 1)"
 }

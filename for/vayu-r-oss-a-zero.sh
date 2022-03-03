@@ -13,7 +13,7 @@ TypeBuildTag="[MPDCL]"
  
 
 CloneKernel "--depth=1"
-CloneZyCFoutTeenClang
+CloneZyCFifTeenClang
 DisableThin
 EnableRELR
 CompileClangKernelLLVM && CleanOut
