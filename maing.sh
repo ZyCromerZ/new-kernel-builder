@@ -13,7 +13,7 @@ elif [ ! -z "${GITHUB_REF}" ];then
     export KBUILD_BUILD_HOST="Github-server"
     # rbranch="${GITHUB_REF/"refs/heads/"/""}"
     # TotalCores="4"
-    DoSudo="sudo"
+    # DoSudo="sudo"
 fi
 rbranch="$1"
 
