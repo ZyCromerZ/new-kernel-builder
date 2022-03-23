@@ -485,8 +485,7 @@ CompileClangKernelLLVMB(){
                 OBJCOPY=${PrefixDir}llvm-objcopy \
                 OBJDUMP=${PrefixDir}llvm-objdump \
                 READELF=${PrefixDir}llvm-readelf \
-                HOSTAR=${PrefixDir}llvm-ar \
-                HOSTLD=${PrefixDir}ld.lld ${MorePlusPlus} LLVM=1
+                HOSTAR=${PrefixDir}llvm-ar ${MorePlusPlus} LLVM=1
         )
         make    -j${TotalCores}  O=out \
                 ARCH=$ARCH \
@@ -503,8 +502,7 @@ CompileClangKernelLLVMB(){
                 OBJCOPY=${PrefixDir}llvm-objcopy \
                 OBJDUMP=${PrefixDir}llvm-objdump \
                 READELF=${PrefixDir}llvm-readelf \
-                HOSTAR=${PrefixDir}llvm-ar \
-                HOSTLD=${PrefixDir}ld.lld ${MorePlusPlus} LLVM=1
+                HOSTAR=${PrefixDir}llvm-ar ${MorePlusPlus} LLVM=1
     fi
     BUILD_END=$(date +"%s")
     DIFF=$((BUILD_END - BUILD_START))
