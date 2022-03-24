@@ -20,5 +20,5 @@ CloneDTCClang
 # DisableThin
 DisableLTO
 # EnableRELR
-UseGoldBinutils=y
+UseGoldBinutils="m"
 CompileClangKernel && CleanOut
