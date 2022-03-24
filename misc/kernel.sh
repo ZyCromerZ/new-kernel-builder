@@ -72,6 +72,8 @@ CompileClangKernel(){
     MorePlusPlus=" "
     if [[ "$UseGoldBinutils" == "y" ]];then
         MorePlusPlus="LD=$for64-ld.gold LDGOLD=$for64-ld.gold HOSTLD=ld $MorePlusPlus"
+    elif [[ "$UseGoldBinutils" == "m" ]];then
+        MorePlusPlus="LD=$for64-ld LDGOLD=$for64-ld.gold HOSTLD=ld $MorePlusPlus"
     else
         MorePlusPlus="LD=ld.lld HOSTLD=ld.lld $MorePlusPlus"
     fi
@@ -324,6 +326,8 @@ CompileClangKernelLLVM(){
     fi
     if [[ "$UseGoldBinutils" == "y" ]];then
         MorePlusPlus="LD=aarch64-linux-gnu-ld.gold LDGOLD=aarch64-linux-gnu-ld.gold HOSTLD=ld $MorePlusPlus"
+    elif [[ "$UseGoldBinutils" == "m" ]];then
+        MorePlusPlus="LD=aarch64-linux-gnu-ld LDGOLD=aarch64-linux-gnu-ld.gold HOSTLD=ld $MorePlusPlus"
     else
         MorePlusPlus="LD=${PrefixDir}ld.lld HOSTLD=${PrefixDir}ld.lld $MorePlusPlus"
     fi
@@ -432,6 +436,8 @@ CompileClangKernelLLVMB(){
     fi
     if [[ "$UseGoldBinutils" == "y" ]];then
         MorePlusPlus="LD=$for64-ld.gold LDGOLD=$for64-ld.gold HOSTLD=ld $MorePlusPlus"
+    elif [[ "$UseGoldBinutils" == "m" ]];then
+        MorePlusPlus="LD=$for64-ld LDGOLD=$for64-ld.gold HOSTLD=ld $MorePlusPlus"
     else
         MorePlusPlus="LD=${PrefixDir}ld.lld HOSTLD=${PrefixDir}ld.lld $MorePlusPlus"
     fi
