@@ -70,8 +70,10 @@ CompileClangKernel(){
     BUILD_START=$(date +"%s")
     make    -j${TotalCores}  O=out ARCH="$ARCH" "$DEFFCONFIG"
     MorePlusPlus=" "
-    if [[ ! -z "$(cat $KernelPath/out/.config | grep "CONFIG_LTO=y" )" ]] || [[ ! -z "$(cat $KernelPath/out/.config | grep "CONFIG_LTO_CLANG=y" )" ]];then
-        MorePlusPlus="LD=ld.lld HOSTLD=ld.lld"
+    if [[ "$UseGoldBinutils" == "y" ]];then
+        MorePlusPlus="LD=$for64-ld.gold LDGOLD=$for64-ld.gold HOSTLD=ld $MorePlusPlus"
+    else
+        MorePlusPlus="LD=ld.lld HOSTLD=ld.lld $MorePlusPlus"
     fi
     if [[ "$TypeBuilder" == *"SDClang"* ]];then
         MorePlusPlus="HOSTCC=gcc HOSTCXX=g++ $MorePlusPlus"
@@ -321,7 +323,7 @@ CompileClangKernelLLVM(){
         MorePlusPlus="HOSTCC=gcc HOSTCXX=g++"
     fi
     if [[ "$UseGoldBinutils" == "y" ]];then
-        MorePlusPlus="LD=aarch64-linux-gnu-ld.gold HOSTLD=aarch64-linux-gnu-ld.gold $MorePlusPlus"
+        MorePlusPlus="LD=aarch64-linux-gnu-ld.gold LDGOLD=aarch64-linux-gnu-ld.gold HOSTLD=ld $MorePlusPlus"
     else
         MorePlusPlus="LD=${PrefixDir}ld.lld HOSTLD=${PrefixDir}ld.lld $MorePlusPlus"
     fi
@@ -429,7 +431,7 @@ CompileClangKernelLLVMB(){
         MorePlusPlus="HOSTCC=gcc HOSTCXX=g++"
     fi
     if [[ "$UseGoldBinutils" == "y" ]];then
-        MorePlusPlus="LD=$for64-ld.gold HOSTLD=$for64-ld.gold $MorePlusPlus"
+        MorePlusPlus="LD=$for64-ld.gold LDGOLD=$for64-ld.gold HOSTLD=ld $MorePlusPlus"
     else
         MorePlusPlus="LD=${PrefixDir}ld.lld HOSTLD=${PrefixDir}ld.lld $MorePlusPlus"
     fi

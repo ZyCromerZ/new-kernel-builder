@@ -19,5 +19,6 @@ CloneDTCClang
 # DisableMsmP
 # DisableThin
 DisableLTO
-EnableRELR
+# EnableRELR
+UseGoldBinutils=y
 CompileClangKernelLLVMB && CleanOut
