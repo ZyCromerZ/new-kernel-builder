@@ -331,6 +331,11 @@ CompileClangKernelLLVM(){
     else
         MorePlusPlus="LD=${PrefixDir}ld.lld HOSTLD=${PrefixDir}ld.lld $MorePlusPlus"
     fi
+    if [[ "$UseOBJCOPYBinutils" == "y" ]];then
+        MorePlusPlus="OBJCOPY=aarch64-linux-gnu-objcopy $MorePlusPlus"
+    else
+        MorePlusPlus="OBJCOPY=${PrefixDir}llvm-objcopy $MorePlusPlus"
+    fi
     BUILD_START=$(date +"%s")
     make    -j${TotalCores}  O=out ARCH="$ARCH" "$DEFFCONFIG"
     if [ -d "${ClangPath}/lib64" ];then
@@ -346,7 +351,6 @@ CompileClangKernelLLVM(){
                 AR=${PrefixDir}llvm-ar \
                 NM=${PrefixDir}llvm-nm \
                 STRIP=${PrefixDir}llvm-strip \
-                OBJCOPY=${PrefixDir}llvm-objcopy \
                 OBJDUMP=${PrefixDir}llvm-objdump \
                 READELF=${PrefixDir}llvm-readelf \
                 HOSTAR=${PrefixDir}llvm-ar ${MorePlusPlus} LLVM=1
@@ -363,7 +367,6 @@ CompileClangKernelLLVM(){
                 AR=${PrefixDir}llvm-ar \
                 NM=${PrefixDir}llvm-nm \
                 STRIP=${PrefixDir}llvm-strip \
-                OBJCOPY=${PrefixDir}llvm-objcopy \
                 OBJDUMP=${PrefixDir}llvm-objdump \
                 READELF=${PrefixDir}llvm-readelf \
                 HOSTAR=${PrefixDir}llvm-ar ${MorePlusPlus} LLVM=1
@@ -380,7 +383,6 @@ CompileClangKernelLLVM(){
                 AR=${PrefixDir}llvm-ar \
                 NM=${PrefixDir}llvm-nm \
                 STRIP=${PrefixDir}llvm-strip \
-                OBJCOPY=${PrefixDir}llvm-objcopy \
                 OBJDUMP=${PrefixDir}llvm-objdump \
                 READELF=${PrefixDir}llvm-readelf \
                 HOSTAR=${PrefixDir}llvm-ar ${MorePlusPlus} LLVM=1
@@ -397,7 +399,6 @@ CompileClangKernelLLVM(){
                 AR=${PrefixDir}llvm-ar \
                 NM=${PrefixDir}llvm-nm \
                 STRIP=${PrefixDir}llvm-strip \
-                OBJCOPY=${PrefixDir}llvm-objcopy \
                 OBJDUMP=${PrefixDir}llvm-objdump \
                 READELF=${PrefixDir}llvm-readelf \
                 HOSTAR=${PrefixDir}llvm-ar ${MorePlusPlus} LLVM=1
@@ -441,6 +442,11 @@ CompileClangKernelLLVMB(){
     else
         MorePlusPlus="LD=${PrefixDir}ld.lld HOSTLD=${PrefixDir}ld.lld $MorePlusPlus"
     fi
+    if [[ "$UseOBJCOPYBinutils" == "y" ]];then
+        MorePlusPlus="OBJCOPY=$for64-objcopy $MorePlusPlus"
+    else
+        MorePlusPlus="OBJCOPY=${PrefixDir}llvm-objcopy $MorePlusPlus"
+    fi
     BUILD_START=$(date +"%s")
     make    -j${TotalCores}  O=out ARCH="$ARCH" "$DEFFCONFIG"
     if [ -d "${ClangPath}/lib64" ];then
@@ -456,7 +462,6 @@ CompileClangKernelLLVMB(){
                 AR=${PrefixDir}llvm-ar \
                 NM=${PrefixDir}llvm-nm \
                 STRIP=${PrefixDir}llvm-strip \
-                OBJCOPY=${PrefixDir}llvm-objcopy \
                 OBJDUMP=${PrefixDir}llvm-objdump \
                 READELF=${PrefixDir}llvm-readelf \
                 HOSTAR=${PrefixDir}llvm-ar ${MorePlusPlus} LLVM=1
@@ -473,7 +478,6 @@ CompileClangKernelLLVMB(){
                 AR=${PrefixDir}llvm-ar \
                 NM=${PrefixDir}llvm-nm \
                 STRIP=${PrefixDir}llvm-strip \
-                OBJCOPY=${PrefixDir}llvm-objcopy \
                 OBJDUMP=${PrefixDir}llvm-objdump \
                 READELF=${PrefixDir}llvm-readelf \
                 HOSTAR=${PrefixDir}llvm-ar ${MorePlusPlus} LLVM=1
@@ -490,7 +494,6 @@ CompileClangKernelLLVMB(){
                 AR=${PrefixDir}llvm-ar \
                 NM=${PrefixDir}llvm-nm \
                 STRIP=${PrefixDir}llvm-strip \
-                OBJCOPY=${PrefixDir}llvm-objcopy \
                 OBJDUMP=${PrefixDir}llvm-objdump \
                 READELF=${PrefixDir}llvm-readelf \
                 HOSTAR=${PrefixDir}llvm-ar ${MorePlusPlus} LLVM=1
@@ -507,7 +510,6 @@ CompileClangKernelLLVMB(){
                 AR=${PrefixDir}llvm-ar \
                 NM=${PrefixDir}llvm-nm \
                 STRIP=${PrefixDir}llvm-strip \
-                OBJCOPY=${PrefixDir}llvm-objcopy \
                 OBJDUMP=${PrefixDir}llvm-objdump \
                 READELF=${PrefixDir}llvm-readelf \
                 HOSTAR=${PrefixDir}llvm-ar ${MorePlusPlus} LLVM=1

@@ -21,4 +21,5 @@ CloneDTCClang
 DisableLTO
 # EnableRELR
 UseGoldBinutils="m"
+UseOBJCOPYBinutils="y"
 CompileClangKernelLLVMB && CleanOut
