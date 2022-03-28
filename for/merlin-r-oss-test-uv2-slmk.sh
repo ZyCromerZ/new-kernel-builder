@@ -8,6 +8,7 @@ FolderUp="shared-file"
 TypeBuildTag="[SLMK][1000Mhz]"
 
 CloneKernel "--depth=1"
+ChangeConfigData
 # pullBranch "base-r-oss-custom-ALMK" "[STABLE][ALMK][1000Mhz]"
 # pullBranch "base-r-oss-custom-SLMK" "[TEST][SLMK][1000Mhz]"
 CloneCompiledGccTwelve

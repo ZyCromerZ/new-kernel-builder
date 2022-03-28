@@ -6,6 +6,7 @@ SaveChatID="-1001301538740"
 ARCH="arm64"
 TypeBuild="Stable"
 DEFFCONFIG="merlin_defconfig"
+DEFFCONFIGB="merlin_old_defconfig"
 GetBD=$(date +"%m%d")
 GetCBD=$(date +"%Y-%m-%d")
 TypeBuildTag=""

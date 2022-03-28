@@ -756,3 +756,12 @@ EnableRELR()
     sed -i "s/# CONFIG_TOOLS_SUPPORT_RELR is not set/CONFIG_TOOLS_SUPPORT_RELR=y/" arch/$ARCH/configs/$DEFFCONFIG
     git add arch/$ARCH/configs/$DEFFCONFIG && git commit -sm 'defconfig: enable TOOLS_SUPPORT_RELR'  
 }
+
+ChangeConfigData()
+{
+    [[ "$(pwd)" != "${KernelPath}" ]] && cd "${KernelPath}"
+    if [[ ! -z "$DEFFCONFIGB" ]] && [[ -f "arch/arm64/configs/$DEFFCONFIGB" ]];then
+        sed -i "s/\$(KCONFIG_CONFIG)/arch\/arm64\/configs\/$DEFFCONFIGB/" kernel/Makefile
+        git add kernel/Makefile && git commit -sm "kernel: Makefile: change defconfig for /proc/config.gz"
+    fi
+}

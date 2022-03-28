@@ -6,6 +6,7 @@ SaveChatID="-1001301538740"
 ARCH="arm64"
 TypeBuild="Stable"
 DEFFCONFIG="lancelot_defconfig"
+DEFFCONFIGB="lancelot_old_defconfig"
 GetBD=$(date +"%m%d")
 GetCBD=$(date +"%Y-%m-%d")
 TypeBuildTag=""
