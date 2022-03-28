@@ -5,7 +5,7 @@ IncludeFiles "${MainPath}/device/vayu-r-oss.sh"
 CustomUploader="Y"
 IncludeFiles "${MainPath}/misc/kernel.sh" "https://${GIT_SECRET}@github.com/${GIT_USERNAME}/vayu_kernel"
 # FolderUp="shared-file"
-TypeBuildTag="[ThinLTO][MPDCL][CLD]"
+TypeBuildTag="[ThinLTO][MPDCL][GLD]"
 MultipleDtbBranch=""
 
 # misc
@@ -18,6 +18,6 @@ CloneCompiledGccTwelve
 CloneDTCClang
 # DisableMsmP
 # DisableThin
-EnableRELR
-# UseGoldBinutils="m"
+# EnableRELR
+UseGoldBinutils="m"
 CompileClangKernel && CleanOut
