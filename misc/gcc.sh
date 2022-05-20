@@ -52,10 +52,10 @@ CloneCompiledGccEleven(){
     [[ "$(pwd)" != "${MainPath}" ]] && cd "${MainPath}"
     GCCaPath="${MainGCCaPath}"
     if [ ! -d "$GCCaPath" ];then
-        git clone https://github.com/ZyCromerZ/aarch64-zyc-linux-gnu -b 11 $GCCaPath --depth=1
+        git clone https://github.com/ZyCromerZ/aarch64-zyc-linux-gnu.git -b 11 $GCCaPath --depth=1
     else
         cd "${GCCaPath}"
-        git fetch https://github.com/ZyCromerZ/aarch64-zyc-linux-gnu 11 --depth=1
+        git fetch https://github.com/ZyCromerZ/aarch64-zyc-linux-gnu.git 11 --depth=1
         git checkout FETCH_HEAD
         [[ ! -z "$(git branch | grep 11)" ]] && git branch -D 11
         git checkout -b 11
@@ -64,10 +64,10 @@ CloneCompiledGccEleven(){
     [[ "$(pwd)" != "${MainPath}" ]] && cd "${MainPath}"
     GCCbPath="${MainGCCbPath}"
     if [ ! -d "$GCCbPath" ];then
-        git clone https://github.com/ZyCromerZ/arm-zyc-linux-gnueabi -b 11 $GCCbPath --depth=1
+        git clone https://github.com/ZyCromerZ/arm-zyc-linux-gnueabi.git -b 11 $GCCbPath --depth=1
     else
         cd "${GCCbPath}"
-        git fetch https://github.com/ZyCromerZ/arm-zyc-linux-gnueabi 11 --depth=1
+        git fetch https://github.com/ZyCromerZ/arm-zyc-linux-gnueabi.git 11 --depth=1
         git checkout FETCH_HEAD
         [[ ! -z "$(git branch | grep 11)" ]] && git branch -D 11
         git checkout -b 11
@@ -81,10 +81,10 @@ CloneGCCOld(){
     [[ "$(pwd)" != "${MainPath}" ]] && cd "${MainPath}"
     GCCaPath="${MainGCCaPath}"
     if [ ! -d "$GCCaPath" ];then
-        git clone https://github.com/ZyCromerZ/aarch64-linux-android-4.9 -b android-12.0.0_r15 $GCCaPath --depth=1
+        git clone https://github.com/ZyCromerZ/aarch64-linux-android-4.9.git -b android-12.0.0_r15 $GCCaPath --depth=1
     else
         cd "${GCCaPath}"
-        git fetch https://github.com/ZyCromerZ/aarch64-linux-android-4.9 android-12.0.0_r15 --depth=1
+        git fetch https://github.com/ZyCromerZ/aarch64-linux-android-4.9.git android-12.0.0_r15 --depth=1
         git checkout FETCH_HEAD
         [[ ! -z "$(git branch | grep android-12.0.0_r15)" ]] && git branch -D android-12.0.0_r15
         git checkout -b android-12.0.0_r15
@@ -93,16 +93,18 @@ CloneGCCOld(){
     [[ "$(pwd)" != "${MainPath}" ]] && cd "${MainPath}"
     GCCbPath="${MainGCCbPath}"
     if [ ! -d "$GCCbPath" ];then
-        git clone https://github.com/ZyCromerZ/arm-linux-androideabi-4.9 -b android-12.0.0_r15 $GCCbPath --depth=1
+        git clone https://github.com/ZyCromerZ/arm-linux-androideabi-4.9.git -b android-12.0.0_r15 $GCCbPath --depth=1
     else
         cd "${GCCbPath}"
-        git fetch https://github.com/ZyCromerZ/arm-linux-androideabi-4.9 android-12.0.0_r15 --depth=1
+        git fetch https://github.com/ZyCromerZ/arm-linux-androideabi-4.9.git android-12.0.0_r15 --depth=1
         git checkout FETCH_HEAD
         [[ ! -z "$(git branch | grep android-12.0.0_r15)" ]] && git branch -D android-12.0.0_r15
         git checkout -b android-12.0.0_r15
     fi
     for32=arm-linux-androideabi
     GetGccVersion
+    ls $GCCaPath
+    ls $GCCbPath
 }
 
 CloneGccten(){
@@ -156,10 +158,10 @@ CloneCompiledGccTwelve(){
     [[ "$(pwd)" != "${MainPath}" ]] && cd "${MainPath}"
     GCCaPath="${MainGCCaPath}"
     if [ ! -d "$GCCaPath" ];then
-        git clone https://github.com/ZyCromerZ/aarch64-zyc-linux-gnu -b 12 $GCCaPath --depth=1
+        git clone https://github.com/ZyCromerZ/aarch64-zyc-linux-gnu.git -b 12 $GCCaPath --depth=1
     else
         cd "${GCCaPath}"
-        git fetch https://github.com/ZyCromerZ/aarch64-zyc-linux-gnu 12 --depth=1
+        git fetch https://github.com/ZyCromerZ/aarch64-zyc-linux-gnu.git 12 --depth=1
         git checkout FETCH_HEAD
         [[ ! -z "$(git branch | grep 12)" ]] && git branch -D 12
         git checkout -b 12
@@ -168,10 +170,10 @@ CloneCompiledGccTwelve(){
     [[ "$(pwd)" != "${MainPath}" ]] && cd "${MainPath}"
     GCCbPath="${MainGCCbPath}"
     if [ ! -d "$GCCbPath" ];then
-        git clone https://github.com/ZyCromerZ/arm-zyc-linux-gnueabi -b 12 $GCCbPath --depth=1
+        git clone https://github.com/ZyCromerZ/arm-zyc-linux-gnueabi.git -b 12 $GCCbPath --depth=1
     else
         cd "${GCCbPath}"
-        git fetch https://github.com/ZyCromerZ/arm-zyc-linux-gnueabi 12 --depth=1
+        git fetch https://github.com/ZyCromerZ/arm-zyc-linux-gnueabi.git 12 --depth=1
         git checkout FETCH_HEAD
         [[ ! -z "$(git branch | grep 12)" ]] && git branch -D 12
         git checkout -b 12
@@ -184,10 +186,10 @@ CloneCompiledGccThirteen(){
     [[ "$(pwd)" != "${MainPath}" ]] && cd "${MainPath}"
     GCCaPath="${MainGCCaPath}"
     if [ ! -d "$GCCaPath" ];then
-        git clone https://github.com/ZyCromerZ/aarch64-zyc-linux-gnu -b 13 $GCCaPath --depth=1
+        git clone https://github.com/ZyCromerZ/aarch64-zyc-linux-gnu.git -b 13 $GCCaPath --depth=1
     else
         cd "${GCCaPath}"
-        git fetch https://github.com/ZyCromerZ/aarch64-zyc-linux-gnu 13 --depth=1
+        git fetch https://github.com/ZyCromerZ/aarch64-zyc-linux-gnu.git 13 --depth=1
         git checkout FETCH_HEAD
         [[ ! -z "$(git branch | grep 13)" ]] && git branch -D 13
         git checkout -b 13
@@ -196,10 +198,10 @@ CloneCompiledGccThirteen(){
     [[ "$(pwd)" != "${MainPath}" ]] && cd "${MainPath}"
     GCCbPath="${MainGCCbPath}"
     if [ ! -d "$GCCbPath" ];then
-        git clone https://github.com/ZyCromerZ/arm-zyc-linux-gnueabi -b 13 $GCCbPath --depth=1
+        git clone https://github.com/ZyCromerZ/arm-zyc-linux-gnueabi.git -b 13 $GCCbPath --depth=1
     else
         cd "${GCCbPath}"
-        git fetch https://github.com/ZyCromerZ/arm-zyc-linux-gnueabi 13 --depth=1
+        git fetch https://github.com/ZyCromerZ/arm-zyc-linux-gnueabi.git 13 --depth=1
         git checkout FETCH_HEAD
         [[ ! -z "$(git branch | grep 13)" ]] && git branch -D 13
         git checkout -b 13
