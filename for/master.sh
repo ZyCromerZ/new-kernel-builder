@@ -59,4 +59,4 @@ rm -fr ./*
 cp -af $ClangPath/* .
 git add . && git commit -sm "$(cat $MainPath/get.md)"
 git push --all origin -f
-. $MainPath/misc/bot.sh "send_info" "SDClang 14.1.0 uploaded"
+. $MainPath/misc/bot.sh "send_info" "SDClang 14.1.2 uploaded"
