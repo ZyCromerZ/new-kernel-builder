@@ -130,6 +130,7 @@ CompileClangKernel(){
     fi
     cp -af $KernelPath/out/arch/$ARCH/boot/${ImgName} $AnyKernelPath
     KName=$(cat "${KernelPath}/arch/$ARCH/configs/$DEFFCONFIG" | grep "CONFIG_LOCALVERSION=" | sed 's/CONFIG_LOCALVERSION="-*//g' | sed 's/"*//g' )
+    KName="${KName/"+"/"plus"}"
     ZipName="[$GetBD][$TypeBuilder]${TypeBuildTag}[$CODENAME]$KVer-$KName-$HeadCommitId.zip"
     [[ ! -z "$TypeBuildFor" ]] && ZipName="[$GetBD][$TypeBuildFor][$TypeBuilder]${TypeBuildTag}[$CODENAME]$KVer-$KName-$HeadCommitId.zip"
     CompilerStatus="- <code>${ClangType}</code>%0A- <code>${gcc32Type}</code>%0A- <code>${gcc64Type}</code>"

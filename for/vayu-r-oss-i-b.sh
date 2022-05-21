@@ -14,12 +14,18 @@ MultipleDtbBranch=""
  
 
 CloneKernel "--depth=1"
-CloneCompiledGccThirteen
-CloneDTCClang
+# CloneCompiledGccTwelve
+# CloneDTCClang
 # DisableMsmP
 # DisableThin
 # EnableRELR
 # UseGoldBinutils="m"
-UseOBJCOPYBinutils="y"
-EnableRELR
-CompileClangKernelLLVMB && CleanOut
+# UseOBJCOPYBinutils="y"
+# CloneZyCFifTeenClang
+# CompileClangKernelLLVM && CleanOut
+# CloneGCCOld
+# CloneSdClang
+DisableLTO
+# CompileClangKernelLLVMB && CleanOut
+CloneCompiledGccTwelve
+CompileGccKernel

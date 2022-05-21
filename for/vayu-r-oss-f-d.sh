@@ -14,7 +14,7 @@ MultipleDtbBranch=""
  
 
 CloneKernel "--depth=1"
-CloneCompiledGccTwelve
+CloneCompiledGccThirteen
 CloneDTCClang
 # DisableMsmP
 # DisableThin

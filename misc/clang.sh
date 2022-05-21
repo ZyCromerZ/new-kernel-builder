@@ -154,6 +154,22 @@ CloneSdClang(){
     ClangType="$(${ClangPath}/bin/clang --version | head -n 1)"
 }
 
+CloneSdClangB(){
+    ClangPath=${MainClangPath}
+    [[ "$(pwd)" != "${MainPath}" ]] && cd "${MainPath}"
+    if [ ! -d "${ClangPath}" ];then
+        git clone https://${GIT_SECRET}@github.com/ZyCromerZ/SDClang -b 14.0.3 "${ClangPath}" --depth=1
+    else
+        cd "${ClangPath}"
+        git fetch https://${GIT_SECRET}@github.com/ZyCromerZ/SDClang 14.0.3 --depth=1
+        git checkout FETCH_HEAD
+        [[ ! -z "$(git branch | grep 14.0.3)" ]] && git branch -D 14.0.3
+        git checkout -b 14.0.3
+    fi
+    TypeBuilder="SDClang-14"
+    ClangType="$(${ClangPath}/bin/clang --version | head -n 1)"
+}
+
 CloneOldSdClang(){
     ClangPath=${MainClangPath}
     [[ "$(pwd)" != "${MainPath}" ]] && cd "${MainPath}"

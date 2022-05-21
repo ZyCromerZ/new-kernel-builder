@@ -1,5 +1,5 @@
 #! /bin/bash
-KernelBranch="20220412/RutuF"
+KernelBranch="20220412/RutuF+"
 
 IncludeFiles "${MainPath}/device/vayu-r-oss.sh"
 CustomUploader="Y"
@@ -14,12 +14,16 @@ MultipleDtbBranch=""
  
 
 CloneKernel "--depth=1"
-CloneCompiledGccThirteen
-CloneDTCClang
+# CloneCompiledGccTwelve
+# CloneDTCClang
 # DisableMsmP
 # DisableThin
-# EnableRELR
-# UseGoldBinutils="m"
-UseOBJCOPYBinutils="y"
 EnableRELR
+# UseGoldBinutils="m"
+# UseOBJCOPYBinutils="y"
+# CloneZyCFifTeenClang
+# CompileClangKernelLLVM && CleanOut
+CloneGCCOld
+CloneSdClangB
+# DisableLTO
 CompileClangKernelLLVMB && CleanOut
