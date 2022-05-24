@@ -9,6 +9,7 @@ TypeBuildTag="[STABLE]"
 
 CloneKernel
 CloneZyCFifTeenClang
+OptimizaForPerf
 CompileClangKernelB
 
  

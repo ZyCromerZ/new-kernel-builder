@@ -10,7 +10,7 @@ FolderUp="shared-file"
 TypeBuildTag="[SLMK][806Mhz]"
 
 CloneKernel "--depth=1"
-CloneCompiledGccEleven
+CloneCompiledGccTwelve
 DisableLTO
 # DisableMsmP
 CompileGccKernel

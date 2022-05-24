@@ -10,7 +10,7 @@ TypeBuildTag="[950Mhz]"
 CloneKernel "--depth=1"
 # pullBranch "base-r-oss-custom-ALMK" "[STABLE][ALMK][950Mhz]"
 # pullBranch "base-r-oss-custom-SLMK" "[TEST][SLMK][950Mhz]"
-CloneCompiledGccEleven
+CloneCompiledGccTwelve
 DisableLTO
 OptimizaForPerf
 # DisableMsmP

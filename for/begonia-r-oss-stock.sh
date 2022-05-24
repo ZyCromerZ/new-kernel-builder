@@ -10,6 +10,7 @@ FolderUp="shared-file"
 TypeBuildTag=""
 
 CloneKernel "--depth=1"
-# CloneCompiledGccTwelve
+# CloneCompiledGccThirteen
 CloneZyCFifTeenClang
+OptimizaForPerf
 CompileClangKernelB && CleanOut

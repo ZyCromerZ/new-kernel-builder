@@ -11,7 +11,7 @@ TypeBuildTag="[SLMK][806Mhz]"
 
 CloneKernel "--depth=1"
 CloneGCCOld
-CloneSdClang
+CloneSdClangB
 DisableLTO
 # CompileClangKernel
 # DisableMsmP

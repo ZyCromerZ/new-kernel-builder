@@ -10,7 +10,7 @@ FolderUp="shared-file"
 TypeBuildTag="[806Mhz][r23p1]"
 
 CloneKernel "--depth=1"
-CloneCompiledGccTwelve
+CloneCompiledGccThirteen
 CloneDTCClang
 # DisableMsmP
 # DisableThin

@@ -12,8 +12,8 @@ ChangeConfigData
 # pullBranch "base-r-oss-custom-ALMK" "[STABLE][ALMK][1000Mhz]"
 # pullBranch "base-r-oss-custom-SLMK" "[TEST][SLMK][1000Mhz]"
 CloneZyCFifTeenClang
+OptimizaForPerf
 # DisableMsmP
 DisableThin
 EnableRELR
-OptimizaForPerf
 CompileClangKernelLLVM && CleanOut
