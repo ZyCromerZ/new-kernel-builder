@@ -15,5 +15,5 @@ CloneCompiledGccThirteen
 CloneDTCClang
 DisableThin
 EnableRELR
-OptimizaForPerf
+OptimizaForSize
 CompileClangKernelLLVMB && CleanOut

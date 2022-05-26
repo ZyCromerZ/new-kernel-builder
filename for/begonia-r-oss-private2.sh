@@ -11,7 +11,7 @@ TypeBuildTag="[TEST]"
 
 CloneKernel "--depth=1"
 CloneZyCFifTeenClang
-OptimizaForPerf
+OptimizaForSize
 CloneCompiledGccTwelve
 CompileGccKernel && CleanOut
 TypeBuildTag="[TEST][ZyCLLVM]"

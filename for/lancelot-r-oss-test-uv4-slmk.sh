@@ -13,6 +13,6 @@ ChangeConfigData
 # pullBranch "base-r-oss-custom-SLMK" "[TEST][SLMK][950Mhz]"
 CloneCompiledGccTwelve
 DisableLTO
-OptimizaForPerf
+OptimizaForSize
 # DisableMsmP
 CompileGccKernel
