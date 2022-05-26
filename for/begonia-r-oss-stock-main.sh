@@ -10,7 +10,7 @@ FolderUp="shared-file"
 TypeBuildTag="[R-OSS][Stable]"
 
 CloneKernel "--depth=1"
-CloneZyCFifTeenClang
+CloneZyCFoutTeenClang
 OptimizaForSize
 CompileClangKernelB
 

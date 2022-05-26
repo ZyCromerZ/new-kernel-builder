@@ -10,7 +10,7 @@ FolderUp="shared-file"
 TypeBuildTag="[806Mhz]"
 
 CloneKernel "--depth=1"
-CloneZyCFifTeenClang
+CloneZyCFoutTeenClang
 OptimizaForSize
 # DisableMsmP
 # DisableThin

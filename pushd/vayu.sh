@@ -49,10 +49,7 @@ git add .drone.yml && git commit -s -m 'Go build'
 
 pushNow()
 {
-    REsult="$(git push -f $GetRepo $SetBranch || echo 'failed')"
-    if [[ "$REsult" == *"failed"* ]];then
-        pushNow
-    fi
+    git push -f $GetRepo $SetBranch || pushNow
 }
 pushNow
 

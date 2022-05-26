@@ -8,7 +8,7 @@ FolderUp="shared-file"
 TypeBuildTag="[STABLE]"
 
 CloneKernel
-CloneZyCFifTeenClang
+CloneZyCFoutTeenClang
 OptimizaForSize
 CompileClangKernelB
 
