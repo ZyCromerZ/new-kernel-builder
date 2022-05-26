@@ -47,7 +47,14 @@ git add .drone.yml && git commit -s -m 'Go build'
 
 [[ -z "$GetRepo" ]] && GetRepo="zero"
 
-git push -f $GetRepo $SetBranch
+pushNow()
+{
+    REsult="$(git push -f $GetRepo $SetBranch || echo 'failed')"
+    if [[ "$REsult" == *"failed"* ]];then
+        pushNow
+    fi
+}
+pushNow
 
 git checkout master
 git branch -D $SetBranch

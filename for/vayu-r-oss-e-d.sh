@@ -6,7 +6,7 @@ CustomUploader="Y"
 IncludeFiles "${MainPath}/misc/kernel.sh" "https://${GIT_SECRET}@github.com/${GIT_USERNAME}/vayu_kernel"
 # FolderUp="shared-file"
 TypeBuildTag="[FullLTO][MPDCL][GLD]"
-MultipleDtbBranch=""
+MultipleDtbBranch="$MultipleDtbBranchB"
 
 # misc
 # doOsdnUp=$FolderUp
