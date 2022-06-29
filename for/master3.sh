@@ -12,7 +12,7 @@ TypeBuildTag="[TEST]"
 CloneKernel
 cd "${KernelPath}"
 git push https://${GIT_SECRET}@github.com/${GIT_USERNAME}/vayu-jun-22 $KernelBranch
-# for branchx in 20220412/Flata 20220412/Flata+ 20220412/RutuF 20220412/RutuF+ 20220412/main-caf 20220412/main-f2fs 20220412/main-upstream
+# for branchx in 20220412/Flata 20220412/Flata+ 20220412/RutuF 20220412/main-x-up 20220412/main-caf 20220412/main-f2fs 20220412/main-upstream
 # do
 #     git fetch origin $branchx
 #     git checkout FETCH_HEAD

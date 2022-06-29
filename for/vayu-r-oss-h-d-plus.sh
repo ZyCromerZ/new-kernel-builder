@@ -1,5 +1,5 @@
 #! /bin/bash
-KernelBranch="20220412/RutuF+"
+KernelBranch="20220412/main-x-up"
 
 IncludeFiles "${MainPath}/device/vayu-r-oss.sh"
 CustomUploader="Y"
