@@ -5,7 +5,7 @@ IncludeFiles "${MainPath}/device/vayu-r-oss.sh"
 CustomUploader="Y"
 IncludeFiles "${MainPath}/misc/kernel.sh" "https://${GIT_SECRET}@github.com/${GIT_USERNAME}/vayu_kernel"
 # FolderUp="shared-file"
-TypeBuildTag="[13][MPDCL]"
+TypeBuildTag="[12][MPDCL]"
 MultipleDtbBranch="$MultipleDtbBranchB"
 
 # misc
@@ -27,5 +27,5 @@ CloneKernel "--depth=1"
 # CloneSdClang
 DisableLTO
 # CompileClangKernelLLVMB && CleanOut
-CloneCompiledGccThirteen
+CloneCompiledGccTwelve
 CompileGccKernel
