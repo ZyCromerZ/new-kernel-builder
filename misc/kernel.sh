@@ -144,6 +144,9 @@ CompileClangKernel(){
 CompileGccKernel(){
     cd "${KernelPath}"
     DisableLTO
+    MorePlusPlus=" "
+    [[ -e ${GCCaPath}/bin/$for64-ld.lld ]] && MorePlusPlus="LD=${GCCaPath}/bin/$for64-ld.lld HOSTLD=${GCCaPath}/bin/$for64-ld.lld"
+    echo "MorePlusPlus : $MorePlusPlus"
     SendInfoLink
     BUILD_START=$(date +"%s")
     make    -j${TotalCores}  O=out ARCH="${ARCH}" "${DEFFCONFIG}"
@@ -152,14 +155,14 @@ CompileGccKernel(){
         SUBARCH=$ARCH \
         PATH=${GCCaPath}/bin:${GCCbPath}/bin:/usr/bin:${PATH} \
         CROSS_COMPILE=$for64- \
-        CROSS_COMPILE_ARM32=$for32-
+        CROSS_COMPILE_ARM32=$for32- $MorePlusPlus
     )
     make    -j${TotalCores}  O=out \
             ARCH=$ARCH \
             SUBARCH=$ARCH \
             PATH=${GCCaPath}/bin:${GCCbPath}/bin:/usr/bin:${PATH} \
             CROSS_COMPILE=$for64- \
-            CROSS_COMPILE_ARM32=$for32-
+            CROSS_COMPILE_ARM32=$for32- $MorePlusPlus
     
     BUILD_END=$(date +"%s")
     DIFF=$((BUILD_END - BUILD_START))
@@ -184,8 +187,19 @@ CompileGccKernel(){
 CompileGccKernelB(){
     cd "${KernelPath}"
     DisableLTO
+    MorePlusPlus=" "
+
+    [[ -e ${GCCaPath}/bin/$for64-ld.lld ]] && MorePlusPlus="LD=${GCCaPath}/bin/$for64-ld.lld HOSTLD=${GCCaPath}/bin/$for64-ld.lld"
+    [[ -e ${GCCaPath}/bin/llvm-ar ]] && MorePlusPlus="AR=${GCCaPath}/bin/llvm-ar $MorePlusPlus"
+    [[ -e ${GCCaPath}/bin/llvm-nm ]] && MorePlusPlus="NM=${GCCaPath}/bin/llvm-nm $MorePlusPlus"
+    [[ -e ${GCCaPath}/bin/llvm-strip ]] && MorePlusPlus="STRIP=${GCCaPath}/bin/llvm-strip $MorePlusPlus"
+    [[ -e ${GCCaPath}/bin/llvm-objcopy ]] && MorePlusPlus="OBJCOPY=${GCCaPath}/bin/llvm-objcopy $MorePlusPlus"
+    [[ -e ${GCCaPath}/bin/llvm-objdump ]] && MorePlusPlus="OBJDUMP=${GCCaPath}/bin/llvm-objdump $MorePlusPlus"
+    [[ -e ${GCCaPath}/bin/llvm-readelf ]] && MorePlusPlus="READELF=${GCCaPath}/bin/llvm-readelf $MorePlusPlus"
+    [[ -e ${GCCaPath}/bin/llvm-ar ]] && MorePlusPlus="HOSTAR=${GCCaPath}/bin/llvm-ar $MorePlusPlus"
+    echo "MorePlusPlus : $MorePlusPlus"
+
     SendInfoLink
-    PrefixDir="${MainClangZipPath}-zyc/bin/"
     BUILD_START=$(date +"%s")
     make    -j${TotalCores}  O=out ARCH="${ARCH}" "${DEFFCONFIG}"
     MAKE=(
@@ -193,32 +207,14 @@ CompileGccKernelB(){
         SUBARCH=$ARCH \
         PATH=${GCCaPath}/bin:${GCCbPath}/bin:/usr/bin:${PATH} \
         CROSS_COMPILE=$for64- \
-        CROSS_COMPILE_ARM32=$for32- \
-        LD=${PrefixDir}ld.lld \
-        AR=${PrefixDir}llvm-ar \
-        NM=${PrefixDir}llvm-nm \
-        STRIP=${PrefixDir}llvm-strip \
-        OBJCOPY=${PrefixDir}llvm-objcopy \
-        OBJDUMP=${PrefixDir}llvm-objdump \
-        READELF=${PrefixDir}llvm-readelf \
-        HOSTAR=${PrefixDir}llvm-ar \
-        HOSTLD=${PrefixDir}ld.lld ${MorePlusPlus}
+        CROSS_COMPILE_ARM32=$for32- $MorePlusPlus
     )
     make    -j${TotalCores}  O=out \
             ARCH=$ARCH \
             SUBARCH=$ARCH \
             PATH=${GCCaPath}/bin:${GCCbPath}/bin:/usr/bin:${PATH} \
             CROSS_COMPILE=$for64- \
-            CROSS_COMPILE_ARM32=$for32- \
-            LD=${PrefixDir}ld.lld \
-            AR=${PrefixDir}llvm-ar \
-            NM=${PrefixDir}llvm-nm \
-            STRIP=${PrefixDir}llvm-strip \
-            OBJCOPY=${PrefixDir}llvm-objcopy \
-            OBJDUMP=${PrefixDir}llvm-objdump \
-            READELF=${PrefixDir}llvm-readelf \
-            HOSTAR=${PrefixDir}llvm-ar \
-            HOSTLD=${PrefixDir}ld.lld ${MorePlusPlus}
+            CROSS_COMPILE_ARM32=$for32- $MorePlusPlus
     
     BUILD_END=$(date +"%s")
     DIFF=$((BUILD_END - BUILD_START))
