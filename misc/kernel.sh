@@ -26,6 +26,7 @@ if [ ! -z "$1" ];then
     [[ -z "$UseDtb" ]] && UseDtb="n"
     [[ -z "$UseDtbo" ]] && UseDtbo="n"
     UseZyCLLVM="n"
+    UseGCCLLVM="n"
     UseGoldBinutils="n"
     MAKE=()
     [ -z "$DontInc" ] && DontInc=""
@@ -71,11 +72,11 @@ CompileClangKernel(){
     make    -j${TotalCores}  O=out ARCH="$ARCH" "$DEFFCONFIG"
     MorePlusPlus=" "
     if [[ "$UseGoldBinutils" == "y" ]];then
-        MorePlusPlus="LD=$for64-ld.gold LDGOLD=$for64-ld.gold HOSTLD=ld $MorePlusPlus"
+        MorePlusPlus="LD=$for64-ld.gold LDGOLD=$for64-ld.gold HOSTLD=${ClangPath}/bin/ld $MorePlusPlus"
     elif [[ "$UseGoldBinutils" == "m" ]];then
-        MorePlusPlus="LD=$for64-ld LDGOLD=$for64-ld.gold HOSTLD=ld $MorePlusPlus"
+        MorePlusPlus="LD=$for64-ld LDGOLD=$for64-ld.gold HOSTLD=${ClangPath}/bin/ld $MorePlusPlus"
     else
-        MorePlusPlus="LD=ld.lld HOSTLD=ld.lld $MorePlusPlus"
+        MorePlusPlus="LD=${ClangPath}/bin/ld.lld HOSTLD=${ClangPath}/bin/ld.lld $MorePlusPlus"
     fi
     if [[ "$TypeBuilder" == *"SDClang"* ]];then
         MorePlusPlus="HOSTCC=gcc HOSTCXX=g++ $MorePlusPlus"
@@ -315,6 +316,8 @@ CompileClangKernelLLVM(){
     PrefixDir=""
     if [[ "$UseZyCLLVM" == "y" ]];then
         PrefixDir="${MainClangZipPath}-zyc/bin/"
+    else
+        PrefixDir="${ClangPath}/bin/"
     fi
     if [[ "$TypeBuilder" != *"SDClang"* ]];then
         MorePlusPlus="HOSTCC=clang HOSTCXX=clang++"
@@ -322,9 +325,9 @@ CompileClangKernelLLVM(){
         MorePlusPlus="HOSTCC=gcc HOSTCXX=g++"
     fi
     if [[ "$UseGoldBinutils" == "y" ]];then
-        MorePlusPlus="LD=aarch64-linux-gnu-ld.gold LDGOLD=aarch64-linux-gnu-ld.gold HOSTLD=ld $MorePlusPlus"
+        MorePlusPlus="LD=aarch64-linux-gnu-ld.gold LDGOLD=aarch64-linux-gnu-ld.gold HOSTLD=${PrefixDir}ld $MorePlusPlus"
     elif [[ "$UseGoldBinutils" == "m" ]];then
-        MorePlusPlus="LD=aarch64-linux-gnu-ld LDGOLD=aarch64-linux-gnu-ld.gold HOSTLD=ld $MorePlusPlus"
+        MorePlusPlus="LD=aarch64-linux-gnu-ld LDGOLD=aarch64-linux-gnu-ld.gold HOSTLD=${PrefixDir}ld $MorePlusPlus"
     else
         MorePlusPlus="LD=${PrefixDir}ld.lld HOSTLD=${PrefixDir}ld.lld $MorePlusPlus"
     fi
@@ -426,6 +429,10 @@ CompileClangKernelLLVMB(){
     PrefixDir=""
     if [[ "$UseZyCLLVM" == "y" ]];then
         PrefixDir="${MainClangZipPath}-zyc/bin/"
+    elif [[ "$UseGCCLLVM" == "y" ]];then
+        PrefixDir="${MainClangZipPath}-zyc/bin/"
+    else
+        PrefixDir="${ClangPath}/bin/"
     fi
     if [[ "$TypeBuilder" != *"SDClang"* ]];then
         MorePlusPlus="HOSTCC=clang HOSTCXX=clang++"
@@ -433,9 +440,9 @@ CompileClangKernelLLVMB(){
         MorePlusPlus="HOSTCC=gcc HOSTCXX=g++"
     fi
     if [[ "$UseGoldBinutils" == "y" ]];then
-        MorePlusPlus="LD=$for64-ld.gold LDGOLD=$for64-ld.gold HOSTLD=ld $MorePlusPlus"
+        MorePlusPlus="LD=$for64-ld.gold LDGOLD=$for64-ld.gold HOSTLD=${PrefixDir}ld $MorePlusPlus"
     elif [[ "$UseGoldBinutils" == "m" ]];then
-        MorePlusPlus="LD=$for64-ld LDGOLD=$for64-ld.gold HOSTLD=ld $MorePlusPlus"
+        MorePlusPlus="LD=$for64-ld LDGOLD=$for64-ld.gold HOSTLD=${PrefixDir}ld $MorePlusPlus"
     else
         MorePlusPlus="LD=${PrefixDir}ld.lld HOSTLD=${PrefixDir}ld.lld $MorePlusPlus"
     fi
