@@ -28,6 +28,7 @@ if [ ! -z "$1" ];then
     UseZyCLLVM="n"
     UseGCCLLVM="n"
     UseGoldBinutils="n"
+    UseOBJCOPYBinutils="n"
     MAKE=()
     [ -z "$DontInc" ] && DontInc=""
 else    
@@ -147,6 +148,11 @@ CompileGccKernel(){
     DisableLTO
     MorePlusPlus=" "
     [[ -e ${GCCaPath}/bin/$for64-ld.lld ]] && MorePlusPlus="LD=${GCCaPath}/bin/$for64-ld.lld HOSTLD=${GCCaPath}/bin/$for64-ld.lld"
+    if [[ -e ${GCCbPath}/bin/$for32-ld.lld ]];then
+        MorePlusPlus="LD_COMPAT=${GCCbPath}/bin/$for32-ld.lld $MorePlusPlus"
+    else
+        MorePlusPlus="LD_COMPAT=${GCCbPath}/bin/$for32-ld $MorePlusPlus"
+    fi
     echo "MorePlusPlus : $MorePlusPlus"
     SendInfoLink
     BUILD_START=$(date +"%s")
@@ -189,8 +195,12 @@ CompileGccKernelB(){
     cd "${KernelPath}"
     DisableLTO
     MorePlusPlus=" "
-
     [[ -e ${GCCaPath}/bin/$for64-ld.lld ]] && MorePlusPlus="LD=${GCCaPath}/bin/$for64-ld.lld HOSTLD=${GCCaPath}/bin/$for64-ld.lld"
+    if [[ -e ${GCCbPath}/bin/$for32-ld.lld ]];then
+        MorePlusPlus="LD_COMPAT=${GCCbPath}/bin/$for32-ld.lld $MorePlusPlus"
+    else
+        MorePlusPlus="LD_COMPAT=${GCCbPath}/bin/$for32-ld $MorePlusPlus"
+    fi
     [[ -e ${GCCaPath}/bin/llvm-ar ]] && MorePlusPlus="AR=${GCCaPath}/bin/llvm-ar $MorePlusPlus"
     [[ -e ${GCCaPath}/bin/llvm-nm ]] && MorePlusPlus="NM=${GCCaPath}/bin/llvm-nm $MorePlusPlus"
     [[ -e ${GCCaPath}/bin/llvm-strip ]] && MorePlusPlus="STRIP=${GCCaPath}/bin/llvm-strip $MorePlusPlus"
@@ -430,7 +440,7 @@ CompileClangKernelLLVMB(){
     if [[ "$UseZyCLLVM" == "y" ]];then
         PrefixDir="${MainClangZipPath}-zyc/bin/"
     elif [[ "$UseGCCLLVM" == "y" ]];then
-        PrefixDir="${MainClangZipPath}-zyc/bin/"
+        PrefixDir="${GCCaPath}/bin/"
     else
         PrefixDir="${ClangPath}/bin/"
     fi
@@ -441,10 +451,13 @@ CompileClangKernelLLVMB(){
     fi
     if [[ "$UseGoldBinutils" == "y" ]];then
         MorePlusPlus="LD=$for64-ld.gold LDGOLD=$for64-ld.gold HOSTLD=${PrefixDir}ld $MorePlusPlus"
+        [[ "$UseGCCLLVM" == "y" ]] && MorePlusPlus="LD_COMPAT=$for32-ld.gold $MorePlusPlus"
     elif [[ "$UseGoldBinutils" == "m" ]];then
         MorePlusPlus="LD=$for64-ld LDGOLD=$for64-ld.gold HOSTLD=${PrefixDir}ld $MorePlusPlus"
+        [[ "$UseGCCLLVM" == "y" ]] && MorePlusPlus="LD_COMPAT=$for32-ld $MorePlusPlus"
     else
         MorePlusPlus="LD=${PrefixDir}ld.lld HOSTLD=${PrefixDir}ld.lld $MorePlusPlus"
+        [[ "$UseGCCLLVM" == "y" ]] && MorePlusPlus="LD_COMPAT=$for32-ld.lld $MorePlusPlus"
     fi
     if [[ "$UseOBJCOPYBinutils" == "y" ]];then
         MorePlusPlus="OBJCOPY=$for64-objcopy $MorePlusPlus"
