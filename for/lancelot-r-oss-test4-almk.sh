@@ -12,6 +12,6 @@ CloneKernel "--depth=1"
 # pullBranch "base-r-oss-custom-SLMK" "[TEST][SLMK][950Mhz]"
 CloneCompiledGccTwelve
 DisableLTO
-OptimizaForSize
+OptimizeForSize
 # DisableMsmP
 CompileGccKernel

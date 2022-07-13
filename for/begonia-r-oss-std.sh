@@ -11,7 +11,7 @@ TypeBuildTag="[806Mhz]"
 
 CloneKernel "--depth=1"
 CloneZyCFoutTeenClang
-OptimizaForSize
+OptimizeForSize
 # DisableMsmP
 # DisableThin
 EnableRELR

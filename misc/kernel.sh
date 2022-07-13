@@ -729,7 +729,7 @@ DisableKCAL(){
     git add arch/$ARCH/configs/$DEFFCONFIG && git commit -sm 'defconfig: Disable DRM_MSM_KCAL_CTRL' 
 }
 
-OptimizaForSize()
+OptimizeForSize()
 {
     [[ "$(pwd)" != "${KernelPath}" ]] && cd "${KernelPath}"
     sed -i "s/# CONFIG_CC_OPTIMIZE_FOR_SIZE is not set/CONFIG_CC_OPTIMIZE_FOR_SIZE=y/" arch/$ARCH/configs/$DEFFCONFIG
@@ -737,7 +737,7 @@ OptimizaForSize()
     git add arch/$ARCH/configs/$DEFFCONFIG && git commit -sm 'defconfig: Optimize for size' 
 }
 
-OptimizaForPerf()
+OptimizeForPerf()
 {
     [[ "$(pwd)" != "${KernelPath}" ]] && cd "${KernelPath}"
     sed -i "s/# CONFIG_CC_OPTIMIZE_FOR_PERFORMANCE is not set/CONFIG_CC_OPTIMIZE_FOR_PERFORMANCE=y/" arch/$ARCH/configs/$DEFFCONFIG

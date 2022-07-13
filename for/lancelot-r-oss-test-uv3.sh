@@ -15,5 +15,5 @@ CloneSdClangB
 # DisableThin
 DisableLTO
 EnableRELR
-OptimizaForSize
+OptimizeForSize
 CompileClangKernelLLVMB

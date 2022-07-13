@@ -186,6 +186,21 @@ CloneOldSdClang(){
     ClangType="$(${ClangPath}/bin/clang --version | head -n 1)"
 }
 
+CloneZyCFoutThirdteenClang()
+{
+    ClangPath=${MainClangZipPath}-zyc
+    [[ "$(pwd)" != "${MainPath}" ]] && cd "${MainPath}"
+    [[ ! -d ${MainClangZipPath} ]] && mkdir $ClangPath
+    rm -rf $ClangPath/*
+    if [ ! -e "${MainPath}/ZyC-Clang-13.tar.gz" ];then
+        wget -q  $(curl https://raw.githubusercontent.com/ZyCromerZ/Clang/main/Clang-13-link.txt 2>/dev/null) -O "ZyC-Clang-13.tar.gz"
+    fi
+    tar -xf ZyC-Clang-13.tar.gz -C $ClangPath
+    rm -rf ZyC-Clang-13.tar.gz
+    TypeBuilder="CLANG-13"
+    ClangType="$(${ClangPath}/bin/clang --version | head -n 1)"
+}
+
 CloneZyCFoutTeenClang()
 {
     ClangPath=${MainClangZipPath}-zyc
