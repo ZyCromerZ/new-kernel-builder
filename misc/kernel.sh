@@ -93,15 +93,6 @@ CompileClangKernel(){
                 CROSS_COMPILE_ARM32=$for32- \
                 CLANG_TRIPLE=aarch64-linux-gnu- ${MorePlusPlus}
         )
-        make    -j${TotalCores}  O=out \
-                ARCH=$ARCH \
-                SUBARCH=$ARCH \
-                PATH=${ClangPath}/bin:${GCCaPath}/bin:${GCCbPath}/bin:/usr/bin:${PATH} \
-                LD_LIBRARY_PATH="${ClangPath}/lib64:${LD_LIBRARY_PATH}" \
-                CC=clang \
-                CROSS_COMPILE=$for64- \
-                CROSS_COMPILE_ARM32=$for32- \
-                CLANG_TRIPLE=aarch64-linux-gnu- ${MorePlusPlus}
     else
         MAKE=(
                 ARCH=$ARCH \
@@ -113,34 +104,8 @@ CompileClangKernel(){
                 CROSS_COMPILE_ARM32=$for32- \
                 CLANG_TRIPLE=aarch64-linux-gnu- ${MorePlusPlus}
         )
-        make    -j${TotalCores}  O=out \
-                ARCH=$ARCH \
-                SUBARCH=$ARCH \
-                PATH=${ClangPath}/bin:${GCCaPath}/bin:${GCCbPath}/bin:/usr/bin:${PATH} \
-                LD_LIBRARY_PATH="${ClangPath}/lib:${LD_LIBRARY_PATH}" \
-                CC=clang \
-                CROSS_COMPILE=$for64- \
-                CROSS_COMPILE_ARM32=$for32- \
-                CLANG_TRIPLE=aarch64-linux-gnu- ${MorePlusPlus}
     fi
-    BUILD_END=$(date +"%s")
-    DIFF=$((BUILD_END - BUILD_START))
-    if [[ ! -e $KernelPath/out/arch/$ARCH/boot/${ImgName} ]];then
-        MSG="<b>❌ Build failed</b>%0ABranch : <b>${KernelBranch}</b>%0ABuilder : <b>${rbranch}</b>%0A%0A- <code>$((DIFF / 60)) minute(s) $((DIFF % 60)) second(s)</code>%0A%0ASad Boy"
-        . $MainPath/misc/bot.sh "send_info" "$MSG"
-        exit 1
-    fi
-    cp -af $KernelPath/out/arch/$ARCH/boot/${ImgName} $AnyKernelPath
-    KName=$(cat "${KernelPath}/arch/$ARCH/configs/$DEFFCONFIG" | grep "CONFIG_LOCALVERSION=" | sed 's/CONFIG_LOCALVERSION="-*//g' | sed 's/"*//g' )
-    KName="${KName/"+"/"plus"}"
-    ZipName="[$GetBD][$TypeBuilder]${TypeBuildTag}[$CODENAME]$KVer-$KName-$HeadCommitId.zip"
-    [[ ! -z "$TypeBuildFor" ]] && ZipName="[$GetBD][$TypeBuildFor][$TypeBuilder]${TypeBuildTag}[$CODENAME]$KVer-$KName-$HeadCommitId.zip"
-    CompilerStatus="- <code>${ClangType}</code>%0A- <code>${gcc32Type}</code>%0A- <code>${gcc64Type}</code>"
-    if [ ! -z "$1" ];then
-        MakeZip "$1"
-    else
-        MakeZip
-    fi
+    CompileNow ${@}
 }
 
 CompileGccKernel(){
@@ -162,32 +127,12 @@ CompileGccKernel(){
         SUBARCH=$ARCH \
         PATH=${GCCaPath}/bin:${GCCbPath}/bin:/usr/bin:${PATH} \
         CROSS_COMPILE=$for64- \
-        CROSS_COMPILE_ARM32=$for32- $MorePlusPlus
+        CROSS_COMPILE_ARM32=$for32- ${MorePlusPlus}
     )
-    make    -j${TotalCores}  O=out \
-            ARCH=$ARCH \
-            SUBARCH=$ARCH \
-            PATH=${GCCaPath}/bin:${GCCbPath}/bin:/usr/bin:${PATH} \
-            CROSS_COMPILE=$for64- \
-            CROSS_COMPILE_ARM32=$for32- $MorePlusPlus
-    
-    BUILD_END=$(date +"%s")
-    DIFF=$((BUILD_END - BUILD_START))
-    if [[ ! -e $KernelPath/out/arch/$ARCH/boot/${ImgName} ]];then
-        MSG="<b>❌ Build failed</b>%0ABranch : <b>${KernelBranch}</b>%0ABuilder : <b>${rbranch}</b>%0A%0A- <code>$((DIFF / 60)) minute(s) $((DIFF % 60)) second(s)</code>%0A%0ASad Boy"
-        . $MainPath/misc/bot.sh "send_info" "$MSG"
-        exit 1
-    fi
-    cp -af $KernelPath/out/arch/$ARCH/boot/${ImgName} $AnyKernelPath
-    KName=$(cat "${KernelPath}/arch/${ARCH}/configs/${DEFFCONFIG}" | grep "CONFIG_LOCALVERSION=" | sed 's/CONFIG_LOCALVERSION="-*//g' | sed 's/"*//g' )
-    ZipName="[$GetBD][GCC]${TypeBuildTag}[$CODENAME]$KVer-$KName-$HeadCommitId.zip"
-    [[ ! -z "$TypeBuildFor" ]] && ZipName="[$GetBD][$TypeBuildFor][GCC]${TypeBuildTag}[$CODENAME]$KVer-$KName-$HeadCommitId.zip"
-    CompilerStatus="- <code>${gcc32Type}</code>%0A- <code>${gcc64Type}</code>"
-    if [ ! -z "$1" ];then
-        MakeZip "$1"
-    else
-        MakeZip
-    fi
+    TypeBuilderOld="$TypeBuilder"
+    TypeBuilder="GCC"
+    CompileNow ${@}
+    TypeBuilder="$TypeBuilderOld"
 
 }
 
@@ -218,33 +163,12 @@ CompileGccKernelB(){
         SUBARCH=$ARCH \
         PATH=${GCCaPath}/bin:${GCCbPath}/bin:/usr/bin:${PATH} \
         CROSS_COMPILE=$for64- \
-        CROSS_COMPILE_ARM32=$for32- $MorePlusPlus
+        CROSS_COMPILE_ARM32=$for32- ${MorePlusPlus}
     )
-    make    -j${TotalCores}  O=out \
-            ARCH=$ARCH \
-            SUBARCH=$ARCH \
-            PATH=${GCCaPath}/bin:${GCCbPath}/bin:/usr/bin:${PATH} \
-            CROSS_COMPILE=$for64- \
-            CROSS_COMPILE_ARM32=$for32- $MorePlusPlus
-    
-    BUILD_END=$(date +"%s")
-    DIFF=$((BUILD_END - BUILD_START))
-    if [[ ! -e $KernelPath/out/arch/$ARCH/boot/${ImgName} ]];then
-        MSG="<b>❌ Build failed</b>%0ABranch : <b>${KernelBranch}</b>%0ABuilder : <b>${rbranch}</b>%0A%0A- <code>$((DIFF / 60)) minute(s) $((DIFF % 60)) second(s)</code>%0A%0ASad Boy"
-        . $MainPath/misc/bot.sh "send_info" "$MSG"
-        exit 1
-    fi
-    cp -af $KernelPath/out/arch/$ARCH/boot/${ImgName} $AnyKernelPath
-    KName=$(cat "${KernelPath}/arch/${ARCH}/configs/${DEFFCONFIG}" | grep "CONFIG_LOCALVERSION=" | sed 's/CONFIG_LOCALVERSION="-*//g' | sed 's/"*//g' )
-    ZipName="[$GetBD][GCC]${TypeBuildTag}[$CODENAME]$KVer-$KName-$HeadCommitId.zip"
-    [[ ! -z "$TypeBuildFor" ]] && ZipName="[$GetBD][$TypeBuildFor][GCC]${TypeBuildTag}[$CODENAME]$KVer-$KName-$HeadCommitId.zip"
-    CompilerStatus="- <code>${gcc32Type}</code>%0A- <code>${gcc64Type}</code>"
-    if [ ! -z "$1" ];then
-        MakeZip "$1"
-    else
-        MakeZip
-    fi
-
+    TypeBuilderOld="$TypeBuilder"
+    TypeBuilder="GCC"
+    CompileNow ${@}
+    TypeBuilder="$TypeBuilderOld"
 }
 
 CompileClangKernelB(){
@@ -270,15 +194,6 @@ CompileClangKernelB(){
                 CROSS_COMPILE_ARM32=arm-linux-gnueabi- \
                 CLANG_TRIPLE=aarch64-linux-gnu- ${MorePlusPlus}
         )
-        make    -j${TotalCores}  O=out \
-                ARCH=$ARCH \
-                SUBARCH=$ARCH \
-                PATH=${ClangPath}/bin:/usr/bin:${PATH} \
-                LD_LIBRARY_PATH="${ClangPath}/lib64:${LD_LIBRARY_PATH}" \
-                CC=clang \
-                CROSS_COMPILE=aarch64-linux-gnu- \
-                CROSS_COMPILE_ARM32=arm-linux-gnueabi- \
-                CLANG_TRIPLE=aarch64-linux-gnu- ${MorePlusPlus}
     else
         MAKE=(
                 ARCH=$ARCH \
@@ -290,33 +205,8 @@ CompileClangKernelB(){
                 CROSS_COMPILE_ARM32=arm-linux-gnueabi- \
                 CLANG_TRIPLE=aarch64-linux-gnu- ${MorePlusPlus}
         )
-        make    -j${TotalCores}  O=out \
-                ARCH=$ARCH \
-                SUBARCH=$ARCH \
-                PATH=${ClangPath}/bin:/usr/bin:${PATH} \
-                LD_LIBRARY_PATH="${ClangPath}/lib:${LD_LIBRARY_PATH}" \
-                CC=clang \
-                CROSS_COMPILE=aarch64-linux-gnu- \
-                CROSS_COMPILE_ARM32=arm-linux-gnueabi- \
-                CLANG_TRIPLE=aarch64-linux-gnu- ${MorePlusPlus}
     fi
-    BUILD_END=$(date +"%s")
-    DIFF=$((BUILD_END - BUILD_START))
-    if [[ ! -e $KernelPath/out/arch/$ARCH/boot/${ImgName} ]];then
-        MSG="<b>❌ Build failed</b>%0ABranch : <b>${KernelBranch}</b>%0ABuilder : <b>${rbranch}</b>%0A%0A- <code>$((DIFF / 60)) minute(s) $((DIFF % 60)) second(s)</code>%0A%0ASad Boy"
-        . $MainPath/misc/bot.sh "send_info" "$MSG"
-        exit 1
-    fi
-    cp -af $KernelPath/out/arch/$ARCH/boot/${ImgName} $AnyKernelPath
-    KName=$(cat "${KernelPath}/arch/$ARCH/configs/$DEFFCONFIG" | grep "CONFIG_LOCALVERSION=" | sed 's/CONFIG_LOCALVERSION="-*//g' | sed 's/"*//g' )
-    ZipName="[$GetBD][$TypeBuilder]${TypeBuildTag}[$CODENAME]$KVer-$KName-$HeadCommitId.zip"
-    [[ ! -z "$TypeBuildFor" ]] && ZipName="[$GetBD][$TypeBuildFor][$TypeBuilder]${TypeBuildTag}[$CODENAME]$KVer-$KName-$HeadCommitId.zip"
-    CompilerStatus="- <code>${ClangType}</code>%0A- <code>${gcc32Type}</code>%0A- <code>${gcc64Type}</code>"
-    if [ ! -z "$1" ];then
-        MakeZip "$1"
-    else
-        MakeZip
-    fi
+    CompileNow ${@}
 }
 
 CompileClangKernelLLVM(){
@@ -365,21 +255,6 @@ CompileClangKernelLLVM(){
                 READELF=${PrefixDir}llvm-readelf \
                 HOSTAR=${PrefixDir}llvm-ar ${MorePlusPlus} LLVM=1
         )
-        make    -j${TotalCores}  O=out \
-                ARCH=$ARCH \
-                SUBARCH=$ARCH \
-                PATH=${ClangPath}/bin:${PATH} \
-                LD_LIBRARY_PATH="${ClangPath}/lib64:${LD_LIBRARY_PATH}" \
-                CC=clang \
-                CROSS_COMPILE=aarch64-linux-gnu- \
-                CROSS_COMPILE_ARM32=arm-linux-gnueabi- \
-                CLANG_TRIPLE=aarch64-linux-gnu- \
-                AR=${PrefixDir}llvm-ar \
-                NM=${PrefixDir}llvm-nm \
-                STRIP=${PrefixDir}llvm-strip \
-                OBJDUMP=${PrefixDir}llvm-objdump \
-                READELF=${PrefixDir}llvm-readelf \
-                HOSTAR=${PrefixDir}llvm-ar ${MorePlusPlus} LLVM=1
     else
         MAKE=(
                 ARCH=$ARCH \
@@ -397,39 +272,8 @@ CompileClangKernelLLVM(){
                 READELF=${PrefixDir}llvm-readelf \
                 HOSTAR=${PrefixDir}llvm-ar ${MorePlusPlus} LLVM=1
         )
-        make    -j${TotalCores}  O=out \
-                ARCH=$ARCH \
-                SUBARCH=$ARCH \
-                PATH=${ClangPath}/bin:${PATH} \
-                LD_LIBRARY_PATH="${ClangPath}/lib:${LD_LIBRARY_PATH}" \
-                CC=clang \
-                CROSS_COMPILE=aarch64-linux-gnu- \
-                CROSS_COMPILE_ARM32=arm-linux-gnueabi- \
-                CLANG_TRIPLE=aarch64-linux-gnu- \
-                AR=${PrefixDir}llvm-ar \
-                NM=${PrefixDir}llvm-nm \
-                STRIP=${PrefixDir}llvm-strip \
-                OBJDUMP=${PrefixDir}llvm-objdump \
-                READELF=${PrefixDir}llvm-readelf \
-                HOSTAR=${PrefixDir}llvm-ar ${MorePlusPlus} LLVM=1
     fi
-    BUILD_END=$(date +"%s")
-    DIFF=$((BUILD_END - BUILD_START))
-    if [[ ! -e $KernelPath/out/arch/$ARCH/boot/${ImgName} ]];then
-        MSG="<b>❌ Build failed</b>%0ABranch : <b>${KernelBranch}</b>%0ABuilder : <b>${rbranch}</b>%0A%0A- <code>$((DIFF / 60)) minute(s) $((DIFF % 60)) second(s)</code>%0A%0ASad Boy"
-        . $MainPath/misc/bot.sh "send_info" "$MSG"
-        exit 1
-    fi
-    cp -af $KernelPath/out/arch/$ARCH/boot/${ImgName} $AnyKernelPath
-    KName=$(cat "${KernelPath}/arch/$ARCH/configs/$DEFFCONFIG" | grep "CONFIG_LOCALVERSION=" | sed 's/CONFIG_LOCALVERSION="-*//g' | sed 's/"*//g' )
-    ZipName="[$GetBD][$TypeBuilder]${TypeBuildTag}[$CODENAME]$KVer-$KName-$HeadCommitId.zip"
-    [[ ! -z "$TypeBuildFor" ]] && ZipName="[$GetBD][$TypeBuildFor][$TypeBuilder]${TypeBuildTag}[$CODENAME]$KVer-$KName-$HeadCommitId.zip"
-    CompilerStatus="- <code>${ClangType}</code>%0A- <code>${gcc32Type}</code>%0A- <code>${gcc64Type}</code>"
-    if [ ! -z "$1" ];then
-        MakeZip "$1"
-    else
-        MakeZip
-    fi
+    CompileNow ${@}
 }
 
 CompileClangKernelLLVMB(){
@@ -483,21 +327,6 @@ CompileClangKernelLLVMB(){
                 READELF=${PrefixDir}llvm-readelf \
                 HOSTAR=${PrefixDir}llvm-ar ${MorePlusPlus} LLVM=1
         )
-        make    -j${TotalCores}  O=out \
-                ARCH=$ARCH \
-                SUBARCH=$ARCH \
-                PATH=${ClangPath}/bin:${GCCaPath}/bin:${GCCbPath}/bin:/usr/bin:${PATH} \
-                LD_LIBRARY_PATH="${ClangPath}/lib64:${LD_LIBRARY_PATH}" \
-                CC=clang \
-                CROSS_COMPILE=$for64- \
-                CROSS_COMPILE_ARM32=$for32- \
-                CLANG_TRIPLE=aarch64-linux-gnu- \
-                AR=${PrefixDir}llvm-ar \
-                NM=${PrefixDir}llvm-nm \
-                STRIP=${PrefixDir}llvm-strip \
-                OBJDUMP=${PrefixDir}llvm-objdump \
-                READELF=${PrefixDir}llvm-readelf \
-                HOSTAR=${PrefixDir}llvm-ar ${MorePlusPlus} LLVM=1
     else
         MAKE=(
                 ARCH=$ARCH \
@@ -515,22 +344,14 @@ CompileClangKernelLLVMB(){
                 READELF=${PrefixDir}llvm-readelf \
                 HOSTAR=${PrefixDir}llvm-ar ${MorePlusPlus} LLVM=1
         )
-        make    -j${TotalCores}  O=out \
-                ARCH=$ARCH \
-                SUBARCH=$ARCH \
-                PATH=${ClangPath}/bin:${GCCaPath}/bin:${GCCbPath}/bin:/usr/bin:${PATH} \
-                LD_LIBRARY_PATH="${ClangPath}/lib:${LD_LIBRARY_PATH}" \
-                CC=clang \
-                CROSS_COMPILE=$for64- \
-                CROSS_COMPILE_ARM32=$for32- \
-                CLANG_TRIPLE=aarch64-linux-gnu- \
-                AR=${PrefixDir}llvm-ar \
-                NM=${PrefixDir}llvm-nm \
-                STRIP=${PrefixDir}llvm-strip \
-                OBJDUMP=${PrefixDir}llvm-objdump \
-                READELF=${PrefixDir}llvm-readelf \
-                HOSTAR=${PrefixDir}llvm-ar ${MorePlusPlus} LLVM=1
     fi
+    CompileNow ${@}
+}
+
+CompileNow()
+{
+    getInfo "script : 'make -j${TotalCores} O=out ${MAKE[@]}'"
+    make -j${TotalCores} O=out "${MAKE[@]}"
     BUILD_END=$(date +"%s")
     DIFF=$((BUILD_END - BUILD_START))
     if [[ ! -e $KernelPath/out/arch/$ARCH/boot/${ImgName} ]];then
@@ -540,9 +361,16 @@ CompileClangKernelLLVMB(){
     fi
     cp -af $KernelPath/out/arch/$ARCH/boot/${ImgName} $AnyKernelPath
     KName=$(cat "${KernelPath}/arch/$ARCH/configs/$DEFFCONFIG" | grep "CONFIG_LOCALVERSION=" | sed 's/CONFIG_LOCALVERSION="-*//g' | sed 's/"*//g' )
+    KName="${KName/'+'/'plus'}"
     ZipName="[$GetBD][$TypeBuilder]${TypeBuildTag}[$CODENAME]$KVer-$KName-$HeadCommitId.zip"
     [[ ! -z "$TypeBuildFor" ]] && ZipName="[$GetBD][$TypeBuildFor][$TypeBuilder]${TypeBuildTag}[$CODENAME]$KVer-$KName-$HeadCommitId.zip"
-    CompilerStatus="- <code>${ClangType}</code>%0A- <code>${gcc32Type}</code>%0A- <code>${gcc64Type}</code>"
+    if [[ "$TypeBuilder" == "GCC" ]];then
+        CompilerStatus="- <code>${gcc32Type}</code>%0A- <code>${gcc64Type}</code>"
+    elif [[ -z "$gcc64Type" ]] && [[ -z "$gcc32Type" ]];then
+        CompilerStatus="- <code>${ClangType}</code>"
+    else
+        CompilerStatus="- <code>${ClangType}</code>%0A- <code>${gcc32Type}</code>%0A- <code>${gcc64Type}</code>"
+    fi
     if [ ! -z "$1" ];then
         MakeZip "$1"
     else

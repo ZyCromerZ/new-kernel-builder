@@ -216,14 +216,14 @@ GetGccVersion()
         gcc32Type="$($GCCbPath/bin/$for32-gcc --version | head -n 1)"
     else
         cd ${GCCbPath}
-        gcc32Type=$(git log --pretty=format:'%h: %s' -n1)
+        gcc32Type="$($GCCbPath/bin/$for32-ld --version | head -n 1)"
         cd ${MainPath}
     fi
     if [ -e $GCCaPath/bin/$for64-gcc ];then
         gcc64Type="$($GCCaPath/bin/$for64-gcc --version | head -n 1)"
     else
         cd ${GCCaPath}
-        gcc64Type=$(git log --pretty=format:'%h: %s' -n1)
+        gcc64Type="$($GCCaPath/bin/$for64-ld --version | head -n 1)"
         cd ${MainPath}
     fi
 }
