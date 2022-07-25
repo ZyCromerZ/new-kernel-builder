@@ -1,5 +1,5 @@
 #! /bin/bash
-KernelBranch="20220412/main-y"
+KernelBranch="20220412/main-y-up"
 
 IncludeFiles "${MainPath}/device/vayu-r-oss.sh"
 CustomUploader="Y"
@@ -17,7 +17,7 @@ CloneKernel "--depth=1"
 CloneCompiledGccThirteen
 CloneDTCClang
 # DisableMsmP
-# DisableThin
+DisableThin
 # EnableRELR
 # UseGoldBinutils="m"
 UseOBJCOPYBinutils="y"
