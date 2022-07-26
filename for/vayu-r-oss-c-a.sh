@@ -14,7 +14,7 @@ MultipleDtbBranch="${MultipleDtbBranchA}"
  
 
 CloneKernel "--depth=1"
-CloneZyCFifTeenClang
+CloneZyCMainClang
 # DisableMsmP
 DisableThin
 EnableRELR

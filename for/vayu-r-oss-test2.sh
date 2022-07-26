@@ -13,7 +13,7 @@ TypeBuildTag="[TEST]"
  
 
 CloneKernel "--depth=1"
-CloneZyCFifTeenClang
+CloneZyCMainClang
 CloneCompiledGccEleven
 CompileGccKernel && CleanOut
 TypeBuildTag="[TEST][ZyCLLVM]"

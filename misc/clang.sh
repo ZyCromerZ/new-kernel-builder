@@ -216,7 +216,7 @@ CloneZyCFoutTeenClang()
     ClangType="$(${ClangPath}/bin/clang --version | head -n 1)"
 }
 
-CloneZyCFifTeenClang()
+CloneZyCMainClang()
 {
     ClangPath=${MainClangZipPath}-zyc
     [[ "$(pwd)" != "${MainPath}" ]] && cd "${MainPath}"
@@ -227,7 +227,7 @@ CloneZyCFifTeenClang()
     fi
     tar -xf ZyC-Clang-main.tar.gz -C $ClangPath
     rm -rf ZyC-Clang-main.tar.gz
-    TypeBuilder="CLANG-15"
+    TypeBuilder="CLANG-16"
     ClangType="$(${ClangPath}/bin/clang --version | head -n 1)"
 }
 

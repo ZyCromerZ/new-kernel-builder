@@ -2,6 +2,8 @@
 export DEBIAN_FRONTEND=noninteractive
 export KBUILD_BUILD_USER="ZyCromerZ"
 TotalCores="$(nproc --all)"
+TotalCores="$(($TotalCores*4))"
+TotalCores="$(($TotalCores+1))"
 DoSudo=""
 if [ ! -z "${CIRCLE_BRANCH}" ];then
     export KBUILD_BUILD_HOST="Circleci-server"

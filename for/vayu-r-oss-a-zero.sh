@@ -13,7 +13,7 @@ TypeBuildTag="[MPDCL][DFDYD][CIBE]"
  
 
 CloneKernel "--depth=1"
-CloneZyCFifTeenClang
+CloneZyCMainClang
 DisableThin
 EnableRELR
 CompileClangKernelLLVM && CleanOut
