@@ -55,8 +55,9 @@ chmod a+x bin/ld*
 cd $MainPath
 git clone https://${GIT_SECRET}@github.com/${GIT_USERNAME}/SDClang -b 12 $MainPath/ClangRepo
 cd $MainPath/ClangRepo
+git reset --hard e5d2db459c1145ccccd5fe731e96fb7e95f0a8f4
 rm -fr ./*
 cp -af $ClangPath/* .
-git add . && git commit -sm "$(cat $MainPath/get.md)"
+git add . && git commit -sm "$(cat $MainPath/getB.md)"
 git push --all origin -f
 . $MainPath/misc/bot.sh "send_info" "SDClang 12.1.5 uploaded"

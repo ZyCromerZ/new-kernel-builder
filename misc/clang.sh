@@ -119,15 +119,10 @@ ClonePrepSdClang(){
     [[ "$(pwd)" != "${MainPath}" ]] && cd "${MainPath}"
     [[ ! -d ${MainClangZipPath} ]] && mkdir $ClangPath
     rm -rf $ClangPath/*
-    # if [ ! -e "${MainPath}/SDClang-12.1.3.tar.g" ];then
-    #     wget -q  https://github.com/ZyCromerZ/Clang/releases/download/sdclang-14-release/SDClang-12.1.3.tar.gz -O "SDClang-12.1.3.tar.g"
-    # fi
-    # tar -xf SDClang-12.1.3.tar.g -C $ClangPath
-    # rm -rf SDClang-12.1.3.tar.g
-    if [ ! -e "${MainPath}/SDClang-14.1.2.0.zip" ];then
-        wget -q  https://github.com/ZyCromerZ/Clang/releases/download/sdclang-14-release/SDClang-14.1.2.0.zip -O "SDClang-14.1.2.0.zip"
+    if [ ! -e "${MainPath}/SDClang-14.1.4.0.zip" ];then
+        wget -q  https://github.com/ZyCromerZ/Clang/releases/download/sdclang-14-release/SDClang-14.1.4.0.zip -O "SDClang-14.1.4.0.zip"
     fi
-    unzip -P ${ZIP_PASS} SDClang-14.1.2.0.zip -d $ClangPath
+    unzip -P ${ZIP_PASS} SDClang-14.1.4.0.zip -d $ClangPath
     TypeBuilder="SDClang"
     ClangType="$(${ClangPath}/bin/clang --version | head -n 1)"
     [[ -z "${ZIP_PASS}" ]] && Fail="y"
@@ -144,15 +139,10 @@ ClonePrepSdClangB(){
     [[ "$(pwd)" != "${MainPath}" ]] && cd "${MainPath}"
     [[ ! -d ${MainClangZipPath} ]] && mkdir $ClangPath
     rm -rf $ClangPath/*
-    # if [ ! -e "${MainPath}/SDClang-12.1.3.tar.g" ];then
-    #     wget -q  https://github.com/ZyCromerZ/Clang/releases/download/sdclang-14-release/SDClang-12.1.3.tar.gz -O "SDClang-12.1.3.tar.g"
-    # fi
-    # tar -xf SDClang-12.1.3.tar.g -C $ClangPath
-    # rm -rf SDClang-12.1.3.tar.g
-    if [ ! -e "${MainPath}/SDClang-14.1.2.0.zip" ];then
-        wget -q  https://github.com/ZyCromerZ/Clang/releases/download/sdclang-14-release/SDClang-14.1.2.0.zip -O "SDClang-14.1.2.0.zip"
+    if [ ! -e "${MainPath}/SDClang-12.1.5.0.zip" ];then
+        wget -q  https://github.com/ZyCromerZ/Clang/releases/download/sdclang-14-release/SDClang-12.1.5.0.zip -O "SDClang-12.1.5.0.zip"
     fi
-    unzip -P ${ZIP_PASS} SDClang-14.1.2.0.zip -d $ClangPath
+    unzip -P ${ZIP_PASS} SDClang-12.1.5.0.zip -d $ClangPath
     TypeBuilder="SDClang"
     ClangType="$(${ClangPath}/bin/clang --version | head -n 1)"
     [[ -z "${ZIP_PASS}" ]] && Fail="y"

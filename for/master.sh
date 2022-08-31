@@ -55,6 +55,7 @@ chmod a+x bin/ld*
 cd $MainPath
 git clone https://${GIT_SECRET}@github.com/${GIT_USERNAME}/SDClang -b 14 $MainPath/ClangRepo
 cd $MainPath/ClangRepo
+git reset --hard eb9eead18a3af23f6292e6f4ce2ac8d06e6c82c4
 rm -fr ./*
 cp -af $ClangPath/* .
 git add . && git commit -sm "$(cat $MainPath/get.md)"
