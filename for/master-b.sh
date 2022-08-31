@@ -10,7 +10,7 @@ FolderUp="shared-file"
 TypeBuildTag="[TEST]"
 
 
-ClonePrepSdClang
+ClonePrepSdClangB
 CloneGCCOld
 # GCCbPath="${GCCbPath}/arm-linux-gnueabi"
 # GCCaPath="${GCCaPath}/aarch64-linux-gnu"
@@ -53,10 +53,10 @@ rm list
 chmod a+x bin/ld*
 
 cd $MainPath
-git clone https://${GIT_SECRET}@github.com/${GIT_USERNAME}/SDClang -b 14 $MainPath/ClangRepo
+git clone https://${GIT_SECRET}@github.com/${GIT_USERNAME}/SDClang -b 12 $MainPath/ClangRepo
 cd $MainPath/ClangRepo
 rm -fr ./*
 cp -af $ClangPath/* .
 git add . && git commit -sm "$(cat $MainPath/get.md)"
 git push --all origin -f
-. $MainPath/misc/bot.sh "send_info" "SDClang 14.1.4 uploaded"
+. $MainPath/misc/bot.sh "send_info" "SDClang 12.1.5 uploaded"
