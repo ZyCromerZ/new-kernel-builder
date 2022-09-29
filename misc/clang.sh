@@ -139,10 +139,10 @@ ClonePrepSdClangB(){
     [[ "$(pwd)" != "${MainPath}" ]] && cd "${MainPath}"
     [[ ! -d ${MainClangZipPath} ]] && mkdir $ClangPath
     rm -rf $ClangPath/*
-    if [ ! -e "${MainPath}/SDClang-10.0.11.0.zip" ];then
-        wget -q  https://github.com/ZyCromerZ/Clang/releases/download/sdclang-14-release/SDClang-10.0.11.0.zip -O "SDClang-10.0.11.0.zip"
+    if [ ! -e "${MainPath}/SDClang-16.0.0.0.zip" ];then
+        wget -q  https://github.com/ZyCromerZ/Clang/releases/download/sdclang-14-release/SDClang-16.0.0.0.zip -O "SDClang-16.0.0.0.zip"
     fi
-    unzip -P ${ZIP_PASS} SDClang-10.0.11.0.zip -d $ClangPath
+    unzip -P ${ZIP_PASS} SDClang-16.0.0.0.zip -d $ClangPath
     TypeBuilder="SDClang"
     ClangType="$(${ClangPath}/bin/clang --version | head -n 1)"
     [[ -z "${ZIP_PASS}" ]] && Fail="y"
