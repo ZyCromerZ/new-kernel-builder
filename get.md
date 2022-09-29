@@ -1,4 +1,4 @@
-Import stripped Snapdragon LLVM ARM Compiler 14.1.4
+Import stripped Snapdragon LLVM ARM Compiler 14.1.5
 
 - Strip binaries to optimize size (thanks Ju Hyung Park)
 - Restore symlinks to reduce I/O (thanks Ju Hyung Park)
