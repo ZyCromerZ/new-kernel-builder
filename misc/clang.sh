@@ -185,6 +185,27 @@ CloneSdClangB(){
     ClangType="$(${ClangPath}/bin/clang --version | head -n 1)"
 }
 
+CloneSdClangL(){
+    ClangPath=${MainClangZipPath}
+    Fail="n"
+    [[ "$(pwd)" != "${MainPath}" ]] && cd "${MainPath}"
+    [[ ! -d ${MainClangZipPath} ]] && mkdir $ClangPath
+    rm -rf $ClangPath/*
+    if [ ! -e "${MainPath}/SDClang-16.0.0.0.zip" ];then
+        wget -q  https://github.com/ZyCromerZ/Clang/releases/download/sdclang-14-release/SDClang-16.0.0.0.zip -O "SDClang-16.0.0.0.zip"
+    fi
+    unzip -P ${ZIP_PASS} SDClang-16.0.0.0.zip -d $ClangPath
+    TypeBuilder="SDClang-16"
+    ClangType="$(${ClangPath}/bin/clang --version | head -n 1)"
+    chmod a+x $ClangPath/bin/ld* ### fix permission denied
+    [[ -z "${ZIP_PASS}" ]] && Fail="y"
+    if [[ "$Fail" == "y" ]];then
+        getInfo "Clone SD clang 16 failed, cloning SD Clang 14 instead"
+        CloneSdClang
+    fi
+    Fail=""
+}
+
 CloneOldSdClang(){
     ClangPath=${MainClangPath}
     [[ "$(pwd)" != "${MainPath}" ]] && cd "${MainPath}"
