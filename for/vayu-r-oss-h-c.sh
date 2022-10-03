@@ -24,6 +24,6 @@ EnableRELR
 # CloneZyCMainClang
 # CompileClangKernelLLVM && CleanOut
 CloneGCCOld
-CloneSdClangB
+CloneSdClangL
 # DisableLTO
 CompileClangKernelLLVMB && CleanOut
