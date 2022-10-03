@@ -11,7 +11,7 @@ CloneKernel "--depth=1"
 ChangeConfigData
 # pullBranch "base-r-oss-custom-ALMK" "[STABLE][ALMK][950Mhz]"
 # pullBranch "base-r-oss-custom-SLMK" "[TEST][SLMK][950Mhz]"
-CloneZyCFoutTeenClang
+CloneZyCMainClang
 OptimizeForSize
 # DisableMsmP
 DisableThin
