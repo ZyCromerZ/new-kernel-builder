@@ -25,5 +25,5 @@ EnableRELR
 # CompileClangKernelLLVM && CleanOut
 CloneGCCOld
 CloneSdClangL
-# DisableLTO
+DisableLTO
 CompileClangKernelLLVMB && CleanOut
