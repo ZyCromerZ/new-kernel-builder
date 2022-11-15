@@ -20,4 +20,4 @@ CloneOldSdClang
 # DisableMsmP
 DisableThin
 EnableRELR
-CompileClangKernelLLVMB
+CompileClangKernel

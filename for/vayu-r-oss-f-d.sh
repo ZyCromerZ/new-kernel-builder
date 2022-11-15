@@ -22,4 +22,4 @@ CloneDTCClang
 # UseGoldBinutils="m"
 UseOBJCOPYBinutils="y"
 EnableRELR
-CompileClangKernelLLVMB && CleanOut
+CompileClangKernel && CleanOut

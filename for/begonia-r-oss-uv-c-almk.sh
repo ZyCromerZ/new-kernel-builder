@@ -17,4 +17,4 @@ DisableLTO
 # DisableMsmP
 # DisableThin
 EnableRELR
-CompileClangKernelLLVMB
+CompileClangKernel

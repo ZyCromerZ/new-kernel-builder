@@ -15,4 +15,4 @@ CloneDTCClang
 DisableThin
 EnableRELR
 OptimizeForSize
-CompileClangKernelLLVMB && CleanOut
+CompileClangKernel && CleanOut

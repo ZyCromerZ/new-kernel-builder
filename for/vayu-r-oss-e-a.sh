@@ -21,4 +21,4 @@ DisableThin
 # EnableRELR
 UseGoldBinutils="m"
 UseOBJCOPYBinutils="y"
-CompileClangKernelLLVMB && CleanOut
+CompileClangKernel && CleanOut

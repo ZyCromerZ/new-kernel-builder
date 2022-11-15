@@ -19,6 +19,6 @@ CompileGccKernelB && CleanOut
 UseZyCLLVM="y"
 CloneSdClangB
 CloneGCCOld
-CompileClangKernelLLVMB && CleanOut
+CompileClangKernel && CleanOut
 
  

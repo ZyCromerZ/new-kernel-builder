@@ -16,14 +16,14 @@ CloneKernel "--depth=1"
 CloneZyCMainClang
 DisableThin
 EnableRELR
-CompileClangKernelLLVM && CleanOut
+CompileClangKernelB && CleanOut
 CloneCompiledGccTwelve
 CloneDTCClang
 DisableThin
 EnableRELR
-CompileClangKernelLLVMB && CleanOut
+CompileClangKernel && CleanOut
 CloneGCCOld
 CloneSdClang
 DisableThin
 EnableRELR
-CompileClangKernelLLVMB && CleanOut
+CompileClangKernel && CleanOut

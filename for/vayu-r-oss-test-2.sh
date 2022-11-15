@@ -31,4 +31,4 @@ CloneKernel "--depth=1"
 # CompileGccKernel
 CloneZyCMainClang
 # CompileClangKernelB
-CompileClangKernelLLVM
+CompileClangKernelB

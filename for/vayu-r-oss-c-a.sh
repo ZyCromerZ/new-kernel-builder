@@ -19,4 +19,4 @@ CloneZyCMainClang
 DisableThin
 EnableRELR
 OptimizeForSize
-CompileClangKernelLLVM && CleanOut
+CompileClangKernelB && CleanOut

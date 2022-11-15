@@ -19,4 +19,4 @@ CloneDTCClang
 # DisableMsmP
 DisableThin
 EnableRELR
-CompileClangKernelLLVMB && CleanOut
+CompileClangKernel && CleanOut

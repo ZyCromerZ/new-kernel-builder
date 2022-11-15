@@ -24,4 +24,4 @@ UseOBJCOPYBinutils="y"
 EnableRELR
 UseGCCLLVM="y"
 DisableLTO
-CompileClangKernelLLVMB && CleanOut
+CompileClangKernel && CleanOut

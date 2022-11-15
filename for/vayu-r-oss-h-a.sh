@@ -22,8 +22,8 @@ EnableRELR
 # UseGoldBinutils="m"
 # UseOBJCOPYBinutils="y"
 # CloneZyCMainClang
-# CompileClangKernelLLVM && CleanOut
+# CompileClangKernelB && CleanOut
 CloneGCCOld
 CloneSdClangL
 # DisableLTO
-CompileClangKernelLLVMB && CleanOut
+CompileClangKernel && CleanOut

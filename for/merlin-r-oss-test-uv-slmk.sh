@@ -16,4 +16,4 @@ OptimizeForSize
 # DisableMsmP
 DisableThin
 EnableRELR
-CompileClangKernelLLVM && CleanOut
+CompileClangKernelB && CleanOut
