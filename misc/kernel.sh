@@ -29,6 +29,7 @@ if [ ! -z "$1" ];then
     UseGCCLLVM="n"
     UseGoldBinutils="n"
     UseOBJCOPYBinutils="n"
+    SDLTOFix="n"
     MAKE=()
     [ -z "$DontInc" ] && DontInc=""
 else    
@@ -74,13 +75,18 @@ CompileClangKernel(){
     MorePlusPlus=" "
     if [[ "$UseGoldBinutils" == "y" ]];then
         MorePlusPlus="LD=$for64-ld.gold LDGOLD=$for64-ld.gold HOSTLD=${ClangPath}/bin/ld $MorePlusPlus"
+        MorePlusPlus="LD_COMPAT=${GCCbPath}/bin/$for32-ld $MorePlusPlus"
     elif [[ "$UseGoldBinutils" == "m" ]];then
         MorePlusPlus="LD=$for64-ld LDGOLD=$for64-ld.gold HOSTLD=${ClangPath}/bin/ld $MorePlusPlus"
+        MorePlusPlus="LD_COMPAT=${GCCbPath}/bin/$for32-ld $MorePlusPlus"
     else
-        MorePlusPlus="LD=${ClangPath}/bin/ld.lld HOSTLD=${ClangPath}/bin/ld.lld $MorePlusPlus"
+        MorePlusPlus="LD=${ClangPath}/bin/ld.lld HOSTLD=${ClangPath}/bin/ld.lld LD_COMPAT=${ClangPath}/bin/ld.lld $MorePlusPlus"
     fi
     if [[ "$TypeBuilder" == *"SDClang"* ]];then
         MorePlusPlus="HOSTCC=gcc HOSTCXX=g++ $MorePlusPlus"
+    fi
+    if [[ "$SDLTOFix" == "y" ]];then
+        MorePlusPlus="NM=${ClangPath}/bin/llvm-nm OBJCOPY=${ClangPath}/bin/llvm-objcopy $MorePlusPlus"
     fi
     if [ -d "${ClangPath}/lib64" ];then
         MAKE=(
@@ -180,7 +186,13 @@ CompileClangKernelB(){
     make    -j${TotalCores}  O=out ARCH="$ARCH" "$DEFFCONFIG"
     MorePlusPlus=" "
     if [[ ! -z "$(cat $KernelPath/out/.config | grep "CONFIG_LTO=y" )" ]] || [[ ! -z "$(cat $KernelPath/out/.config | grep "CONFIG_LTO_CLANG=y" )" ]];then
-        MorePlusPlus="LD=ld.lld HOSTLD=ld.lld"
+        MorePlusPlus="LD=ld.lld HOSTLD=ld.lld LD_COMPAT=ld.lld"
+    else
+        if [[ -e ${GCCbPath}/bin/$for32-ld.lld ]];then
+            MorePlusPlus="LD_COMPAT=${GCCbPath}/bin/$for32-ld.lld $MorePlusPlus"
+        else
+            MorePlusPlus="LD_COMPAT=${GCCbPath}/bin/$for32-ld $MorePlusPlus"
+        fi
     fi
     if [[ "$TypeBuilder" == *"SDClang"* ]];then
         MorePlusPlus="HOSTCC=gcc HOSTCXX=g++ $MorePlusPlus"

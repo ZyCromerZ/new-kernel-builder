@@ -25,5 +25,6 @@ EnableRELR
 # CompileClangKernelB && CleanOut
 CloneGCCOld
 CloneSdClangL
+SDLTOFix="y"
 # DisableLTO
 CompileClangKernel && CleanOut
