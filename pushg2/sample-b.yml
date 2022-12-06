@@ -1,0 +1,28 @@
+
+    name: run-${{ matrix.config.file }}
+
+    runs-on: ubuntu-20.04
+
+    steps:
+
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Cleanup Linux Enviroment
+        uses: ZyCromerZ/slimhub_actions@main
+
+      - name: Configure Swap
+        uses: pierotofy/set-swap-space@master
+
+      - name: initialize
+        run: |
+          chmod +x misc/initialize.sh
+          sudo ./misc/initialize.sh
+
+      - name: compile kernels
+        run: |
+          chmod +x maing.sh
+          ./maing.sh ${{ matrix.config.file }}
+
+      - name: remove everything
+        run: rm -rf ./*
