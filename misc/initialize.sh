@@ -30,7 +30,7 @@ apt-get -y install tzdata \
     wget \
     python3 \
     python3-pip \
-    python \
+    python2 \
     gcc \
     clang \
     libssl-dev \
