@@ -12,6 +12,10 @@ elif [ ! -z "${GITHUB_REF}" ];then
     export KBUILD_BUILD_HOST="Github-server"
     rbranch="${GITHUB_REF/"refs/heads/"/""}"
     # TotalCores="4"
+else
+    export KBUILD_BUILD_HOST="Harness-server"
+    BuildNumber="private"
+    GenLink="private"
 fi
 if [ ! -z "$1" ];then
     rbranch="$1"
