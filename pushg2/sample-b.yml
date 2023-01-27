@@ -3,6 +3,9 @@
 
     runs-on: ubuntu-22.04
 
+    container:
+      image: zycromerz/kerneldocker:v4
+
     steps:
 
       - name: Checkout
@@ -11,13 +14,13 @@
       # - name: Cleanup Linux Enviroment
       #   uses: ZyCromerZ/slimhub_actions@main
 
-      - name: Configure Swap
-        uses: pierotofy/set-swap-space@master
+      # - name: Configure Swap
+      #   uses: pierotofy/set-swap-space@master
 
       - name: initialize
         run: |
           chmod +x misc/initialize.sh
-          sudo ./misc/initialize.sh
+          ./misc/initialize.sh
 
       - name: compile kernels
         run: |
