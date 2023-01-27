@@ -186,24 +186,19 @@ CloneSdClangB(){
 }
 
 CloneSdClangL(){
-    ClangPath=${MainClangZipPath}
-    Fail="n"
+    ClangPath=${MainClangPath}
     [[ "$(pwd)" != "${MainPath}" ]] && cd "${MainPath}"
-    [[ ! -d ${MainClangZipPath} ]] && mkdir $ClangPath
-    rm -rf $ClangPath/*
-    if [ ! -e "${MainPath}/SDClang-16.0.2.0.zip" ];then
-        wget -q  https://github.com/ZyCromerZ/Clang/releases/download/sdclang-14-release/SDClang-16.0.2.0.zip -O "SDClang-16.0.2.0.zip"
+    if [ ! -d "${ClangPath}" ];then
+        git clone https://gitlab.com/ZyCromerZ/sdclang-16.0.2.0 -b main "${ClangPath}" --depth=1
+    else
+        cd "${ClangPath}"
+        git fetch https://gitlab.com/ZyCromerZ/sdclang-16.0.2.0 main --depth=1
+        git checkout FETCH_HEAD
+        [[ ! -z "$(git branch | grep main)" ]] && git branch -D main
+        git checkout -b main
     fi
-    unzip -P ${ZIP_PASS} SDClang-16.0.2.0.zip -d $ClangPath
     TypeBuilder="SDClang-16"
     ClangType="$(${ClangPath}/bin/clang --version | head -n 1)"
-    chmod a+x $ClangPath/bin/ld* ### fix permission denied
-    [[ -z "${ZIP_PASS}" ]] && Fail="y"
-    if [[ "$Fail" == "y" ]];then
-        getInfo "Clone SD clang 16 failed, cloning SD Clang 14 instead"
-        CloneSdClang
-    fi
-    Fail=""
 }
 
 CloneOldSdClang(){
