@@ -8,8 +8,8 @@
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Cleanup Linux Enviroment
-        uses: ZyCromerZ/slimhub_actions@main
+      # - name: Cleanup Linux Enviroment
+      #   uses: ZyCromerZ/slimhub_actions@main
 
       - name: Configure Swap
         uses: pierotofy/set-swap-space@master
