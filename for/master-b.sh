@@ -54,11 +54,11 @@ chmod a+x bin/ld*
 
 cd $MainPath
 # git clone https://${GIT_SECRET}@github.com/${GIT_USERNAME}/SDClang -b 12 $MainPath/ClangRepo
-(mkdir $MainPath/ClangRepo && cd $MainPath/ClangRepo && git init && git remote add origin https://${GIT_SECRET}@github.com/${GIT_USERNAME}/SDClang && git checkout -b 16)
+(mkdir $MainPath/ClangRepo && cd $MainPath/ClangRepo && git init && git remote add origin https://${GL_N}:${GL_S}@gitlab.com/${GIT_USERNAME}/sdclang-16.0.2 && git checkout -b main)
 cd $MainPath/ClangRepo
 # git reset --hard e5d2db459c1145ccccd5fe731e96fb7e95f0a8f4
-rm -fr ./*
+# rm -fr ./*
 cp -af $ClangPath/* .
 git add . && git commit -sm "$(cat $MainPath/getB.md)"
 git push --all origin -f
-. $MainPath/misc/bot.sh "send_info" "SDClang 16.0.0 uploaded"
+. $MainPath/misc/bot.sh "send_info" "SDClang 16.2.0 uploaded"

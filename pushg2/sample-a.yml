@@ -8,6 +8,8 @@ env:
   BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
   GIT_USERNAME: ${{ secrets.GIT_USERNAME }}
   ZIP_PASS: ${{ secrets.ZIP_PASS }}
+  GL_N: ${{ secrets.GL_N }}
+  GL_S: ${{ secrets.GL_S }}
   TZ: Asia/Jakarta
   DEBIAN_FRONTEND: noninteractive
 
