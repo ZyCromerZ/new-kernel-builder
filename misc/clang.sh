@@ -258,7 +258,7 @@ CloneZyCMainClang()
     fi
     tar -xf ZyC-Clang-main.tar.gz -C $ClangPath
     rm -rf ZyC-Clang-main.tar.gz
-    TypeBuilder="CLANG-16"
+    TypeBuilder="CLANG-main"
     ClangType="$(${ClangPath}/bin/clang --version | head -n 1)"
 }
 

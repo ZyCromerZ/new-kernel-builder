@@ -18,13 +18,14 @@ CloneKernel "--depth=1"
 # CloneDTCClang
 # DisableMsmP
 # DisableThin
-EnableRELR
+# EnableRELR
 # UseGoldBinutils="m"
 # UseOBJCOPYBinutils="y"
 # CloneZyCMainClang
 # CompileClangKernelB && CleanOut
-CloneGCCOld
-CloneSdClangL
+# CloneGCCOld
+# CloneSdClang
 DisableLTO
-SDLTOFix="y"
-CompileClangKernelLLVMB && CleanOut
+# CompileClangKernel && CleanOut
+CloneCompiledGccTwelve
+CompileGccKernelB
