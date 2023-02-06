@@ -32,6 +32,7 @@ if [ ! -z "$1" ];then
     SDLTOFix="n"
     MAKE=()
     [ -z "$DontInc" ] && DontInc=""
+    export CLANG_TRIPLE=aarch64-linux-gnu-
 else    
     getInfoErr "KernelRepo is missing :/"
     [ ! -z "${DRONE_BRANCH}" ] && . $MainPath/misc/bot.sh "send_info" "<b>❌ Build failed</b>%0ABranch : <b>${KernelBranch}</b%0A%0ASad Boy"
@@ -365,7 +366,7 @@ CompileClangKernelLLVMB(){
 CompileNow()
 {
     getInfo "script : 'make -j${TotalCores} O=out ${MAKE[@]}'"
-    make -j${TotalCores} O=out "${MAKE[@]}"
+    make -j${TotalCores} O=out ${MAKE[@]}
     BUILD_END=$(date +"%s")
     DIFF=$((BUILD_END - BUILD_START))
     if [[ ! -e $KernelPath/out/arch/$ARCH/boot/${ImgName} ]];then
