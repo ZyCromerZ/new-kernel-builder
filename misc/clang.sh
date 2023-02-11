@@ -108,7 +108,7 @@ CloneProtonClang(){
 #     [[ -z "${ZIP_PASS}" ]] && Fail="y"
 #     if [[ "$Fail" == "y" ]];then
 #         getInfo "Clone SD clang failed, cloning ZyC Clang instead"
-#         CloneZyCFoutTeenClang
+#         CloneZyCFourTeenClang
 #     fi
 #     Fail=""
 # }
@@ -128,7 +128,7 @@ ClonePrepSdClang(){
     [[ -z "${ZIP_PASS}" ]] && Fail="y"
     if [[ "$Fail" == "y" ]];then
         getInfo "Clone SD clang failed, cloning ZyC Clang instead"
-        CloneZyCFoutTeenClang
+        CloneZyCFourTeenClang
     fi
     Fail=""
 }
@@ -148,7 +148,7 @@ ClonePrepSdClangB(){
     [[ -z "${ZIP_PASS}" ]] && Fail="y"
     if [[ "$Fail" == "y" ]];then
         getInfo "Clone SD clang failed, cloning ZyC Clang instead"
-        CloneZyCFoutTeenClang
+        CloneZyCFourTeenClang
     fi
     Fail=""
 }
@@ -217,7 +217,7 @@ CloneOldSdClang(){
     ClangType="$(${ClangPath}/bin/clang --version | head -n 1)"
 }
 
-CloneZyCFoutThirdteenClang()
+CloneZyCThirdteenClang()
 {
     ClangPath=${MainClangZipPath}-zyc
     [[ "$(pwd)" != "${MainPath}" ]] && cd "${MainPath}"
@@ -232,7 +232,7 @@ CloneZyCFoutThirdteenClang()
     ClangType="$(${ClangPath}/bin/clang --version | head -n 1)"
 }
 
-CloneZyCFoutTeenClang()
+CloneZyCFourTeenClang()
 {
     ClangPath=${MainClangZipPath}-zyc
     [[ "$(pwd)" != "${MainPath}" ]] && cd "${MainPath}"
@@ -244,6 +244,36 @@ CloneZyCFoutTeenClang()
     tar -xf ZyC-Clang-14.tar.gz -C $ClangPath
     rm -rf ZyC-Clang-14.tar.gz
     TypeBuilder="CLANG-14"
+    ClangType="$(${ClangPath}/bin/clang --version | head -n 1)"
+}
+
+CloneZyCFiveTeenClang()
+{
+    ClangPath=${MainClangZipPath}-zyc
+    [[ "$(pwd)" != "${MainPath}" ]] && cd "${MainPath}"
+    [[ ! -d ${MainClangZipPath} ]] && mkdir $ClangPath
+    rm -rf $ClangPath/*
+    if [ ! -e "${MainPath}/ZyC-Clang-15.tar.gz" ];then
+        wget -q  $(curl https://raw.githubusercontent.com/ZyCromerZ/Clang/main/Clang-15-link.txt 2>/dev/null) -O "ZyC-Clang-15.tar.gz"
+    fi
+    tar -xf ZyC-Clang-15.tar.gz -C $ClangPath
+    rm -rf ZyC-Clang-15.tar.gz
+    TypeBuilder="CLANG-15"
+    ClangType="$(${ClangPath}/bin/clang --version | head -n 1)"
+}
+
+CloneZyCSixTeenClang()
+{
+    ClangPath=${MainClangZipPath}-zyc
+    [[ "$(pwd)" != "${MainPath}" ]] && cd "${MainPath}"
+    [[ ! -d ${MainClangZipPath} ]] && mkdir $ClangPath
+    rm -rf $ClangPath/*
+    if [ ! -e "${MainPath}/ZyC-Clang-16.tar.gz" ];then
+        wget -q  $(curl https://raw.githubusercontent.com/ZyCromerZ/Clang/main/Clang-16-link.txt 2>/dev/null) -O "ZyC-Clang-16.tar.gz"
+    fi
+    tar -xf ZyC-Clang-16.tar.gz -C $ClangPath
+    rm -rf ZyC-Clang-16.tar.gz
+    TypeBuilder="CLANG-16"
     ClangType="$(${ClangPath}/bin/clang --version | head -n 1)"
 }
 
