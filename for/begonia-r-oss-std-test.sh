@@ -10,9 +10,13 @@ FolderUp="shared-file"
 TypeBuildTag="[806Mhz]"
 
 CloneKernel "--depth=1"
-CloneZyCFiveTeenClang
+# CloneZyCFiveTeenClang
 # OptimizeForSize
 # DisableMsmP
 # DisableThin
 # EnableRELR
-CompileClangKernelB && CleanOut
+# CompileClangKernelB && CleanOut
+
+CloneCompiledGccThirteen
+CloneDTCClang
+CompileClangKernel && CleanOut
