@@ -32,6 +32,7 @@ if [ ! -z "$1" ];then
     SDLTOFix="n"
     MAKE=()
     [ -z "$DontInc" ] && DontInc=""
+    [ -z "$DoSubModules" ] && DoSubModules="n"
     export CLANG_TRIPLE=aarch64-linux-gnu-
 else    
     getInfoErr "KernelRepo is missing :/"
@@ -66,6 +67,10 @@ CloneKernel(){
     HeadCommitId="$(git log --pretty=format:'%h' -n1)"
     HeadCommitMsg="$(git log --pretty=format:'%s' -n1)"
     getInfo "get some main info done"
+    if [[ "$DoSubModules" == "y" ]];then
+        git submodule update --init --recursive
+        getInfo "get submodule done"
+    fi
 }
 
 CompileClangKernel(){
