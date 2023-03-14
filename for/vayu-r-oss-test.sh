@@ -1,11 +1,12 @@
 #! /bin/bash
-KernelBranch="20210824/neutrino-flamescion"
+KernelBranch="20220412/main"
 
 IncludeFiles "${MainPath}/device/vayu-r-oss.sh"
 CustomUploader="Y"
 IncludeFiles "${MainPath}/misc/kernel.sh" "https://${GIT_SECRET}@github.com/${GIT_USERNAME}/vayu_kernel"
 # FolderUp="shared-file"
-TypeBuildTag="[TEST]"
+TypeBuildTag="[MPDCL][TEST-MAIN]"
+MultipleDtbBranch="$MultipleDtbBranchA"
 
 # misc
 # doOsdnUp=$FolderUp
@@ -13,12 +14,12 @@ TypeBuildTag="[TEST]"
  
 
 CloneKernel "--depth=1"
-CloneZyCMainClang
-CompileClangKernelB && CleanOut
-CloneGCCOld
-CloneSdClang
-DisableLTO
+CloneCompiledGccThirteen
+CloneDTCClang
+# DisableMsmP
+# DisableThin
+# EnableRELR
+# UseGoldBinutils="m"
+UseOBJCOPYBinutils="y"
+EnableRELR
 CompileClangKernel && CleanOut
-CloneCompiledGccEleven
-DisableLTO
-CompileGccKernelB
