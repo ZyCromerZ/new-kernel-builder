@@ -14,6 +14,7 @@ ExFolder="Bego-Q-kernels-release"
 AnyKernelBranch="master-begonia-q-oss"
 FirstSendInfoLink="N"
 TypeBuildFor="Q-OSS"
+DoSubModules="y"
 
 # pullALmk(){
 #     [[ "$(pwd)" != "${KernelPath}" ]] && cd "${KernelPath}"
