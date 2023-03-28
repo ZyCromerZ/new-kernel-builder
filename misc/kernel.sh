@@ -25,6 +25,7 @@ if [ ! -z "$1" ];then
     [[ -z "$ImgName" ]] && ImgName="Image.gz-dtb"
     [[ -z "$UseDtb" ]] && UseDtb="n"
     [[ -z "$UseDtbo" ]] && UseDtbo="n"
+    [[ -z "$FixKSU" ]] && FixKSU="n"
     UseZyCLLVM="n"
     UseGCCLLVM="n"
     UseGoldBinutils="n"
@@ -68,8 +69,16 @@ CloneKernel(){
     HeadCommitMsg="$(git log --pretty=format:'%s' -n1)"
     getInfo "get some main info done"
     if [[ "$DoSubModules" == "y" ]];then
-        git submodule update --init --recursive
+        git submodule update --remote --init --recursive
         getInfo "get submodule done"
+        if [[ "$FixKSU" == "y" ]];then
+            sed -i "s/4, 14, 163/4, 14, 400/" ${KernelPath}/drivers/kernelsu/selinux/selinux.c
+            sed -i "s/4, 14, 163/4, 14, 400/" ${KernelPath}/drivers/kernelsu/selinux/rules.c
+            sed -i "s/4, 9, 337/4, 19, 0/" ${KernelPath}/drivers/kernelsu/selinux/rules.c
+            sed -i "s/4, 9, 337/4, 19, 0/" ${KernelPath}/drivers/kernelsu/selinux/selinux.c
+            sed -i "s/current_sid/get_current_sid/" ${KernelPath}/drivers/kernelsu/selinux/selinux.c
+            getInfo "fix kernelsu/selinux compile failed for this kernel done"
+        fi
     fi
 }
 

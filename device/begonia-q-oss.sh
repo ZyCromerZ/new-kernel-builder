@@ -15,6 +15,7 @@ AnyKernelBranch="master-begonia-q-oss"
 FirstSendInfoLink="N"
 TypeBuildFor="Q-OSS"
 DoSubModules="y"
+FixKSU="y"
 
 # pullALmk(){
 #     [[ "$(pwd)" != "${KernelPath}" ]] && cd "${KernelPath}"
