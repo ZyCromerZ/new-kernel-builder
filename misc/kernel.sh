@@ -25,6 +25,7 @@ if [ ! -z "$1" ];then
     [[ -z "$ImgName" ]] && ImgName="Image.gz-dtb"
     [[ -z "$UseDtb" ]] && UseDtb="n"
     [[ -z "$UseDtbo" ]] && UseDtbo="n"
+    [[ -z "$AddKSU" ]] && AddKSU="n"
     [[ -z "$FixKSU" ]] && FixKSU="n"
     UseZyCLLVM="n"
     UseGCCLLVM="n"
@@ -40,6 +41,17 @@ else
     [ ! -z "${DRONE_BRANCH}" ] && . $MainPath/misc/bot.sh "send_info" "<b>❌ Build failed</b>%0ABranch : <b>${KernelBranch}</b%0A%0ASad Boy"
     exit 1
 fi
+
+addToConf()
+{
+    local path="$1"
+    local val="$2"
+    if [[ ! -z "$(cat "$path" | grep "$val")" ]];then
+        sed -i "s/# $val is not set/$val=y/" $path
+    else
+        echo "$val=y" >> "$path"
+    fi
+}
 
 CloneKernel(){
     if [[ ! -d "${KernelPath}" ]];then
@@ -71,14 +83,25 @@ CloneKernel(){
     if [[ "$DoSubModules" == "y" ]];then
         git submodule update --remote --init --recursive
         getInfo "get submodule done"
-        if [[ "$FixKSU" == "y" ]];then
-            sed -i "s/4, 14, 163/4, 14, 400/" ${KernelPath}/drivers/kernelsu/selinux/selinux.c
-            sed -i "s/4, 14, 163/4, 14, 400/" ${KernelPath}/drivers/kernelsu/selinux/rules.c
-            sed -i "s/4, 9, 337/4, 19, 0/" ${KernelPath}/drivers/kernelsu/selinux/rules.c
-            sed -i "s/4, 9, 337/4, 19, 0/" ${KernelPath}/drivers/kernelsu/selinux/selinux.c
-            sed -i "s/current_sid/get_current_sid/" ${KernelPath}/drivers/kernelsu/selinux/selinux.c
-            getInfo "fix kernelsu/selinux compile failed for this kernel done"
-        fi
+    fi
+
+    if [ "$AddKSU" == "y" ]; then
+        curl -LSs "https://raw.githubusercontent.com/tiann/KernelSU/main/kernel/setup.sh" | bash -
+        addToConf "arch/${ARCH}/configs/${DEFFCONFIG}" "CONFIG_KPROBES"
+        addToConf "arch/${ARCH}/configs/${DEFFCONFIG}" "CONFIG_HAVE_KPROBES"
+        addToConf "arch/${ARCH}/configs/${DEFFCONFIG}" "CONFIG_KPROBE_EVENTS"
+        addToConf "arch/${ARCH}/configs/${DEFFCONFIG}" "CONFIG_OVERLAY_FS"
+        git add arch/${ARCH}/configs/${DEFFCONFIG} && git commit -sm 'defconfig: update for ksu'
+        rm -rf KernelSU && git clone https://github.com/tiann/KernelSU
+    fi
+
+    if [[ "$FixKSU" == "y" ]];then
+        sed -i "s/4, 14, 163/4, 14, 400/" ${KernelPath}/drivers/kernelsu/selinux/selinux.c
+        sed -i "s/4, 14, 163/4, 14, 400/" ${KernelPath}/drivers/kernelsu/selinux/rules.c
+        sed -i "s/4, 9, 337/4, 19, 0/" ${KernelPath}/drivers/kernelsu/selinux/rules.c
+        sed -i "s/4, 9, 337/4, 19, 0/" ${KernelPath}/drivers/kernelsu/selinux/selinux.c
+        sed -i "s/current_sid/get_current_sid/" ${KernelPath}/drivers/kernelsu/selinux/selinux.c
+        getInfo "fix kernelsu/selinux compile failed for this kernel done"
     fi
 }
 
@@ -379,8 +402,8 @@ CompileClangKernelLLVMB(){
 
 CompileNow()
 {
-    getInfo "script : 'make -j${TotalCores} O=out ${MAKE[@]}'"
-    make -j${TotalCores} O=out ${MAKE[@]}
+    getInfo "script : 'make -j${TotalCores} O=out ${MAKE[@]} LLVM_IAS=1'"
+    make -j${TotalCores} O=out ${MAKE[@]} LLVM_IAS=1
     BUILD_END=$(date +"%s")
     DIFF=$((BUILD_END - BUILD_START))
     if [[ ! -e $KernelPath/out/arch/$ARCH/boot/${ImgName} ]];then
