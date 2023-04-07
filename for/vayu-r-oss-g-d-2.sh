@@ -21,6 +21,7 @@ CloneKernel "--depth=1"
 EnableRELR
 # UseGoldBinutils="m"
 # UseOBJCOPYBinutils="y"
+DisableLTO
 CloneZyCMainClang
 CompileClangKernelLLVM && CleanOut
 # CloneGCCOld

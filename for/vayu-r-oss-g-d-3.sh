@@ -1,12 +1,12 @@
 #! /bin/bash
-KernelBranch="20220412/Flata+"
+KernelBranch="20220412/main-x-up"
 
 IncludeFiles "${MainPath}/device/vayu-r-oss.sh"
 CustomUploader="Y"
 IncludeFiles "${MainPath}/misc/kernel.sh" "https://${GIT_SECRET}@github.com/${GIT_USERNAME}/vayu_kernel"
 # FolderUp="shared-file"
 TypeBuildTag="[MPDCL][FL]"
-MultipleDtbBranch="$MultipleDtbBranchA"
+MultipleDtbBranch="$MultipleDtbBranchB"
 
 # misc
 # doOsdnUp=$FolderUp
@@ -22,7 +22,7 @@ EnableRELR
 # UseGoldBinutils="m"
 # UseOBJCOPYBinutils="y"
 DisableLTO
-CloneZyCMainClang
+CloneZyCSixTeenClang
 CompileClangKernelLLVM && CleanOut
 # CloneGCCOld
 # CloneSdClang
