@@ -86,7 +86,7 @@ CloneKernel(){
     fi
 
     if [ "$AddKSU" == "y" ]; then
-        curl -LSs "https://raw.githubusercontent.com/tiann/KernelSU/main/kernel/setup.sh" | bash -
+        curl -LSs "https://raw.githubusercontent.com/tiann/KernelSU/main/kernel/setup.sh" | bash -s main
         addToConf "arch/${ARCH}/configs/${DEFFCONFIG}" "CONFIG_KPROBES"
         addToConf "arch/${ARCH}/configs/${DEFFCONFIG}" "CONFIG_HAVE_KPROBES"
         addToConf "arch/${ARCH}/configs/${DEFFCONFIG}" "CONFIG_KPROBE_EVENTS"
