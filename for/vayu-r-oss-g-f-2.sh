@@ -1,5 +1,5 @@
 #! /bin/bash
-KernelBranch="20220412/Flata+"
+KernelBranch="20220412/main-x-up"
 
 IncludeFiles "${MainPath}/device/vayu-r-oss.sh"
 CustomUploader="Y"
@@ -22,7 +22,7 @@ EnableRELR
 # UseGoldBinutils="m"
 # UseOBJCOPYBinutils="y"
 CloneZyCMainClang
-CompileClangKernelB && CleanOut
+CompileClangKernelLLVM && CleanOut
 # CloneGCCOld
 # CloneSdClang
 # DisableLTO
