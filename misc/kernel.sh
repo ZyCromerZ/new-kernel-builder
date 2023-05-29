@@ -440,8 +440,8 @@ CreateMultipleDtb()
         do
             branch=$(echo $Ngesot | awk -F ':' '{print $1}')
             filename=$(echo $Ngesot | awk -F ':' '{print $2}')
-            git reset --hard $KernelRepo
-            git fetch origin $KernelRepo --unshallow
+            git reset --hard $KernelBranch
+            git fetch origin $KernelBranch --unshallow
             git fetch origin $branch
             git pull origin $branch --no-commit
             git commit -sm 'merged dtbo'
