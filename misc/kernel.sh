@@ -55,8 +55,9 @@ addToConf()
 
 CloneKernel(){
     if [[ ! -d "${KernelPath}" ]];then
-        if [ ! -z "$1" ];then
-            git clone "${KernelRepo}" -b "${KernelBranch}" "${KernelPath}" "$1"
+        local args="${@}"
+        if [ ! -z "$args" ];then
+            git clone "${KernelRepo}" -b "${KernelBranch}" "${KernelPath}" ${args}
         else
             git clone "${KernelRepo}" -b "${KernelBranch}" "${KernelPath}"
         fi
@@ -439,8 +440,11 @@ CreateMultipleDtb()
         do
             branch=$(echo $Ngesot | awk -F ':' '{print $1}')
             filename=$(echo $Ngesot | awk -F ':' '{print $2}')
-            git fetch origin $branch --depth=1
-            git checkout FETCH_HEAD
+            git reset --hard $KernelRepo
+            git fetch origin $KernelRepo --unshallow
+            git fetch origin $branch
+            git pull origin $branch --no-commit
+            git commit -sm 'merged dtbo'
             make "${MAKE[@]}" O=out "$DEFFCONFIG" dtbo.img
             ( find "$KernelPath/out/arch/$ARCH/boot/dts/$AfterDTS" -name "*.dtb" -exec cat {} + > $AnyKernelPath/dtb-$filename )
             [[ ! -e "$AnyKernelPath/dtb-$filename" ]] && [[ ! -z "$BASE_DTB_NAME" ]] && cp $KernelPath/out/arch/$ARCH/boot/dts/$AfterDTS/$BASE_DTB_NAME $AnyKernelPath/dtb-$filename
