@@ -5,6 +5,8 @@ chmod +x ${MainPath}/misc/bot.sh
 IncludeFiles ${MainPath}/misc/clang.sh
 IncludeFiles ${MainPath}/misc/gcc.sh
 
+git config --global pull.rebase false
+
 getInfo() {
     echo -e "\e[1;32m$*\e[0m"
 }
@@ -436,12 +438,12 @@ CreateMultipleDtb()
     if [[ ! -z "$MultipleDtbBranch" ]];then
         cd "${KernelPath}"
         rm -rf $AnyKernelPath/dtb
+        git fetch origin $KernelBranch --unshallow
         for Ngesot in $MultipleDtbBranch
         do
             branch=$(echo $Ngesot | awk -F ':' '{print $1}')
             filename=$(echo $Ngesot | awk -F ':' '{print $2}')
             git reset --hard $KernelBranch
-            git fetch origin $KernelBranch --unshallow
             git fetch origin $branch
             git pull origin $branch --no-commit
             git commit -sm 'merged dtbo'
