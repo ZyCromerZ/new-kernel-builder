@@ -153,6 +153,27 @@ ClonePrepSdClangB(){
     Fail=""
 }
 
+ClonePrepSdClangC(){
+    ClangPath=${MainClangZipPath}
+    Fail="n"
+    [[ "$(pwd)" != "${MainPath}" ]] && cd "${MainPath}"
+    [[ ! -d ${MainClangZipPath} ]] && mkdir $ClangPath
+    rm -rf $ClangPath/*
+    if [ ! -e "${MainPath}/SDClang-16.1.0.1.zip" ];then
+        GDid="12h_OkMZsg0hp1UePVCqhPlL4ZODWLdP7"
+        wget --load-cookies cookies.txt "https://docs.google.com/uc?export=download&confirm=$(wget --quiet --save-cookies cookies.txt --keep-session-cookies --no-check-certificate 'https://docs.google.com/uc?export=download&id='${GDid} -O- | sed -rn 's/.*confirm=([0-9A-Za-z_]+).*/\1\n/p')&id=${GDid}" -O "SDClang-16.1.0.1.zip" && rm -rf cookies.txt
+    fi
+    unzip SDClang-16.1.0.1.zip -d $ClangPath
+    TypeBuilder="SDClang"
+    ClangType="$(${ClangPath}/bin/clang --version | head -n 1)"
+    [[ -z "${ZIP_PASS}" ]] && Fail="y"
+    if [[ "$Fail" == "y" ]];then
+        getInfo "Clone SD clang failed :/"
+        exit
+    fi
+    Fail=""
+}
+
 CloneSdClang(){
     ClangPath=${MainClangPath}
     [[ "$(pwd)" != "${MainPath}" ]] && cd "${MainPath}"
@@ -189,10 +210,10 @@ CloneSdClangL(){
     ClangPath=${MainClangPath}
     [[ "$(pwd)" != "${MainPath}" ]] && cd "${MainPath}"
     if [ ! -d "${ClangPath}" ];then
-        git clone https://gitlab.com/ZyCromerZ/sdclang-16.0.2.0 -b main "${ClangPath}" --depth=1
+        git clone https://gitlab.com/ZyCromerZ/sdclang-16.1.0.1 -b main "${ClangPath}" --depth=1
     else
         cd "${ClangPath}"
-        git fetch https://gitlab.com/ZyCromerZ/sdclang-16.0.2.0 main --depth=1
+        git fetch https://gitlab.com/ZyCromerZ/sdclang-16.1.0.1 main --depth=1
         git checkout FETCH_HEAD
         [[ ! -z "$(git branch | grep main)" ]] && git branch -D main
         git checkout -b main
