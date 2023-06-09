@@ -14,7 +14,8 @@ ExFolder="Bego-Q-kernels-release"
 AnyKernelBranch="master-begonia-q-oss"
 FirstSendInfoLink="N"
 TypeBuildFor="Q-OSS"
-DoSubModules="y"
+# DoSubModules="y"
+AddKSU="y"
 FixKSU="y"
 
 # pullALmk(){
