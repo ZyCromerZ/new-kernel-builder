@@ -28,7 +28,6 @@ if [ ! -z "$1" ];then
     [[ -z "$UseDtb" ]] && UseDtb="n"
     [[ -z "$UseDtbo" ]] && UseDtbo="n"
     [[ -z "$AddKSU" ]] && AddKSU="n"
-    [[ -z "$FixKSU" ]] && FixKSU="n"
     UseZyCLLVM="n"
     UseGCCLLVM="n"
     UseGoldBinutils="n"
@@ -89,22 +88,15 @@ CloneKernel(){
     fi
 
     if [ "$AddKSU" == "y" ]; then
-        curl -LSs "https://raw.githubusercontent.com/tiann/KernelSU/main/kernel/setup.sh" | bash -s main
+        (curl -LSs "https://raw.githubusercontent.com/tiann/KernelSU/main/kernel/setup.sh" | bash -s main)
         addToConf "arch/${ARCH}/configs/${DEFFCONFIG}" "CONFIG_KPROBES"
         addToConf "arch/${ARCH}/configs/${DEFFCONFIG}" "CONFIG_HAVE_KPROBES"
         addToConf "arch/${ARCH}/configs/${DEFFCONFIG}" "CONFIG_KPROBE_EVENTS"
         addToConf "arch/${ARCH}/configs/${DEFFCONFIG}" "CONFIG_OVERLAY_FS"
         git add arch/${ARCH}/configs/${DEFFCONFIG} && git commit -sm 'defconfig: update for ksu'
-        rm -rf KernelSU && git clone https://github.com/tiann/KernelSU
-    fi
-
-    if [[ "$FixKSU" == "y" ]];then
-        sed -i "s/4, 14, 163/4, 14, 400/" ${KernelPath}/drivers/kernelsu/selinux/selinux.c
-        sed -i "s/4, 14, 163/4, 14, 400/" ${KernelPath}/drivers/kernelsu/selinux/rules.c
-        sed -i "s/4, 9, 337/4, 19, 0/" ${KernelPath}/drivers/kernelsu/selinux/rules.c
-        sed -i "s/4, 9, 337/4, 19, 0/" ${KernelPath}/drivers/kernelsu/selinux/selinux.c
-        sed -i "s/current_sid/get_current_sid/" ${KernelPath}/drivers/kernelsu/selinux/selinux.c
-        getInfo "fix kernelsu/selinux compile failed for this kernel done"
+        # re clone again
+        rm -rf KernelSU && git clone https://github.com/tiann/KernelSU -b main
+        getInfo "get KernelSU done"
     fi
 }
 

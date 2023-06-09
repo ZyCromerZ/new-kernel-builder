@@ -16,7 +16,6 @@ FirstSendInfoLink="N"
 TypeBuildFor="Q-OSS"
 # DoSubModules="y"
 AddKSU="y"
-FixKSU="y"
 
 # pullALmk(){
 #     [[ "$(pwd)" != "${KernelPath}" ]] && cd "${KernelPath}"
