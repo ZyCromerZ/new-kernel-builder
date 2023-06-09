@@ -226,15 +226,16 @@ CompileClangKernelB(){
     BUILD_START=$(date +"%s")
     make    -j${TotalCores}  O=out ARCH="$ARCH" "$DEFFCONFIG"
     MorePlusPlus=" "
-    if [[ ! -z "$(cat $KernelPath/out/.config | grep "CONFIG_LTO=y" )" ]] || [[ ! -z "$(cat $KernelPath/out/.config | grep "CONFIG_LTO_CLANG=y" )" ]];then
-        MorePlusPlus="LD=ld.lld HOSTLD=ld.lld LD_COMPAT=ld.lld"
-    else
-        if [[ -e ${ClangPath}/bin/arm-linux-gnueabi-ld.lld ]];then
-            MorePlusPlus="LD_COMPAT=${ClangPath}/bin/arm-linux-gnueabi-ld.lld $MorePlusPlus"
-        else
-            MorePlusPlus="LD_COMPAT=${ClangPath}/bin/arm-linux-gnueabi-ld $MorePlusPlus"
-        fi
-    fi
+    MorePlusPlus="LD=ld.lld HOSTLD=ld.lld LD_COMPAT=ld.lld $MorePlusPlus"
+    # if [[ ! -z "$(cat $KernelPath/out/.config | grep "CONFIG_LTO=y" )" ]] || [[ ! -z "$(cat $KernelPath/out/.config | grep "CONFIG_LTO_CLANG=y" )" ]];then
+    #     MorePlusPlus="LD=ld.lld HOSTLD=ld.lld LD_COMPAT=ld.lld $MorePlusPlus"
+    # else
+    #     if [[ -e ${ClangPath}/bin/arm-linux-gnueabi-ld.lld ]];then
+    #         MorePlusPlus="LD_COMPAT=${ClangPath}/bin/arm-linux-gnueabi-ld.lld $MorePlusPlus"
+    #     else
+    #         MorePlusPlus="LD_COMPAT=${ClangPath}/bin/arm-linux-gnueabi-ld $MorePlusPlus"
+    #     fi
+    # fi
     if [[ "$TypeBuilder" == *"SDClang"* ]];then
         MorePlusPlus="HOSTCC=gcc HOSTCXX=g++ $MorePlusPlus"
     fi
@@ -658,6 +659,13 @@ EnableRELR()
     [[ "$(pwd)" != "${KernelPath}" ]] && cd "${KernelPath}"
     sed -i "s/# CONFIG_TOOLS_SUPPORT_RELR is not set/CONFIG_TOOLS_SUPPORT_RELR=y/" arch/$ARCH/configs/$DEFFCONFIG
     git add arch/$ARCH/configs/$DEFFCONFIG && git commit -sm 'defconfig: enable TOOLS_SUPPORT_RELR'  
+}
+
+DisableRELR()
+{
+    [[ "$(pwd)" != "${KernelPath}" ]] && cd "${KernelPath}"
+    sed -i "s/CONFIG_TOOLS_SUPPORT_RELR=y/# CONFIG_TOOLS_SUPPORT_RELR is not set/" arch/$ARCH/configs/$DEFFCONFIG
+    git add arch/$ARCH/configs/$DEFFCONFIG && git commit -sm 'defconfig: disable TOOLS_SUPPORT_RELR'  
 }
 
 ChangeConfigData()
