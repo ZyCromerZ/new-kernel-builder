@@ -229,10 +229,10 @@ CompileClangKernelB(){
     if [[ ! -z "$(cat $KernelPath/out/.config | grep "CONFIG_LTO=y" )" ]] || [[ ! -z "$(cat $KernelPath/out/.config | grep "CONFIG_LTO_CLANG=y" )" ]];then
         MorePlusPlus="LD=ld.lld HOSTLD=ld.lld LD_COMPAT=ld.lld"
     else
-        if [[ -e ${GCCbPath}/bin/$for32-ld.lld ]];then
-            MorePlusPlus="LD_COMPAT=${GCCbPath}/bin/$for32-ld.lld $MorePlusPlus"
+        if [[ -e ${ClangPath}/bin/arm-linux-gnueabi-ld.lld ]];then
+            MorePlusPlus="LD_COMPAT=${ClangPath}/bin/arm-linux-gnueabi-ld.lld $MorePlusPlus"
         else
-            MorePlusPlus="LD_COMPAT=${GCCbPath}/bin/$for32-ld $MorePlusPlus"
+            MorePlusPlus="LD_COMPAT=${ClangPath}/bin/arm-linux-gnueabi-ld $MorePlusPlus"
         fi
     fi
     if [[ "$TypeBuilder" == *"SDClang"* ]];then
