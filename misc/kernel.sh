@@ -152,8 +152,8 @@ CompileGccKernel(){
     cd "${KernelPath}"
     DisableLTO
     MorePlusPlus=" "
-    [[ -e ${GCCaPath}/bin/$for64-ld.lld ]] && MorePlusPlus="LD=${GCCaPath}/bin/$for64-ld.lld HOSTLD=${GCCaPath}/bin/$for64-ld.lld"
-    if [[ -e ${GCCbPath}/bin/$for32-ld.lld ]];then
+    [[ -f ${GCCaPath}/bin/$for64-ld.lld ]] && MorePlusPlus="LD=${GCCaPath}/bin/$for64-ld.lld HOSTLD=${GCCaPath}/bin/$for64-ld.lld"
+    if [[ -f ${GCCbPath}/bin/$for32-ld.lld ]];then
         MorePlusPlus="LD_COMPAT=${GCCbPath}/bin/$for32-ld.lld $MorePlusPlus"
     else
         MorePlusPlus="LD_COMPAT=${GCCbPath}/bin/$for32-ld $MorePlusPlus"
@@ -181,19 +181,19 @@ CompileGccKernelB(){
     cd "${KernelPath}"
     DisableLTO
     MorePlusPlus=" "
-    [[ -e ${GCCaPath}/bin/$for64-ld.lld ]] && MorePlusPlus="LD=${GCCaPath}/bin/$for64-ld.lld HOSTLD=${GCCaPath}/bin/$for64-ld.lld"
-    if [[ -e ${GCCbPath}/bin/$for32-ld.lld ]];then
+    [[ -f ${GCCaPath}/bin/$for64-ld.lld ]] && MorePlusPlus="LD=${GCCaPath}/bin/$for64-ld.lld HOSTLD=${GCCaPath}/bin/$for64-ld.lld"
+    if [[ -f ${GCCbPath}/bin/$for32-ld.lld ]];then
         MorePlusPlus="LD_COMPAT=${GCCbPath}/bin/$for32-ld.lld $MorePlusPlus"
     else
         MorePlusPlus="LD_COMPAT=${GCCbPath}/bin/$for32-ld $MorePlusPlus"
     fi
-    [[ -e ${GCCaPath}/bin/llvm-ar ]] && MorePlusPlus="AR=${GCCaPath}/bin/llvm-ar $MorePlusPlus"
-    [[ -e ${GCCaPath}/bin/llvm-nm ]] && MorePlusPlus="NM=${GCCaPath}/bin/llvm-nm $MorePlusPlus"
-    [[ -e ${GCCaPath}/bin/llvm-strip ]] && MorePlusPlus="STRIP=${GCCaPath}/bin/llvm-strip $MorePlusPlus"
-    [[ -e ${GCCaPath}/bin/llvm-objcopy ]] && MorePlusPlus="OBJCOPY=${GCCaPath}/bin/llvm-objcopy $MorePlusPlus"
-    [[ -e ${GCCaPath}/bin/llvm-objdump ]] && MorePlusPlus="OBJDUMP=${GCCaPath}/bin/llvm-objdump $MorePlusPlus"
-    [[ -e ${GCCaPath}/bin/llvm-readelf ]] && MorePlusPlus="READELF=${GCCaPath}/bin/llvm-readelf $MorePlusPlus"
-    [[ -e ${GCCaPath}/bin/llvm-ar ]] && MorePlusPlus="HOSTAR=${GCCaPath}/bin/llvm-ar $MorePlusPlus"
+    [[ -f ${GCCaPath}/bin/llvm-ar ]] && MorePlusPlus="AR=${GCCaPath}/bin/llvm-ar $MorePlusPlus"
+    [[ -f ${GCCaPath}/bin/llvm-nm ]] && MorePlusPlus="NM=${GCCaPath}/bin/llvm-nm $MorePlusPlus"
+    [[ -f ${GCCaPath}/bin/llvm-strip ]] && MorePlusPlus="STRIP=${GCCaPath}/bin/llvm-strip $MorePlusPlus"
+    [[ -f ${GCCaPath}/bin/llvm-objcopy ]] && MorePlusPlus="OBJCOPY=${GCCaPath}/bin/llvm-objcopy $MorePlusPlus"
+    [[ -f ${GCCaPath}/bin/llvm-objdump ]] && MorePlusPlus="OBJDUMP=${GCCaPath}/bin/llvm-objdump $MorePlusPlus"
+    [[ -f ${GCCaPath}/bin/llvm-readelf ]] && MorePlusPlus="READELF=${GCCaPath}/bin/llvm-readelf $MorePlusPlus"
+    [[ -f ${GCCaPath}/bin/llvm-ar ]] && MorePlusPlus="HOSTAR=${GCCaPath}/bin/llvm-ar $MorePlusPlus"
     echo "MorePlusPlus : $MorePlusPlus"
 
     SendInfoLink
@@ -220,11 +220,15 @@ CompileClangKernelB(){
     BUILD_START=$(date +"%s")
     make    -j${TotalCores}  O=out ARCH="$ARCH" "$DEFFCONFIG"
     MorePlusPlus=" "
-    MorePlusPlus="LD=ld.lld HOSTLD=ld.lld LD_COMPAT=ld.lld $MorePlusPlus"
+    if [[ -f ${ClangPath}/bin/ld.lld ]];then
+        MorePlusPlus="LD=ld.lld HOSTLD=ld.lld LD_COMPAT=ld.lld $MorePlusPlus"
+    else
+        MorePlusPlus="LD_COMPAT=arm-linux-gnueabi-ld $MorePlusPlus"
+    fi
     # if [[ ! -z "$(cat $KernelPath/out/.config | grep "CONFIG_LTO=y" )" ]] || [[ ! -z "$(cat $KernelPath/out/.config | grep "CONFIG_LTO_CLANG=y" )" ]];then
     #     MorePlusPlus="LD=ld.lld HOSTLD=ld.lld LD_COMPAT=ld.lld $MorePlusPlus"
     # else
-    #     if [[ -e ${ClangPath}/bin/arm-linux-gnueabi-ld.lld ]];then
+    #     if [[ -f ${ClangPath}/bin/arm-linux-gnueabi-ld.lld ]];then
     #         MorePlusPlus="LD_COMPAT=${ClangPath}/bin/arm-linux-gnueabi-ld.lld $MorePlusPlus"
     #     else
     #         MorePlusPlus="LD_COMPAT=${ClangPath}/bin/arm-linux-gnueabi-ld $MorePlusPlus"
