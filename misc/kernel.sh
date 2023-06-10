@@ -102,6 +102,7 @@ CloneKernel(){
 
 CompileClangKernel(){
     cd "${KernelPath}"
+    [[ "$AddKSU" == "y" ]] && [[ "$(cat arch/$ARCH/configs/$DEFFCONFIG)" == "CONFIG_THINLTO=y" ]] && DisableLTO
     SendInfoLink
     BUILD_START=$(date +"%s")
     make    -j${TotalCores}  O=out ARCH="$ARCH" "$DEFFCONFIG"
@@ -214,6 +215,7 @@ CompileGccKernelB(){
 
 CompileClangKernelB(){
     cd "${KernelPath}"
+    [[ "$AddKSU" == "y" ]] && [[ "$(cat arch/$ARCH/configs/$DEFFCONFIG)" == "CONFIG_THINLTO=y" ]] && DisableLTO
     SendInfoLink
     BUILD_START=$(date +"%s")
     make    -j${TotalCores}  O=out ARCH="$ARCH" "$DEFFCONFIG"
@@ -259,6 +261,7 @@ CompileClangKernelB(){
 
 CompileClangKernelLLVM(){
     cd "${KernelPath}"
+    [[ "$AddKSU" == "y" ]] && [[ "$(cat arch/$ARCH/configs/$DEFFCONFIG)" == "CONFIG_THINLTO=y" ]] && DisableLTO
     SendInfoLink
     MorePlusPlus=" "
     PrefixDir=""
@@ -326,6 +329,7 @@ CompileClangKernelLLVM(){
 
 CompileClangKernelLLVMB(){
     cd "${KernelPath}"
+    [[ "$AddKSU" == "y" ]] && [[ "$(cat arch/$ARCH/configs/$DEFFCONFIG)" == "CONFIG_THINLTO=y" ]] && DisableLTO
     SendInfoLink
     MorePlusPlus=" "
     PrefixDir=""
