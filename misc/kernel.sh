@@ -683,3 +683,11 @@ ChangeConfigData()
         git add kernel/Makefile && git commit -sm "kernel: Makefile: change defconfig for /proc/config.gz"
     fi
 }
+
+DebugMissBypass()
+{
+    [[ "$(pwd)" != "${KernelPath}" ]] && cd "${KernelPath}"
+    addToConf "arch/${ARCH}/configs/${DEFFCONFIG}" "CONFIG_DEBUG_SECTION_MISMATCH"
+    addToConf "arch/${ARCH}/configs/${DEFFCONFIG}" "CONFIG_SECTION_MISMATCH_WARN_ONLY"
+    git add "arch/${ARCH}/configs/${DEFFCONFIG}" && git commit -sm 'enable CONFIG_DEBUG_SECTION_MISMATCH CONFIG_SECTION_MISMATCH_WARN_ONLY'
+}

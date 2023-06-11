@@ -44,6 +44,36 @@ CloneFourteenGugelClang(){
     ClangType="$(${ClangPath}/bin/clang --version | head -n 1)"
 }
 
+CloneSixTeenGugelClang()
+{
+    ClangPath=${MainClangZipPath}
+    [[ "$(pwd)" != "${MainPath}" ]] && cd "${MainPath}"
+    [[ ! -d ${MainClangZipPath} ]] && mkdir $ClangPath
+    rm -rf $ClangPath/*
+    if [ ! -e "${MainPath}/clang-r475365b.tar.gz" ];then
+        wget -q  https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+archive/6d5fdd683f6de76f8a98cb1e30738acaa6633c30/clang-r475365b.tar.gz -O "clang-r475365b.tar.gz"
+    fi
+    tar -xf clang-r475365b.tar.gz -C $ClangPath
+    rm -rf clang-r475365b.tar.gz
+    TypeBuilder="GCLANG-16"
+    ClangType="$(${ClangPath}/bin/clang --version | head -n 1)"
+}
+
+CloneSevenTeenGugelClang()
+{
+    ClangPath=${MainClangZipPath}
+    [[ "$(pwd)" != "${MainPath}" ]] && cd "${MainPath}"
+    [[ ! -d ${MainClangZipPath} ]] && mkdir $ClangPath
+    rm -rf $ClangPath/*
+    if [ ! -e "${MainPath}/clang-r487747c.tar.gz" ];then
+        wget -q  https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+archive/6d5fdd683f6de76f8a98cb1e30738acaa6633c30/clang-r487747c.tar.gz -O "clang-r487747c.tar.gz"
+    fi
+    tar -xf clang-r487747c.tar.gz -C $ClangPath
+    rm -rf clang-r487747c.tar.gz
+    TypeBuilder="GCLANG-17"
+    ClangType="$(${ClangPath}/bin/clang --version | head -n 1)"
+}
+
 CloneOldDTCClang(){
     ClangPath=${MainClangPath}
     [[ "$(pwd)" != "${MainPath}" ]] && cd "${MainPath}"
