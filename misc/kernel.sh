@@ -33,6 +33,7 @@ if [ ! -z "$1" ];then
     UseGoldBinutils="n"
     UseOBJCOPYBinutils="n"
     SDLTOFix="n"
+    [ -z "$UseLLD" ] && UseLLD="y"
     MAKE=()
     [ -z "$DontInc" ] && DontInc=""
     [ -z "$DoSubModules" ] && DoSubModules="n"
@@ -52,6 +53,15 @@ addToConf()
     else
         echo "$val=y" >> "$path"
     fi
+}
+
+GetKsuSource(){
+    curl -LSs "https://raw.githubusercontent.com/tiann/KernelSU/main/kernel/setup.sh" | bash -s main || GetKsuSource
+}
+
+CloneKSUSource()
+{
+    git clone https://github.com/tiann/KernelSU -b main || CloneKSUSource
 }
 
 CloneKernel(){
@@ -83,26 +93,28 @@ CloneKernel(){
     HeadCommitMsg="$(git log --pretty=format:'%s' -n1)"
     getInfo "get some main info done"
     if [[ "$DoSubModules" == "y" ]];then
-        git submodule update --remote --init --recursive
+        git submodule update --init --recursive
+        git submodule update --remote --recursive
         getInfo "get submodule done"
     fi
 
     if [ "$AddKSU" == "y" ]; then
-        (curl -LSs "https://raw.githubusercontent.com/tiann/KernelSU/main/kernel/setup.sh" | bash -s main)
+        GetKsuSource
         addToConf "arch/${ARCH}/configs/${DEFFCONFIG}" "CONFIG_KPROBES"
         addToConf "arch/${ARCH}/configs/${DEFFCONFIG}" "CONFIG_HAVE_KPROBES"
         addToConf "arch/${ARCH}/configs/${DEFFCONFIG}" "CONFIG_KPROBE_EVENTS"
         addToConf "arch/${ARCH}/configs/${DEFFCONFIG}" "CONFIG_OVERLAY_FS"
         git add arch/${ARCH}/configs/${DEFFCONFIG} && git commit -sm 'defconfig: update for ksu'
         # re clone again
-        rm -rf KernelSU && git clone https://github.com/tiann/KernelSU -b main
+        rm -rf KernelSU 
+        CloneKSUSource
         getInfo "get KernelSU done"
     fi
 }
 
 CompileClangKernel(){
     cd "${KernelPath}"
-    [[ "$AddKSU" == "y" ]] && [[ "$(cat arch/$ARCH/configs/$DEFFCONFIG)" == "CONFIG_THINLTO=y" ]] && DisableLTO
+    [[ -d "${KernelPath}/KernelSU" ]] && [[ "$(cat arch/$ARCH/configs/$DEFFCONFIG)" == "CONFIG_THINLTO=y" ]] && DisableLTO
     SendInfoLink
     BUILD_START=$(date +"%s")
     make    -j${TotalCores}  O=out ARCH="$ARCH" "$DEFFCONFIG"
@@ -152,8 +164,8 @@ CompileGccKernel(){
     cd "${KernelPath}"
     DisableLTO
     MorePlusPlus=" "
-    [[ -f ${GCCaPath}/bin/$for64-ld.lld ]] && MorePlusPlus="LD=${GCCaPath}/bin/$for64-ld.lld HOSTLD=${GCCaPath}/bin/$for64-ld.lld"
-    if [[ -f ${GCCbPath}/bin/$for32-ld.lld ]];then
+    [[ "$UseLLD" == "y" ]] && [[ -f ${GCCaPath}/bin/$for64-ld.lld ]] && MorePlusPlus="LD=${GCCaPath}/bin/$for64-ld.lld HOSTLD=${GCCaPath}/bin/$for64-ld.lld"
+    if [[ "$UseLLD" == "y" ]] && [[ -f ${GCCbPath}/bin/$for32-ld.lld ]];then
         MorePlusPlus="LD_COMPAT=${GCCbPath}/bin/$for32-ld.lld $MorePlusPlus"
     else
         MorePlusPlus="LD_COMPAT=${GCCbPath}/bin/$for32-ld $MorePlusPlus"
@@ -181,8 +193,8 @@ CompileGccKernelB(){
     cd "${KernelPath}"
     DisableLTO
     MorePlusPlus=" "
-    [[ -f ${GCCaPath}/bin/$for64-ld.lld ]] && MorePlusPlus="LD=${GCCaPath}/bin/$for64-ld.lld HOSTLD=${GCCaPath}/bin/$for64-ld.lld"
-    if [[ -f ${GCCbPath}/bin/$for32-ld.lld ]];then
+    [[ "$UseLLD" == "y" ]] && [[ -f ${GCCaPath}/bin/$for64-ld.lld ]] && MorePlusPlus="LD=${GCCaPath}/bin/$for64-ld.lld HOSTLD=${GCCaPath}/bin/$for64-ld.lld"
+    if [[ "$UseLLD" == "y" ]] && [[ -f ${GCCbPath}/bin/$for32-ld.lld ]];then
         MorePlusPlus="LD_COMPAT=${GCCbPath}/bin/$for32-ld.lld $MorePlusPlus"
     else
         MorePlusPlus="LD_COMPAT=${GCCbPath}/bin/$for32-ld $MorePlusPlus"
@@ -215,25 +227,20 @@ CompileGccKernelB(){
 
 CompileClangKernelB(){
     cd "${KernelPath}"
-    [[ "$AddKSU" == "y" ]] && [[ "$(cat arch/$ARCH/configs/$DEFFCONFIG)" == "CONFIG_THINLTO=y" ]] && DisableLTO
+    [[ -d "${KernelPath}/KernelSU" ]] && [[ "$(cat arch/$ARCH/configs/$DEFFCONFIG)" == "CONFIG_THINLTO=y" ]] && DisableLTO
     SendInfoLink
     BUILD_START=$(date +"%s")
     make    -j${TotalCores}  O=out ARCH="$ARCH" "$DEFFCONFIG"
     MorePlusPlus=" "
-    if [[ -f ${ClangPath}/bin/ld.lld ]];then
+    if [[ ! -z "$(cat $KernelPath/out/.config | grep "CONFIG_LTO=y" )" ]] || [[ ! -z "$(cat $KernelPath/out/.config | grep "CONFIG_LTO_CLANG=y" )" ]] || [[ "$UseLLD" == "y" ]];then
         MorePlusPlus="LD=ld.lld HOSTLD=ld.lld LD_COMPAT=ld.lld $MorePlusPlus"
     else
-        MorePlusPlus="LD_COMPAT=arm-linux-gnueabi-ld $MorePlusPlus"
+        if [[ -f ${ClangPath}/bin/arm-linux-gnueabi-ld.lld ]];then
+            MorePlusPlus="LD_COMPAT=${ClangPath}/bin/arm-linux-gnueabi-ld.lld $MorePlusPlus"
+        else
+            MorePlusPlus="LD_COMPAT=${ClangPath}/bin/arm-linux-gnueabi-ld $MorePlusPlus"
+        fi
     fi
-    # if [[ ! -z "$(cat $KernelPath/out/.config | grep "CONFIG_LTO=y" )" ]] || [[ ! -z "$(cat $KernelPath/out/.config | grep "CONFIG_LTO_CLANG=y" )" ]];then
-    #     MorePlusPlus="LD=ld.lld HOSTLD=ld.lld LD_COMPAT=ld.lld $MorePlusPlus"
-    # else
-    #     if [[ -f ${ClangPath}/bin/arm-linux-gnueabi-ld.lld ]];then
-    #         MorePlusPlus="LD_COMPAT=${ClangPath}/bin/arm-linux-gnueabi-ld.lld $MorePlusPlus"
-    #     else
-    #         MorePlusPlus="LD_COMPAT=${ClangPath}/bin/arm-linux-gnueabi-ld $MorePlusPlus"
-    #     fi
-    # fi
     if [[ "$TypeBuilder" == *"SDClang"* ]];then
         MorePlusPlus="HOSTCC=gcc HOSTCXX=g++ $MorePlusPlus"
     fi
@@ -265,7 +272,7 @@ CompileClangKernelB(){
 
 CompileClangKernelLLVM(){
     cd "${KernelPath}"
-    [[ "$AddKSU" == "y" ]] && [[ "$(cat arch/$ARCH/configs/$DEFFCONFIG)" == "CONFIG_THINLTO=y" ]] && DisableLTO
+    [[ -d "${KernelPath}/KernelSU" ]] && [[ "$(cat arch/$ARCH/configs/$DEFFCONFIG)" == "CONFIG_THINLTO=y" ]] && DisableLTO
     SendInfoLink
     MorePlusPlus=" "
     PrefixDir=""
@@ -333,7 +340,7 @@ CompileClangKernelLLVM(){
 
 CompileClangKernelLLVMB(){
     cd "${KernelPath}"
-    [[ "$AddKSU" == "y" ]] && [[ "$(cat arch/$ARCH/configs/$DEFFCONFIG)" == "CONFIG_THINLTO=y" ]] && DisableLTO
+    [[ -d "${KernelPath}/KernelSU" ]] && [[ "$(cat arch/$ARCH/configs/$DEFFCONFIG)" == "CONFIG_THINLTO=y" ]] && DisableLTO
     SendInfoLink
     MorePlusPlus=" "
     PrefixDir=""
