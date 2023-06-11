@@ -28,4 +28,5 @@ CloneKernel "--depth=1"
 DisableLTO
 # CompileClangKernel && CleanOut
 CloneCompiledGccTwelve
+UseLLD="n"
 CompileGccKernelB
