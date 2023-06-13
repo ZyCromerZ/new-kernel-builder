@@ -74,6 +74,7 @@ CloneCompiledGccEleven(){
     fi
     for32=arm-zyc-linux-gnueabi
     GetGccVersion
+    TypeBuilderGcc="GCC-11"
 }
 
 
@@ -180,6 +181,7 @@ CloneCompiledGccTwelve(){
     fi
     for32=arm-zyc-linux-gnueabi
     GetGccVersion
+    TypeBuilderGcc="GCC-12"
 }
 
 CloneCompiledGccThirteen(){
@@ -208,6 +210,36 @@ CloneCompiledGccThirteen(){
     fi
     for32=arm-zyc-linux-gnueabi
     GetGccVersion
+    TypeBuilderGcc="GCC-13"
+}
+
+CloneCompiledGccFourteen(){
+    [[ "$(pwd)" != "${MainPath}" ]] && cd "${MainPath}"
+    GCCaPath="${MainGCCaPath}"
+    if [ ! -d "$GCCaPath" ];then
+        git clone https://github.com/ZyCromerZ/aarch64-zyc-linux-gnu.git -b 14 $GCCaPath --depth=1
+    else
+        cd "${GCCaPath}"
+        git fetch https://github.com/ZyCromerZ/aarch64-zyc-linux-gnu.git 14 --depth=1
+        git checkout FETCH_HEAD
+        [[ ! -z "$(git branch | grep 14)" ]] && git branch -D 14
+        git checkout -b 14
+    fi
+    for64=aarch64-zyc-linux-gnu
+    [[ "$(pwd)" != "${MainPath}" ]] && cd "${MainPath}"
+    GCCbPath="${MainGCCbPath}"
+    if [ ! -d "$GCCbPath" ];then
+        git clone https://github.com/ZyCromerZ/arm-zyc-linux-gnueabi.git -b 14 $GCCbPath --depth=1
+    else
+        cd "${GCCbPath}"
+        git fetch https://github.com/ZyCromerZ/arm-zyc-linux-gnueabi.git 14 --depth=1
+        git checkout FETCH_HEAD
+        [[ ! -z "$(git branch | grep 14)" ]] && git branch -D 14
+        git checkout -b 14
+    fi
+    for32=arm-zyc-linux-gnueabi
+    GetGccVersion
+    TypeBuilderGcc="GCC-14"
 }
 
 GetGccVersion()

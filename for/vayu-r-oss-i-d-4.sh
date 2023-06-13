@@ -27,6 +27,6 @@ CloneKernel "--depth=1"
 # CloneSdClang
 DisableLTO
 # CompileClangKernel && CleanOut
-CloneCompiledGccTwelve
+CloneCompiledGccFourteen
 UseLLD="n"
 CompileGccKernel

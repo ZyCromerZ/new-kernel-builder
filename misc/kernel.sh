@@ -184,6 +184,7 @@ CompileGccKernel(){
     )
     TypeBuilderOld="$TypeBuilder"
     TypeBuilder="GCC"
+    [[ ! -z "$TypeBuilderGcc" ]] && TypeBuilder="$TypeBuilderGcc"
     CompileNow ${@}
     TypeBuilder="$TypeBuilderOld"
 
@@ -221,6 +222,7 @@ CompileGccKernelB(){
     )
     TypeBuilderOld="$TypeBuilder"
     TypeBuilder="GCC"
+    [[ ! -z "$TypeBuilderGcc" ]] && TypeBuilder="$TypeBuilderGcc"
     CompileNow ${@}
     TypeBuilder="$TypeBuilderOld"
 }
