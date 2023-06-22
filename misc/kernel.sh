@@ -1,9 +1,9 @@
 #! /bin/bash
 
-chmod +x ${MainPath}/misc/bot.sh
+chmod +x "${MainPath}"/misc/bot.sh
 
-IncludeFiles ${MainPath}/misc/clang.sh
-IncludeFiles ${MainPath}/misc/gcc.sh
+IncludeFiles "${MainPath}"/misc/clang.sh
+IncludeFiles "${MainPath}"/misc/gcc.sh
 
 git config --global pull.rebase false
 
@@ -18,7 +18,7 @@ getInfoErr() {
 if [ ! -z "$1" ];then
     KernelRepo="$1"
     if [ "$CustomUploader" == "Y" ];then
-        git clone https://${GIT_SECRET}@github.com/${GIT_USERNAME}/uploader-kernel-private -b master "${UploaderPath}"  --depth=1
+        git clone https://"${GIT_SECRET}"@github.com/"${GIT_USERNAME}"/uploader-kernel-private -b master "${UploaderPath}"  --depth=1
     fi
     if [ "$UseSpectrum" == "Y" ];then
         git clone https://github.com/ZyCromerZ/Spectrum -b master "${SpectrumPath}"  --depth=1 
@@ -40,7 +40,7 @@ if [ ! -z "$1" ];then
     export CLANG_TRIPLE=aarch64-linux-gnu-
 else    
     getInfoErr "KernelRepo is missing :/"
-    [ ! -z "${DRONE_BRANCH}" ] && . $MainPath/misc/bot.sh "send_info" "<b>❌ Build failed</b>%0ABranch : <b>${KernelBranch}</b%0A%0ASad Boy"
+    [ ! -z "${DRONE_BRANCH}" ] && . "$MainPath"/misc/bot.sh "send_info" "<b>❌ Build failed</b>%0ABranch : <b>${KernelBranch}</b%0A%0ASad Boy"
     exit 1
 fi
 
@@ -49,7 +49,7 @@ addToConf()
     local path="$1"
     local val="$2"
     if [[ ! -z "$(cat "$path" | grep "$val")" ]];then
-        sed -i "s/# $val is not set/$val=y/" $path
+        sed -i "s/# $val is not set/$val=y/" "$path"
     else
         echo "$val=y" >> "$path"
     fi
@@ -68,13 +68,13 @@ CloneKernel(){
     if [[ ! -d "${KernelPath}" ]];then
         local args="${@}"
         if [ ! -z "$args" ];then
-            git clone "${KernelRepo}" -b "${KernelBranch}" "${KernelPath}" ${args}
+            git clone "${KernelRepo}" -b "${KernelBranch}" "${KernelPath}" "${args}"
         else
             git clone "${KernelRepo}" -b "${KernelBranch}" "${KernelPath}"
         fi
-        cd "${KernelPath}"
+        cd "${KernelPath}" 
     else
-        cd "${KernelPath}"
+        cd "${KernelPath}" 
         if [ ! -z "${KernelBranch}" ];then
             getInfo "clone balik?"
             if [ ! -z "$1" ];then
@@ -104,7 +104,7 @@ CloneKernel(){
         addToConf "arch/${ARCH}/configs/${DEFFCONFIG}" "CONFIG_HAVE_KPROBES"
         addToConf "arch/${ARCH}/configs/${DEFFCONFIG}" "CONFIG_KPROBE_EVENTS"
         addToConf "arch/${ARCH}/configs/${DEFFCONFIG}" "CONFIG_OVERLAY_FS"
-        git add arch/${ARCH}/configs/${DEFFCONFIG} && git commit -sm 'defconfig: update for ksu'
+        git add arch/"${ARCH}"/configs/"${DEFFCONFIG}" && git commit -sm 'defconfig: update for ksu'
         # re clone again
         rm -rf KernelSU 
         CloneKSUSource
@@ -113,11 +113,11 @@ CloneKernel(){
 }
 
 CompileClangKernel(){
-    cd "${KernelPath}"
-    [[ -d "${KernelPath}/KernelSU" ]] && [[ "$(cat arch/$ARCH/configs/$DEFFCONFIG)" == "CONFIG_THINLTO=y" ]] && DisableLTO
+    cd "${KernelPath}" 
+    [[ -d "${KernelPath}/KernelSU" ]] && [[ "$(cat arch/"$ARCH"/configs/"$DEFFCONFIG")" == "CONFIG_THINLTO=y" ]] && DisableLTO
     SendInfoLink
     BUILD_START=$(date +"%s")
-    make    -j${TotalCores}  O=out ARCH="$ARCH" "$DEFFCONFIG"
+    make    -j"${TotalCores}"  O=out ARCH="$ARCH" "$DEFFCONFIG"
     MorePlusPlus=" "
     if [[ "$UseGoldBinutils" == "y" ]];then
         MorePlusPlus="LD=$for64-ld.gold LDGOLD=$for64-ld.gold HOSTLD=${ClangPath}/bin/ld $MorePlusPlus"
@@ -161,7 +161,7 @@ CompileClangKernel(){
 }
 
 CompileGccKernel(){
-    cd "${KernelPath}"
+    cd "${KernelPath}" 
     DisableLTO
     MorePlusPlus=" "
     [[ "$UseLLD" == "y" ]] && [[ -f ${GCCaPath}/bin/$for64-ld.lld ]] && MorePlusPlus="LD=${GCCaPath}/bin/$for64-ld.lld HOSTLD=${GCCaPath}/bin/$for64-ld.lld"
@@ -173,7 +173,7 @@ CompileGccKernel(){
     echo "MorePlusPlus : $MorePlusPlus"
     SendInfoLink
     BUILD_START=$(date +"%s")
-    make    -j${TotalCores}  O=out ARCH="${ARCH}" "${DEFFCONFIG}"
+    make    -j"${TotalCores}"  O=out ARCH="${ARCH}" "${DEFFCONFIG}"
     MAKE=(
         ARCH=$ARCH \
         SUBARCH=$ARCH \
@@ -191,7 +191,7 @@ CompileGccKernel(){
 }
 
 CompileGccKernelB(){
-    cd "${KernelPath}"
+    cd "${KernelPath}" 
     DisableLTO
     MorePlusPlus=" "
     [[ "$UseLLD" == "y" ]] && [[ -f ${GCCaPath}/bin/$for64-ld.lld ]] && MorePlusPlus="LD=${GCCaPath}/bin/$for64-ld.lld HOSTLD=${GCCaPath}/bin/$for64-ld.lld"
@@ -211,7 +211,7 @@ CompileGccKernelB(){
 
     SendInfoLink
     BUILD_START=$(date +"%s")
-    make    -j${TotalCores}  O=out ARCH="${ARCH}" "${DEFFCONFIG}"
+    make    -j"${TotalCores}"  O=out ARCH="${ARCH}" "${DEFFCONFIG}"
     MAKE=(
         ARCH=$ARCH \
         SUBARCH=$ARCH \
@@ -228,13 +228,13 @@ CompileGccKernelB(){
 }
 
 CompileClangKernelB(){
-    cd "${KernelPath}"
-    [[ -d "${KernelPath}/KernelSU" ]] && [[ "$(cat arch/$ARCH/configs/$DEFFCONFIG)" == "CONFIG_THINLTO=y" ]] && DisableLTO
+    cd "${KernelPath}" 
+    [[ -d "${KernelPath}/KernelSU" ]] && [[ "$(cat arch/"$ARCH"/configs/"$DEFFCONFIG")" == "CONFIG_THINLTO=y" ]] && DisableLTO
     SendInfoLink
     BUILD_START=$(date +"%s")
-    make    -j${TotalCores}  O=out ARCH="$ARCH" "$DEFFCONFIG"
+    make    -j"${TotalCores}"  O=out ARCH="$ARCH" "$DEFFCONFIG"
     MorePlusPlus=" "
-    if [[ ! -z "$(cat $KernelPath/out/.config | grep "CONFIG_LTO=y" )" ]] || [[ ! -z "$(cat $KernelPath/out/.config | grep "CONFIG_LTO_CLANG=y" )" ]] || [[ "$UseLLD" == "y" ]];then
+    if [[ ! -z "$(cat "$KernelPath"/out/.config | grep "CONFIG_LTO=y" )" ]] || [[ ! -z "$(cat "$KernelPath"/out/.config | grep "CONFIG_LTO_CLANG=y" )" ]] || [[ "$UseLLD" == "y" ]];then
         MorePlusPlus="LD=ld.lld HOSTLD=ld.lld LD_COMPAT=ld.lld $MorePlusPlus"
     else
         if [[ -f ${ClangPath}/bin/arm-linux-gnueabi-ld.lld ]];then
@@ -273,8 +273,8 @@ CompileClangKernelB(){
 }
 
 CompileClangKernelLLVM(){
-    cd "${KernelPath}"
-    [[ -d "${KernelPath}/KernelSU" ]] && [[ "$(cat arch/$ARCH/configs/$DEFFCONFIG)" == "CONFIG_THINLTO=y" ]] && DisableLTO
+    cd "${KernelPath}" 
+    [[ -d "${KernelPath}/KernelSU" ]] && [[ "$(cat arch/"$ARCH"/configs/"$DEFFCONFIG")" == "CONFIG_THINLTO=y" ]] && DisableLTO
     SendInfoLink
     MorePlusPlus=" "
     PrefixDir=""
@@ -301,7 +301,7 @@ CompileClangKernelLLVM(){
         MorePlusPlus="OBJCOPY=${PrefixDir}llvm-objcopy $MorePlusPlus"
     fi
     BUILD_START=$(date +"%s")
-    make    -j${TotalCores}  O=out ARCH="$ARCH" "$DEFFCONFIG"
+    make    -j"${TotalCores}"  O=out ARCH="$ARCH" "$DEFFCONFIG"
     if [ -d "${ClangPath}/lib64" ];then
         MAKE=(
                 ARCH=$ARCH \
@@ -341,8 +341,8 @@ CompileClangKernelLLVM(){
 }
 
 CompileClangKernelLLVMB(){
-    cd "${KernelPath}"
-    [[ -d "${KernelPath}/KernelSU" ]] && [[ "$(cat arch/$ARCH/configs/$DEFFCONFIG)" == "CONFIG_THINLTO=y" ]] && DisableLTO
+    cd "${KernelPath}" 
+    [[ -d "${KernelPath}/KernelSU" ]] && [[ "$(cat arch/"$ARCH"/configs/"$DEFFCONFIG")" == "CONFIG_THINLTO=y" ]] && DisableLTO
     SendInfoLink
     MorePlusPlus=" "
     PrefixDir=""
@@ -374,7 +374,7 @@ CompileClangKernelLLVMB(){
         MorePlusPlus="OBJCOPY=${PrefixDir}llvm-objcopy $MorePlusPlus"
     fi
     BUILD_START=$(date +"%s")
-    make    -j${TotalCores}  O=out ARCH="$ARCH" "$DEFFCONFIG"
+    make    -j"${TotalCores}"  O=out ARCH="$ARCH" "$DEFFCONFIG"
     if [ -d "${ClangPath}/lib64" ];then
         MAKE=(
                 ARCH=$ARCH \
@@ -416,15 +416,15 @@ CompileClangKernelLLVMB(){
 CompileNow()
 {
     getInfo "script : 'make -j${TotalCores} O=out ${MAKE[@]} LLVM_IAS=1'"
-    make -j${TotalCores} O=out ${MAKE[@]} LLVM_IAS=1
+    make -j"${TotalCores}" O=out ${MAKE[@]} LLVM_IAS=1
     BUILD_END=$(date +"%s")
     DIFF=$((BUILD_END - BUILD_START))
     if [[ ! -e $KernelPath/out/arch/$ARCH/boot/${ImgName} ]];then
         MSG="<b>❌ Build failed</b>%0ABranch : <b>${KernelBranch}</b>%0ABuilder : <b>${rbranch}</b>%0A%0A- <code>$((DIFF / 60)) minute(s) $((DIFF % 60)) second(s)</code>%0A%0ASad Boy"
-        . $MainPath/misc/bot.sh "send_info" "$MSG"
+        . "$MainPath"/misc/bot.sh "send_info" "$MSG"
         exit 1
     fi
-    cp -af $KernelPath/out/arch/$ARCH/boot/${ImgName} $AnyKernelPath
+    cp -af "$KernelPath"/out/arch/"$ARCH"/boot/"${ImgName}" "$AnyKernelPath"
     KName=$(cat "${KernelPath}/arch/$ARCH/configs/$DEFFCONFIG" | grep "CONFIG_LOCALVERSION=" | sed 's/CONFIG_LOCALVERSION="-*//g' | sed 's/"*//g' )
     KName="${KName/'+'/'plus'}"
     ZipName="[$GetBD][$TypeBuilder]${TypeBuildTag}[$CODENAME]$KVer-$KName-$HeadCommitId.zip"
@@ -446,28 +446,29 @@ CompileNow()
 CreateMultipleDtb()
 {
     if [[ ! -z "$MultipleDtbBranch" ]];then
-        cd "${KernelPath}"
-        rm -rf $AnyKernelPath/dtb
-        git fetch origin $KernelBranch --unshallow
+        cd "${KernelPath}" 
+        rm -rf "$AnyKernelPath"/dtb
+        # git fetch origin "$KernelBranch" --unshallow
         for Ngesot in $MultipleDtbBranch
         do
-            branch=$(echo $Ngesot | awk -F ':' '{print $1}')
-            filename=$(echo $Ngesot | awk -F ':' '{print $2}')
-            git reset --hard $KernelBranch
-            git fetch origin $branch
-            git pull origin $branch --no-commit
+            branch=$(echo "$Ngesot" | awk -F ':' '{print $1}')
+            filename=$(echo "$Ngesot" | awk -F ':' '{print $2}')
+            # git reset --hard "$KernelBranch"
+            git fetch origin "$branch"
+            # git pull origin "$branch" --no-commit
+            git checkout FETCH_HEAD
             git commit -sm 'merged dtbo'
             make "${MAKE[@]}" O=out "$DEFFCONFIG" dtbo.img
-            ( find "$KernelPath/out/arch/$ARCH/boot/dts/$AfterDTS" -name "*.dtb" -exec cat {} + > $AnyKernelPath/dtb-$filename )
-            [[ ! -e "$AnyKernelPath/dtb-$filename" ]] && [[ ! -z "$BASE_DTB_NAME" ]] && cp $KernelPath/out/arch/$ARCH/boot/dts/$AfterDTS/$BASE_DTB_NAME $AnyKernelPath/dtb-$filename
+            ( find "$KernelPath/out/arch/$ARCH/boot/dts/$AfterDTS" -name "*.dtb" -exec cat {} + > "$AnyKernelPath"/dtb-"$filename" )
+            [[ ! -e "$AnyKernelPath/dtb-$filename" ]] && [[ ! -z "$BASE_DTB_NAME" ]] && cp "$KernelPath"/out/arch/"$ARCH"/boot/dts/"$AfterDTS"/"$BASE_DTB_NAME" "$AnyKernelPath"/dtb-"$filename"
         done
-        cd "$AnyKernelPath"
+        cd "$AnyKernelPath" 
     fi
 }
 
 CleanOut()
 {
-    cd "${KernelPath}"
+    cd "${KernelPath}" 
     git reset --hard "${HeadCommitId}"
     rm -rf "${KernelPath}/out"
     ccache -c
@@ -475,19 +476,19 @@ CleanOut()
 }
 
 MakeZip(){
-    cd $AnyKernelPath
+    cd "$AnyKernelPath" 
     if [ ! -z "$spectrumFile" ] && [ "$UseSpectrum" == "Y" ];then
-        cp -af $SpectrumPath/$spectrumFile init.spectrum.rc && sed -i "s/persist.spectrum.kernel.*/persist.spectrum.kernel $KName/g" init.spectrum.rc
+        cp -af "$SpectrumPath"/"$spectrumFile" init.spectrum.rc && sed -i "s/persist.spectrum.kernel.*/persist.spectrum.kernel $KName/g" init.spectrum.rc
     fi
     cp -af anykernel-real.sh anykernel.sh && sed -i "s/kernel.string=.*/kernel.string=$KName-$HeadCommitId by ZyCromerZ/g" anykernel.sh
     [[ "$UseDtbo" == "y" ]] && cp -af "$KernelPath/out/arch/$ARCH/boot/dtbo.img" "$AnyKernelPath/dtbo.img"
     if [[ "$UseDtb" == "y" ]];then
-        ( find "$KernelPath/out/arch/$ARCH/boot/dts/$AfterDTS" -name "*.dtb" -exec cat {} + > $AnyKernelPath/dtb )
-        [[ ! -e "$AnyKernelPath/dtb" ]] && [[ ! -z "$BASE_DTB_NAME" ]] && cp $KernelPath/out/arch/$ARCH/boot/dts/$AfterDTS/$BASE_DTB_NAME $AnyKernelPath/dtb
+        ( find "$KernelPath/out/arch/$ARCH/boot/dts/$AfterDTS" -name "*.dtb" -exec cat {} + > "$AnyKernelPath"/dtb )
+        [[ ! -e "$AnyKernelPath/dtb" ]] && [[ ! -z "$BASE_DTB_NAME" ]] && cp "$KernelPath"/out/arch/"$ARCH"/boot/dts/"$AfterDTS"/"$BASE_DTB_NAME" "$AnyKernelPath"/dtb
     fi
     CreateMultipleDtb
     # remove placeholder file
-    for asu in `find . -name placeholder`
+    for asu in $(find . -name placeholder)
     do
         rm -rf "$asu"
     done
@@ -498,7 +499,7 @@ MakeZip(){
         cp -af "$ZipName-OC.zip" ../"$ZipName-OC.zip" && rm -rf "$ZipName-OC.zip"
         KernelFilesOc="$(pwd)/../$ZipName-OC.zip"
     fi
-    zip -r9 "$ZipName" * -x .git README.md anykernel-real.sh .gitignore *.zip $DontInc
+    zip -r9 "$ZipName" * -x .git README.md anykernel-real.sh .gitignore *.zip "$DontInc"
 
     # remove dtb file after make a zip
     KernelFiles="$(pwd)/$ZipName"
@@ -519,48 +520,48 @@ UploadKernel(){
     [ ! -z "${DRONE_BRANCH}" ] && doOsdnUp="" && doSFUp=""
 
     if [ "${CustomUploader}" == "Y" ];then
-        cd $UploaderPath
+        cd "$UploaderPath" 
         chmod +x "${UploaderPath}/run.sh"
         . "${UploaderPath}/run.sh" "$KernelFiles" "$FolderUp" "$GetCBD" "$ExFolder"
         if [ ! -z "$HasOcDtb" ];then
             . "${UploaderPath}/run.sh" "$KernelFilesOc" "$FolderUp" "$GetCBD" "$ExFolder"
         fi
         if [ ! -z "$1" ];then
-            . ${MainPath}/misc/bot.sh "send_info" "$MSG" "$1"
+            . "${MainPath}"/misc/bot.sh "send_info" "$MSG" "$1"
         else
-            . ${MainPath}/misc/bot.sh "send_info" "$MSG"
+            . "${MainPath}"/misc/bot.sh "send_info" "$MSG"
         fi
     else
         if [ ! -z "$1" ];then
             if [ ! -z "$HasOcDtb" ];then
-                . ${MainPath}/misc/bot.sh "send_files" "$KernelFilesOc" "$MSG" "$1"
+                . "${MainPath}"/misc/bot.sh "send_files" "$KernelFilesOc" "$MSG" "$1"
             fi
-            . ${MainPath}/misc/bot.sh "send_files" "$KernelFiles" "$MSG" "$1"
+            . "${MainPath}"/misc/bot.sh "send_files" "$KernelFiles" "$MSG" "$1"
         else
             if [ ! -z "$HasOcDtb" ];then
-                . ${MainPath}/misc/bot.sh "send_files" "$KernelFilesOc" "$MSG"
+                . "${MainPath}"/misc/bot.sh "send_files" "$KernelFilesOc" "$MSG"
             fi
-            . ${MainPath}/misc/bot.sh "send_files" "$KernelFiles" "$MSG"
+            . "${MainPath}"/misc/bot.sh "send_files" "$KernelFiles" "$MSG"
         fi
     fi
     if [ "$KernelDownloader" == "Y" ] && [ ! -z "${KDType}" ];then
-        git clone https://$GIT_SECRETB@github.com/$GIT_USERNAME/kernel-download-generator "$KDpath"
-        cd "$KDpath"
+        git clone https://"$GIT_SECRETB"@github.com/"$GIT_USERNAME"/kernel-download-generator "$KDpath"
+        cd "$KDpath" 
         chmod +x "${KDpath}/update.sh"
         . "${KDpath}/update.sh" "${KDType}"
-        cd "$MainPath"
+        cd "$MainPath" 
         rm -rf "$KDpath"
     fi
     
     # always remove after push kernel zip
     for FIleName in Image Image-dtb Image.gz Image.gz-dtb dtb dtb.img dt dt.img dtbo dtbo.img init.spectrum.rc dtb-*
     do
-        rm -rf $AnyKernelPath/$FIleName
+        rm -rf "$AnyKernelPath"/"$FIleName"
     done
     rm -rf "$KernelFilesOc"
     # remove kernel zip
     rm -rf "$AnyKernelPath/$ZipName"
-    rm -rf $KernelPath/out/arch/$ARCH/boot/dtbo.img $KernelPath/out/arch/$ARCH/boot/dtbo.img $KernelPath/out/arch/$ARCH/boot/${ImgName}
+    rm -rf "$KernelPath"/out/arch/"$ARCH"/boot/dtbo.img "$KernelPath"/out/arch/"$ARCH"/boot/dtbo.img "$KernelPath"/out/arch/"$ARCH"/boot/"${ImgName}"
     
 }
 
@@ -579,107 +580,107 @@ SendInfoLink(){
             GenLink="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
         fi
         MSG="🔨 New Kernel On The Way%0A%0ADevice: <code>${DEVICE}</code>%0A%0ACodename: <code>${CODENAME}</code>%0A%0ABranch: <code>${KernelBranch}</code>%0A%0ABuild Date: <code>${GetCBD}</code>%0A%0ABuild Number: <code>${BuildNumber}</code>%0A%0AHost Core Count : <code>${TotalCores} cores</code>%0A%0AKernel Version: <code>${KVer}</code>%0A%0ABuild Link Progress : ${GenLink}"
-        . $MainPath/misc/bot.sh "send_info" "$MSG"
+        . "$MainPath"/misc/bot.sh "send_info" "$MSG"
         FirstSendInfoLink="Y"
     fi
 }
 
 pullBranch(){
-    [[ "$(pwd)" != "${KernelPath}" ]] && cd "${KernelPath}"
-    git reset --hard $HeadCommitId
-    git fetch origin $1
-    git pull --no-commit origin $1
+    [[ "$(pwd)" != "${KernelPath}" ]] && cd "${KernelPath}" 
+    git reset --hard "$HeadCommitId"
+    git fetch origin "$1"
+    git pull --no-commit origin "$1"
     git commit -s -m "Pull branch $1"
     TypeBuildTag="$2"
 }
 
 pullBranchAgain(){
-    [[ "$(pwd)" != "${KernelPath}" ]] && cd "${KernelPath}"
-    git fetch origin $1
-    git pull --no-commit origin $1
+    [[ "$(pwd)" != "${KernelPath}" ]] && cd "${KernelPath}" 
+    git fetch origin "$1"
+    git pull --no-commit origin "$1"
     git commit -s -m "Pull branch $1"
     TypeBuildTag="$2"
 }
 
 DisableLTO(){
-    [[ "$(pwd)" != "${KernelPath}" ]] && cd "${KernelPath}"
-    sed -i "s/CONFIG_LTO=y/CONFIG_LTO=n/" arch/$ARCH/configs/$DEFFCONFIG
-    sed -i "s/CONFIG_LTO_CLANG=y/CONFIG_LTO_CLANG=n/" arch/$ARCH/configs/$DEFFCONFIG
-    git add arch/$ARCH/configs/$DEFFCONFIG && git commit -sm 'defconfig: Disable LTO'
+    [[ "$(pwd)" != "${KernelPath}" ]] && cd "${KernelPath}" 
+    sed -i "s/CONFIG_LTO=y/CONFIG_LTO=n/" arch/"$ARCH"/configs/"$DEFFCONFIG"
+    sed -i "s/CONFIG_LTO_CLANG=y/CONFIG_LTO_CLANG=n/" arch/"$ARCH"/configs/"$DEFFCONFIG"
+    git add arch/"$ARCH"/configs/"$DEFFCONFIG" && git commit -sm 'defconfig: Disable LTO'
 }
 
 DisableThin(){
-    [[ "$(pwd)" != "${KernelPath}" ]] && cd "${KernelPath}"
-    sed -i "s/CONFIG_THINLTO=y/CONFIG_THINLTO=n/" arch/$ARCH/configs/$DEFFCONFIG
-    git add arch/$ARCH/configs/$DEFFCONFIG && git commit -sm 'defconfig: Disable THINLTO'
+    [[ "$(pwd)" != "${KernelPath}" ]] && cd "${KernelPath}" 
+    sed -i "s/CONFIG_THINLTO=y/CONFIG_THINLTO=n/" arch/"$ARCH"/configs/"$DEFFCONFIG"
+    git add arch/"$ARCH"/configs/"$DEFFCONFIG" && git commit -sm 'defconfig: Disable THINLTO'
 }
 
 EnableWalt(){
-    [[ "$(pwd)" != "${KernelPath}" ]] && cd "${KernelPath}"
-    sed -i "s/# CONFIG_SCHED_WALT is not set/CONFIG_SCHED_WALT=y/" arch/$ARCH/configs/$DEFFCONFIG
-    git add arch/$ARCH/configs/$DEFFCONFIG && git commit -sm 'defconfig: Enable WALT'
+    [[ "$(pwd)" != "${KernelPath}" ]] && cd "${KernelPath}" 
+    sed -i "s/# CONFIG_SCHED_WALT is not set/CONFIG_SCHED_WALT=y/" arch/"$ARCH"/configs/"$DEFFCONFIG"
+    git add arch/"$ARCH"/configs/"$DEFFCONFIG" && git commit -sm 'defconfig: Enable WALT'
 }
 
 DisableWalt(){
-    [[ "$(pwd)" != "${KernelPath}" ]] && cd "${KernelPath}"
-    sed -i "s/CONFIG_SCHED_WALT=y/CONFIG_SCHED_WALT=n/" arch/$ARCH/configs/$DEFFCONFIG
-    git add arch/$ARCH/configs/$DEFFCONFIG && git commit -sm 'defconfig: Disable WALT'
+    [[ "$(pwd)" != "${KernelPath}" ]] && cd "${KernelPath}" 
+    sed -i "s/CONFIG_SCHED_WALT=y/CONFIG_SCHED_WALT=n/" arch/"$ARCH"/configs/"$DEFFCONFIG"
+    git add arch/"$ARCH"/configs/"$DEFFCONFIG" && git commit -sm 'defconfig: Disable WALT'
 }
 
 DisableMsmP(){
-    [[ "$(pwd)" != "${KernelPath}" ]] && cd "${KernelPath}"
-    sed -i "s/CONFIG_MSM_PERFORMANCE=y/CONFIG_MSM_PERFORMANCE=n/" arch/$ARCH/configs/$DEFFCONFIG
-    git add arch/$ARCH/configs/$DEFFCONFIG && git commit -sm 'defconfig: Disable MSM_PERFORMANCE'   
+    [[ "$(pwd)" != "${KernelPath}" ]] && cd "${KernelPath}" 
+    sed -i "s/CONFIG_MSM_PERFORMANCE=y/CONFIG_MSM_PERFORMANCE=n/" arch/"$ARCH"/configs/"$DEFFCONFIG"
+    git add arch/"$ARCH"/configs/"$DEFFCONFIG" && git commit -sm 'defconfig: Disable MSM_PERFORMANCE'   
 }
 
 DisableKCAL(){
-    [[ "$(pwd)" != "${KernelPath}" ]] && cd "${KernelPath}"
-    sed -i "s/CONFIG_DRM_MSM_KCAL_CTRL=y/CONFIG_DRM_MSM_KCAL_CTRL=n/" arch/$ARCH/configs/$DEFFCONFIG
-    git add arch/$ARCH/configs/$DEFFCONFIG && git commit -sm 'defconfig: Disable DRM_MSM_KCAL_CTRL' 
+    [[ "$(pwd)" != "${KernelPath}" ]] && cd "${KernelPath}" 
+    sed -i "s/CONFIG_DRM_MSM_KCAL_CTRL=y/CONFIG_DRM_MSM_KCAL_CTRL=n/" arch/"$ARCH"/configs/"$DEFFCONFIG"
+    git add arch/"$ARCH"/configs/"$DEFFCONFIG" && git commit -sm 'defconfig: Disable DRM_MSM_KCAL_CTRL' 
 }
 
 OptimizeForSize()
 {
-    [[ "$(pwd)" != "${KernelPath}" ]] && cd "${KernelPath}"
-    sed -i "s/# CONFIG_CC_OPTIMIZE_FOR_SIZE is not set/CONFIG_CC_OPTIMIZE_FOR_SIZE=y/" arch/$ARCH/configs/$DEFFCONFIG
-    sed -i "s/CONFIG_CC_OPTIMIZE_FOR_PERFORMANCE=y/# CONFIG_CC_OPTIMIZE_FOR_PERFORMANCE is not set/" arch/$ARCH/configs/$DEFFCONFIG
-    git add arch/$ARCH/configs/$DEFFCONFIG && git commit -sm 'defconfig: Optimize for size' 
+    [[ "$(pwd)" != "${KernelPath}" ]] && cd "${KernelPath}" 
+    sed -i "s/# CONFIG_CC_OPTIMIZE_FOR_SIZE is not set/CONFIG_CC_OPTIMIZE_FOR_SIZE=y/" arch/"$ARCH"/configs/"$DEFFCONFIG"
+    sed -i "s/CONFIG_CC_OPTIMIZE_FOR_PERFORMANCE=y/# CONFIG_CC_OPTIMIZE_FOR_PERFORMANCE is not set/" arch/"$ARCH"/configs/"$DEFFCONFIG"
+    git add arch/"$ARCH"/configs/"$DEFFCONFIG" && git commit -sm 'defconfig: Optimize for size' 
 }
 
 OptimizeForPerf()
 {
-    [[ "$(pwd)" != "${KernelPath}" ]] && cd "${KernelPath}"
-    sed -i "s/# CONFIG_CC_OPTIMIZE_FOR_PERFORMANCE is not set/CONFIG_CC_OPTIMIZE_FOR_PERFORMANCE=y/" arch/$ARCH/configs/$DEFFCONFIG
-    sed -i "s/CONFIG_CC_OPTIMIZE_FOR_SIZE=y/# CONFIG_CC_OPTIMIZE_FOR_SIZE is not set/" arch/$ARCH/configs/$DEFFCONFIG
-    git add arch/$ARCH/configs/$DEFFCONFIG && git commit -sm 'defconfig: Optimize for Performance' 
+    [[ "$(pwd)" != "${KernelPath}" ]] && cd "${KernelPath}" 
+    sed -i "s/# CONFIG_CC_OPTIMIZE_FOR_PERFORMANCE is not set/CONFIG_CC_OPTIMIZE_FOR_PERFORMANCE=y/" arch/"$ARCH"/configs/"$DEFFCONFIG"
+    sed -i "s/CONFIG_CC_OPTIMIZE_FOR_SIZE=y/# CONFIG_CC_OPTIMIZE_FOR_SIZE is not set/" arch/"$ARCH"/configs/"$DEFFCONFIG"
+    git add arch/"$ARCH"/configs/"$DEFFCONFIG" && git commit -sm 'defconfig: Optimize for Performance' 
 }
 
 EnableSCS()
 {
-    [[ "$(pwd)" != "${KernelPath}" ]] && cd "${KernelPath}"
-    sed -i "s/# CONFIG_SHADOW_CALL_STACK is not set/CONFIG_SHADOW_CALL_STACK=y/" arch/$ARCH/configs/$DEFFCONFIG
-    echo "" >> arch/$ARCH/configs/$DEFFCONFIG
-    echo "CONFIG_SHADOW_CALL_STACK_VMAP=y" >> arch/$ARCH/configs/$DEFFCONFIG
-    git add arch/$ARCH/configs/$DEFFCONFIG && git commit -sm 'defconfig: enable SCS' 
+    [[ "$(pwd)" != "${KernelPath}" ]] && cd "${KernelPath}" 
+    sed -i "s/# CONFIG_SHADOW_CALL_STACK is not set/CONFIG_SHADOW_CALL_STACK=y/" arch/"$ARCH"/configs/"$DEFFCONFIG"
+    echo "" >> arch/"$ARCH"/configs/"$DEFFCONFIG"
+    echo "CONFIG_SHADOW_CALL_STACK_VMAP=y" >> arch/"$ARCH"/configs/"$DEFFCONFIG"
+    git add arch/"$ARCH"/configs/"$DEFFCONFIG" && git commit -sm 'defconfig: enable SCS' 
 }
 
 EnableRELR()
 {
-    [[ "$(pwd)" != "${KernelPath}" ]] && cd "${KernelPath}"
-    sed -i "s/# CONFIG_TOOLS_SUPPORT_RELR is not set/CONFIG_TOOLS_SUPPORT_RELR=y/" arch/$ARCH/configs/$DEFFCONFIG
-    git add arch/$ARCH/configs/$DEFFCONFIG && git commit -sm 'defconfig: enable TOOLS_SUPPORT_RELR'  
+    [[ "$(pwd)" != "${KernelPath}" ]] && cd "${KernelPath}" 
+    sed -i "s/# CONFIG_TOOLS_SUPPORT_RELR is not set/CONFIG_TOOLS_SUPPORT_RELR=y/" arch/"$ARCH"/configs/"$DEFFCONFIG"
+    git add arch/"$ARCH"/configs/"$DEFFCONFIG" && git commit -sm 'defconfig: enable TOOLS_SUPPORT_RELR'  
 }
 
 DisableRELR()
 {
-    [[ "$(pwd)" != "${KernelPath}" ]] && cd "${KernelPath}"
-    sed -i "s/CONFIG_TOOLS_SUPPORT_RELR=y/# CONFIG_TOOLS_SUPPORT_RELR is not set/" arch/$ARCH/configs/$DEFFCONFIG
-    git add arch/$ARCH/configs/$DEFFCONFIG && git commit -sm 'defconfig: disable TOOLS_SUPPORT_RELR'  
+    [[ "$(pwd)" != "${KernelPath}" ]] && cd "${KernelPath}" 
+    sed -i "s/CONFIG_TOOLS_SUPPORT_RELR=y/# CONFIG_TOOLS_SUPPORT_RELR is not set/" arch/"$ARCH"/configs/"$DEFFCONFIG"
+    git add arch/"$ARCH"/configs/"$DEFFCONFIG" && git commit -sm 'defconfig: disable TOOLS_SUPPORT_RELR'  
 }
 
 ChangeConfigData()
 {
-    [[ "$(pwd)" != "${KernelPath}" ]] && cd "${KernelPath}"
+    [[ "$(pwd)" != "${KernelPath}" ]] && cd "${KernelPath}" 
     if [[ ! -z "$DEFFCONFIGB" ]] && [[ -f "arch/arm64/configs/$DEFFCONFIGB" ]];then
         sed -i "s/\$(KCONFIG_CONFIG)/arch\/arm64\/configs\/$DEFFCONFIGB/" kernel/Makefile
         git add kernel/Makefile && git commit -sm "kernel: Makefile: change defconfig for /proc/config.gz"
@@ -688,7 +689,7 @@ ChangeConfigData()
 
 DebugMissBypass()
 {
-    [[ "$(pwd)" != "${KernelPath}" ]] && cd "${KernelPath}"
+    [[ "$(pwd)" != "${KernelPath}" ]] && cd "${KernelPath}" 
     addToConf "arch/${ARCH}/configs/${DEFFCONFIG}" "CONFIG_DEBUG_SECTION_MISMATCH"
     addToConf "arch/${ARCH}/configs/${DEFFCONFIG}" "CONFIG_SECTION_MISMATCH_WARN_ONLY"
     git add "arch/${ARCH}/configs/${DEFFCONFIG}" && git commit -sm 'enable CONFIG_DEBUG_SECTION_MISMATCH CONFIG_SECTION_MISMATCH_WARN_ONLY'
