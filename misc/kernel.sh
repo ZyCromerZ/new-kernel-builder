@@ -462,7 +462,12 @@ CreateMultipleDtb()
             ( find "$KernelPath/out/arch/$ARCH/boot/dts/$AfterDTS" -name "*.dtb" -exec cat {} + > "$AnyKernelPath"/dtb-"$filename" )
             [[ ! -e "$AnyKernelPath/dtb-$filename" ]] && [[ ! -z "$BASE_DTB_NAME" ]] && cp "$KernelPath"/out/arch/"$ARCH"/boot/dts/"$AfterDTS"/"$BASE_DTB_NAME" "$AnyKernelPath"/dtb-"$filename"
         done
-        cd "$AnyKernelPath" 
+        cd "$AnyKernelPath"
+    else
+        if [[ "$UseDtb" == "y" ]];then
+            ( find "$KernelPath/out/arch/$ARCH/boot/dts/$AfterDTS" -name "*.dtb" -exec cat {} + > "$AnyKernelPath"/dtb )
+            [[ ! -e "$AnyKernelPath/dtb" ]] && [[ ! -z "$BASE_DTB_NAME" ]] && cp "$KernelPath"/out/arch/"$ARCH"/boot/dts/"$AfterDTS"/"$BASE_DTB_NAME" "$AnyKernelPath"/dtb
+        fi
     fi
 }
 
@@ -482,10 +487,6 @@ MakeZip(){
     fi
     cp -af anykernel-real.sh anykernel.sh && sed -i "s/kernel.string=.*/kernel.string=$KName-$HeadCommitId by ZyCromerZ/g" anykernel.sh
     [[ "$UseDtbo" == "y" ]] && cp -af "$KernelPath/out/arch/$ARCH/boot/dtbo.img" "$AnyKernelPath/dtbo.img"
-    if [[ "$UseDtb" == "y" ]];then
-        ( find "$KernelPath/out/arch/$ARCH/boot/dts/$AfterDTS" -name "*.dtb" -exec cat {} + > "$AnyKernelPath"/dtb )
-        [[ ! -e "$AnyKernelPath/dtb" ]] && [[ ! -z "$BASE_DTB_NAME" ]] && cp "$KernelPath"/out/arch/"$ARCH"/boot/dts/"$AfterDTS"/"$BASE_DTB_NAME" "$AnyKernelPath"/dtb
-    fi
     CreateMultipleDtb
     # remove placeholder file
     for asu in $(find . -name placeholder)
