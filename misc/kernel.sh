@@ -451,13 +451,11 @@ CreateMultipleDtb()
         # git fetch origin "$KernelBranch" --unshallow
         for Ngesot in $MultipleDtbBranch
         do
-            branch=$(echo "$Ngesot" | awk -F ':' '{print $1}')
-            filename=$(echo "$Ngesot" | awk -F ':' '{print $2}')
-            # git reset --hard "$KernelBranch"
-            git fetch origin "$branch"
-            # git pull origin "$branch" --no-commit
-            git checkout FETCH_HEAD
-            git commit -sm 'merged dtbo'
+            filename=$(echo "$Ngesot" | awk -F ':' '{print $1}')
+            thecomm=$(echo "$Ngesot" | awk -F ':' '{print $2}')
+            git reset --hard "$KernelBranch"
+            git fetch origin "$thecomm" --depth=2
+            git cherry-pick "$thecomm"
             make "${MAKE[@]}" O=out "$DEFFCONFIG" dtbo.img
             ( find "$KernelPath/out/arch/$ARCH/boot/dts/$AfterDTS" -name "*.dtb" -exec cat {} + > "$AnyKernelPath"/dtb-"$filename" )
             [[ ! -e "$AnyKernelPath/dtb-$filename" ]] && [[ ! -z "$BASE_DTB_NAME" ]] && cp "$KernelPath"/out/arch/"$ARCH"/boot/dts/"$AfterDTS"/"$BASE_DTB_NAME" "$AnyKernelPath"/dtb-"$filename"
