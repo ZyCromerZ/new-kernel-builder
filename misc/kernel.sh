@@ -118,15 +118,15 @@ CompileClangKernel(){
     [[ -d "${KernelPath}/KernelSU" ]] && [[ "$(cat arch/"$ARCH"/configs/"$DEFFCONFIG")" == "CONFIG_THINLTO=y" ]] && DisableLTO
     [[ "$NoLTO" != "n" ]] && DisableLTO
     SendInfoLink
-    BUILD_START=$(date +"%s")
-    make    -j"${TotalCores}"  O=out ARCH="$ARCH" "$DEFFCONFIG"
     MorePlusPlus=" "
     if [[ "$UseGoldBinutils" == "y" ]];then
         MorePlusPlus="LD=$for64-ld.gold LDGOLD=$for64-ld.gold HOSTLD=${ClangPath}/bin/ld $MorePlusPlus"
         MorePlusPlus="LD_COMPAT=${GCCbPath}/bin/$for32-ld $MorePlusPlus"
+        DisableRELR
     elif [[ "$UseGoldBinutils" == "m" ]];then
         MorePlusPlus="LD=$for64-ld LDGOLD=$for64-ld.gold HOSTLD=${ClangPath}/bin/ld $MorePlusPlus"
         MorePlusPlus="LD_COMPAT=${GCCbPath}/bin/$for32-ld $MorePlusPlus"
+        DisableRELR
     else
         MorePlusPlus="LD=${ClangPath}/bin/ld.lld HOSTLD=${ClangPath}/bin/ld.lld LD_COMPAT=${ClangPath}/bin/ld.lld $MorePlusPlus"
     fi
@@ -165,6 +165,7 @@ CompileClangKernel(){
 CompileGccKernel(){
     cd "${KernelPath}" 
     DisableLTO
+    DisableRELR
     MorePlusPlus=" "
     [[ "$UseLLD" == "y" ]] && [[ -f ${GCCaPath}/bin/$for64-ld.lld ]] && MorePlusPlus="LD=${GCCaPath}/bin/$for64-ld.lld HOSTLD=${GCCaPath}/bin/$for64-ld.lld"
     if [[ "$UseLLD" == "y" ]] && [[ -f ${GCCbPath}/bin/$for32-ld.lld ]];then
@@ -174,8 +175,6 @@ CompileGccKernel(){
     fi
     echo "MorePlusPlus : $MorePlusPlus"
     SendInfoLink
-    BUILD_START=$(date +"%s")
-    make    -j"${TotalCores}"  O=out ARCH="${ARCH}" "${DEFFCONFIG}"
     MAKE=(
         ARCH=$ARCH \
         SUBARCH=$ARCH \
@@ -195,6 +194,7 @@ CompileGccKernel(){
 CompileGccKernelB(){
     cd "${KernelPath}" 
     DisableLTO
+    DisableRELR
     MorePlusPlus=" "
     [[ "$UseLLD" == "y" ]] && [[ -f ${GCCaPath}/bin/$for64-ld.lld ]] && MorePlusPlus="LD=${GCCaPath}/bin/$for64-ld.lld HOSTLD=${GCCaPath}/bin/$for64-ld.lld"
     if [[ "$UseLLD" == "y" ]] && [[ -f ${GCCbPath}/bin/$for32-ld.lld ]];then
@@ -234,12 +234,11 @@ CompileClangKernelB(){
     [[ -d "${KernelPath}/KernelSU" ]] && [[ "$(cat arch/"$ARCH"/configs/"$DEFFCONFIG")" == "CONFIG_THINLTO=y" ]] && DisableLTO
     [[ "$NoLTO" != "n" ]] && DisableLTO
     SendInfoLink
-    BUILD_START=$(date +"%s")
-    make    -j"${TotalCores}"  O=out ARCH="$ARCH" "$DEFFCONFIG"
     MorePlusPlus=" "
     if [[ ! -z "$(cat "$KernelPath"/out/.config | grep "CONFIG_LTO=y" )" ]] || [[ ! -z "$(cat "$KernelPath"/out/.config | grep "CONFIG_LTO_CLANG=y" )" ]] || [[ "$UseLLD" == "y" ]];then
         MorePlusPlus="LD=ld.lld HOSTLD=ld.lld LD_COMPAT=ld.lld $MorePlusPlus"
     else
+        DisableRELR
         if [[ -f ${ClangPath}/bin/arm-linux-gnueabi-ld.lld ]];then
             MorePlusPlus="LD_COMPAT=${ClangPath}/bin/arm-linux-gnueabi-ld.lld $MorePlusPlus"
         else
@@ -294,8 +293,10 @@ CompileClangKernelLLVM(){
     fi
     if [[ "$UseGoldBinutils" == "y" ]];then
         MorePlusPlus="LD=aarch64-linux-gnu-ld.gold LDGOLD=aarch64-linux-gnu-ld.gold HOSTLD=${PrefixDir}ld $MorePlusPlus"
+        DisableRELR
     elif [[ "$UseGoldBinutils" == "m" ]];then
         MorePlusPlus="LD=aarch64-linux-gnu-ld LDGOLD=aarch64-linux-gnu-ld.gold HOSTLD=${PrefixDir}ld $MorePlusPlus"
+        DisableRELR
     else
         MorePlusPlus="LD=${PrefixDir}ld.lld HOSTLD=${PrefixDir}ld.lld $MorePlusPlus"
     fi
@@ -304,8 +305,6 @@ CompileClangKernelLLVM(){
     else
         MorePlusPlus="OBJCOPY=${PrefixDir}llvm-objcopy $MorePlusPlus"
     fi
-    BUILD_START=$(date +"%s")
-    make    -j"${TotalCores}"  O=out ARCH="$ARCH" "$DEFFCONFIG"
     if [ -d "${ClangPath}/lib64" ];then
         MAKE=(
                 ARCH=$ARCH \
@@ -366,20 +365,20 @@ CompileClangKernelLLVMB(){
     if [[ "$UseGoldBinutils" == "y" ]];then
         MorePlusPlus="LD=$for64-ld.gold LDGOLD=$for64-ld.gold HOSTLD=${PrefixDir}ld $MorePlusPlus"
         [[ "$UseGCCLLVM" == "y" ]] && MorePlusPlus="LD_COMPAT=$for32-ld.gold $MorePlusPlus"
+        DisableRELR
     elif [[ "$UseGoldBinutils" == "m" ]];then
         MorePlusPlus="LD=$for64-ld LDGOLD=$for64-ld.gold HOSTLD=${PrefixDir}ld $MorePlusPlus"
         [[ "$UseGCCLLVM" == "y" ]] && MorePlusPlus="LD_COMPAT=$for32-ld $MorePlusPlus"
+        DisableRELR
     else
         MorePlusPlus="LD=${PrefixDir}ld.lld HOSTLD=${PrefixDir}ld.lld $MorePlusPlus"
-        [[ "$UseGCCLLVM" == "y" ]] && MorePlusPlus="LD_COMPAT=$for32-ld.lld $MorePlusPlus"
+        [[ "$UseGCCLLVM" == "y" ]] && MorePlusPlus="LD_COMPAT=ld.lld $MorePlusPlus"
     fi
     if [[ "$UseOBJCOPYBinutils" == "y" ]];then
         MorePlusPlus="OBJCOPY=$for64-objcopy $MorePlusPlus"
     else
         MorePlusPlus="OBJCOPY=${PrefixDir}llvm-objcopy $MorePlusPlus"
     fi
-    BUILD_START=$(date +"%s")
-    make    -j"${TotalCores}"  O=out ARCH="$ARCH" "$DEFFCONFIG"
     if [ -d "${ClangPath}/lib64" ];then
         MAKE=(
                 ARCH=$ARCH \
@@ -420,6 +419,8 @@ CompileClangKernelLLVMB(){
 
 CompileNow()
 {
+    BUILD_START=$(date +"%s")
+    make -j"${TotalCores}"  O=out ARCH="$ARCH" "$DEFFCONFIG"
     getInfo "script : 'make -j${TotalCores} O=out ${MAKE[@]} LLVM_IAS=1'"
     make -j"${TotalCores}" O=out ${MAKE[@]} LLVM_IAS=1
     BUILD_END=$(date +"%s")
