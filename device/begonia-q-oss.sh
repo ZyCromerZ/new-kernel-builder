@@ -17,6 +17,7 @@ TypeBuildFor="Q-OSS"
 # DoSubModules="y"
 AddKSU="y"
 UseLLD="n"
+NoLTO="y"
 
 # pullALmk(){
 #     [[ "$(pwd)" != "${KernelPath}" ]] && cd "${KernelPath}"

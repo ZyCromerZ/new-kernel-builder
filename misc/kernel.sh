@@ -28,6 +28,7 @@ if [ ! -z "$1" ];then
     [[ -z "$UseDtb" ]] && UseDtb="n"
     [[ -z "$UseDtbo" ]] && UseDtbo="n"
     [[ -z "$AddKSU" ]] && AddKSU="n"
+    [[ -z "$NoLTO" ]] && NoLTO="n"
     UseZyCLLVM="n"
     UseGCCLLVM="n"
     UseGoldBinutils="n"
@@ -115,6 +116,7 @@ CloneKernel(){
 CompileClangKernel(){
     cd "${KernelPath}" 
     [[ -d "${KernelPath}/KernelSU" ]] && [[ "$(cat arch/"$ARCH"/configs/"$DEFFCONFIG")" == "CONFIG_THINLTO=y" ]] && DisableLTO
+    [[ "$NoLTO" != "n" ]] && DisableLTO
     SendInfoLink
     BUILD_START=$(date +"%s")
     make    -j"${TotalCores}"  O=out ARCH="$ARCH" "$DEFFCONFIG"
@@ -230,6 +232,7 @@ CompileGccKernelB(){
 CompileClangKernelB(){
     cd "${KernelPath}" 
     [[ -d "${KernelPath}/KernelSU" ]] && [[ "$(cat arch/"$ARCH"/configs/"$DEFFCONFIG")" == "CONFIG_THINLTO=y" ]] && DisableLTO
+    [[ "$NoLTO" != "n" ]] && DisableLTO
     SendInfoLink
     BUILD_START=$(date +"%s")
     make    -j"${TotalCores}"  O=out ARCH="$ARCH" "$DEFFCONFIG"
@@ -275,6 +278,7 @@ CompileClangKernelB(){
 CompileClangKernelLLVM(){
     cd "${KernelPath}" 
     [[ -d "${KernelPath}/KernelSU" ]] && [[ "$(cat arch/"$ARCH"/configs/"$DEFFCONFIG")" == "CONFIG_THINLTO=y" ]] && DisableLTO
+    [[ "$NoLTO" != "n" ]] && DisableLTO
     SendInfoLink
     MorePlusPlus=" "
     PrefixDir=""
@@ -343,6 +347,7 @@ CompileClangKernelLLVM(){
 CompileClangKernelLLVMB(){
     cd "${KernelPath}" 
     [[ -d "${KernelPath}/KernelSU" ]] && [[ "$(cat arch/"$ARCH"/configs/"$DEFFCONFIG")" == "CONFIG_THINLTO=y" ]] && DisableLTO
+    [[ "$NoLTO" != "n" ]] && DisableLTO
     SendInfoLink
     MorePlusPlus=" "
     PrefixDir=""
