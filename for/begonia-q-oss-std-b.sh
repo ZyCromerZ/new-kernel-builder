@@ -12,6 +12,7 @@ TypeBuildTag="[806Mhz]"
 CloneKernel "--depth=1"
 CloneCompiledGccThirteen
 CloneDTCClang
+OptimizeForSize
 # DisableMsmP
 # DisableThin
 EnableRELR
